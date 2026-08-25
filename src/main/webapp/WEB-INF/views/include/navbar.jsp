@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <header
-	class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b-2 border-dashed border-slate-300">
+	class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b-2 border-dashed border-slate-300 mb-9">
 	<div
 		class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
 

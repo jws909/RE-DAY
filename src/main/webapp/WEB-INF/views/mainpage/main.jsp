@@ -5,11 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<%@ include file="/WEB-INF/views/include/head.jsp"%>
 	<link href = "/css/mainpage.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add" />
 </head>
 <body>
-	<h1>mainpage</h1>
+	<!-- 상단 네비게이션 바 불러오기 -->
+	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
 	<div class = mainpage_container>
 		<!--상단바 -->
 		<div class = "mp_top_column">
