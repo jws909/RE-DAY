@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <header
-	class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b-2 border-dashed border-slate-300 mb-9">
+	class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b-2 border-dashed border-slate-300 mb-8">
 	<div
 		class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
 
@@ -90,7 +90,7 @@
 					<%-- 2. 비로그인 상태 --%>
 					<c:otherwise>
 						<a href="${pageContext.request.contextPath}/member/signin"
-							class="px-2.5 py-1.5 text-xs font-bold text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-md transition-colors hidden sm:inline">
+							class="px-2.5 py-1.5 text-xs font-bold text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-md transition-colors">
 							로그인 </a>
 					</c:otherwise>
 				</c:choose>
