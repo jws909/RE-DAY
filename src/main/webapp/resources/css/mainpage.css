@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+h1 {
+	color: blue;
+}
+
+/* 메인페이지 상단바 */
+.mp_top_column{
+	background-color: #151E31;
+	margin: 0 auto;
+	max-width : 1100px;
+	width:100%;
+	min-height : 200px;
+	border-radius: 32px;
+	border: 3px dashed #CBD5E1;
+	display: flex;
+	justify-content: space-between;
+	overflow: hidden;
+}
+
+.mp_top_left_column{
+	background-color: #151E31;
+	width:65%;
+	padding : 30px;
+}
+
+.mp_t_left_top{
+	display:inline-block;
+	background-color: #1A2E54;
+	color:#93C5FD;
+	border-radius : 10px;
+	text-align : center;
+	border: 1px solid #2E5285;
+	width: 250px;
+	font-size: 13px;
+}
+
+.mp_t_left_middle h1{
+	color: #ffffff;
+	margin: 0 0 10px 0;
+}
+
+.mp_t_left_bottom{
+	color: #CBD5E1;
+}
+
+.mp_top_right_column{
+	background-color: #2F384A;
+	width:35%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.mp_top_right_column button{
+	display: flex;
+	width : 250px;
+	height : 45px;
+	font-size : 15px;
+	font-weight: bold;
+	align-items: center;
+	text-align : center;
+	background-color: #3B82F6;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	border-radius : 12px;
+	border : none;
+	color: #ffffff;
+	transition: background-color 0.2s;
+	justify-content: center;
+	gap: 8px;
+}
+
+.mp_top_right_column button .material-symbols-outlined{
+	font-size : 18px;
+}
