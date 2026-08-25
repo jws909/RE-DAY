@@ -5,21 +5,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<%@ include file="/WEB-INF/views/include/head.jsp"%>
 	<link href = "/css/mainpage.css" rel="stylesheet">
 	<script src= "/js/mainpage.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
-	<h1>mainpage</h1>
-	<div class = "mp_container">
+	<!-- 상단 네비게이션 바 불러오기 -->
+	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
+	<div class = mp_container>
 		<!--상단바 -->
 		<div class = "mp_top_column">
 			<div class ="mp_top_left_column">
-				<div class = "mp_t_left_top">	
+				<div class = "mp_t_left_top mb-2">	
 					✨RE:DAY 데일리 라이프 리뷰
 				</div>
 				<div class = "mp_t_left_middle">
-					<h1>오늘 하루의 평점과 경험을 기록하세요</h1>
+					<h1 class="text-2xl sm:text-3xl font-bold">오늘 하루의 평점과 경험을 기록하세요</h1>
 				</div>
 				<div class = "mp_t_left_bottom">
 					하루 전체의 삶을 별점으로 기록하고, 방문한 맛집/사용한 전자기기/탑승한 차량 등 세부 서브 리뷰를 함께 남겨보세요.
