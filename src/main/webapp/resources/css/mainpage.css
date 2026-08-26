@@ -1,9 +1,15 @@
 @charset "UTF-8";
 
+* {
+    box-sizing: border-box;
+}
+
 .mp_container{
 	width : 1100px;
 	margin: 0 auto;	
 }
+
+
 /* 메인페이지 상단바 */
 .mp_top_column{
 	background-color: #151E31;
@@ -76,131 +82,32 @@
 	font-size : 18px;
 }
 
-/* 정렬&필터바 */
-.sort_filter_bar{
-	border: 3px dashed #CBD5E1;
-	width: 65%;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 30px;
-	padding:10px;
-	border-radius: 12px;
-}
 
-.sort_filter_left{
-	display: flex;
-	gap: 4px;
-	align-items: center;
-}
-
-.filter_button{
-	display: flex;
-	border-radius: 12px;
-	background-color: #F1F5F9;
-	padding : 2px;
-}
-
-.filter_button button {
-    border: none;
-    background: transparent;
-    padding: 6px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #64748B;
-}
-
-.filter_button button.active {
-	background-color: #ffffff;
-	font-weight: bold;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}@charset "UTF-8";
-
-.mp_container{
-	width : 1100px;
-	margin: 0 auto;	
-}
-/* 메인페이지 상단바 */
-.mp_top_column{
-	background-color: #151E31;
-	margin: 0 auto;
-	max-width : 1100px;
+/* 하단 컨테이너*/
+.mp_bottom_column{
 	width:100%;
-	min-height : 200px;
-	border-radius: 32px;
-	border: 3px dashed #CBD5E1;
-	display: flex;
+	min-height : 1000px;
+	display:flex;
 	justify-content: space-between;
-	overflow: hidden;
+	margin-top: 30px;
+	flex-wrap: nowrap;
 }
 
-.mp_top_left_column{
-	background-color: #151E31;
+.mp_bottom_main{
 	width:65%;
-	padding : 30px;
 }
 
-.mp_t_left_top{
-	display:inline-block;
-	background-color: #1A2E54;
-	color:#93C5FD;
-	border-radius : 10px;
-	text-align : center;
-	border: 1px solid #2E5285;
-	width: 250px;
-	font-size: 13px;
-}
-
-.mp_t_left_middle h1{
-	color: #ffffff;
-	margin: 0 0 10px 0;
-}
-
-.mp_t_left_bottom{
-	color: #CBD5E1;
-}
-
-.mp_top_right_column{
-	background-color: #2F384A;
-	width:35%;
-	display: flex;	
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-
-.mp_top_right_column button{
-	display: flex;
-	width : 250px;
-	height : 45px;
-	font-size : 15px;
-	font-weight: bold;
-	align-items: center;
-	text-align : center;
-	background-color: #3B82F6;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
-	border-radius : 12px;
-	border : none;
-	color: #ffffff;
-	transition: background-color 0.2s;
-	justify-content: center;
-	gap: 8px;
-}
-
-.mp_top_right_column button .material-symbols-outlined{
-	font-size : 18px;
+.mp_bottom_side{
+	width:30%;
 }
 
 /* 정렬&필터바 */
 .sort_filter_bar{
 	border: 3px dashed #CBD5E1;
-	width: 65%;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 30px;
 	padding:10px;
 	border-radius: 12px;
 }
@@ -232,4 +139,140 @@
 	background-color: #ffffff;
 	font-weight: bold;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 내 하루 평점 통계표 */
+.mp_day_rating_static{
+	align-items: center;
+	display: flex;
+	width: 100%;
+	height: 300px;
+	border-radius: 10px;
+	border: 3px dashed #CBD5E1;
+	flex-direction: column;
+}
+
+.day_rating_header{
+	display:flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+	border-bottom: 1px solid #CBD5E1;
+}
+
+.day_rating_title{
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap:4px;
+}
+
+.day_rating_title .symbol1{
+	color: #FBBF24;
+	font-size: 20px;
+}
+
+.day_rating_sub_text{
+	font-size: 10px;
+}
+
+.average_daily_score_card {
+	background-color: #F8FAFC;
+	border: 1px solid #E2E8F0;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.score_info_left {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.score_label {
+	font-size: 11px;
+	color: #64748B;
+}
+
+.score_val_wrapper {
+	display: flex;
+	align-items: baseline;
+	gap: 4px;
+}
+
+.score_main {
+	font-size: 22px;
+	font-weight: 800;
+	color: #0F172A;
+}
+
+.score_total {
+	font-size: 12px;
+	color: #94A3B8;
+}
+
+.score_info_right {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
+}
+
+.score_badge {
+	background-color: #DCFCE7;
+	color: #047857;
+	font-size: 11px;
+	font-weight: 700;
+	padding: 2px 6px;
+	border-radius: 6px;
+}
+
+.sub_review_cnt {
+	font-size: 10px;
+	color: #94A3B8;
+}
+
+/* 하단 7일 바 차트 */
+.weekly_chart_wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.week_days_label {
+	display: flex;
+	justify-content: space-between;
+	font-size: 11px;
+	color: #94A3B8;
+	font-family: monospace;
+	padding: 0 4px;
+}
+
+.chart_bars_container {
+	height: 56px;
+	background-color: #F8FAFC;
+	border: 1px solid #E2E8F0;
+	border-radius: 8px;
+	padding: 6px 8px 0 8px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 6px;
+}
+
+.bar_item {
+	flex: 1;
+	background-color: #E2E8F0;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	transition: background-color 0.2s;
+	cursor: pointer;
+}
+
+.bar_item:hover {
+	background-color: #FBBF24;
 }

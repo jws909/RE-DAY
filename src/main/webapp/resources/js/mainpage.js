@@ -1,7 +1,7 @@
 /**
  * 
  */
-
+/*필터 바 분류 버튼 기능*/
 document.addEventListener("DOMContentLoaded", function () {
     const filterButton = document.querySelectorAll('.filter_button button');
 
