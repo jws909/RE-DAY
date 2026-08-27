@@ -53,7 +53,7 @@
 			</a>
 
 			<!-- 하루 쓰기 -->
-			<a href="${pageContext.request.contextPath}/write"
+			<a href="${pageContext.request.contextPath}/RE:DAY/review/write"
 				class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-all border bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">
 				<i class="fa-solid fa-circle-plus"></i> <span>하루 쓰기</span>
 			</a>
