@@ -61,13 +61,13 @@
 						<div class="score_info_left">
 							<span class="score_label">이번 주 평균 하루 점수</span>
 							<div class="score_val_wrapper">
-								<span class="score_main font-mono">4.6</span> <span
-									class="score_total font-mono">/ 5.0</span>
+								<span class="score_main font-mono">n</span> <span
+									class="score_total font-mono">/ n</span>
 							</div>
 						</div>
 						<div class="score_info_right">
-							<span class="score_badge">+0.3점 상승 ↗</span> <span
-								class="sub_review_cnt">서브 리뷰 14개 등록</span>
+							<span class="score_badge">+n점 상승 ↗</span> <span
+								class="sub_review_cnt">서브 리뷰 n개 등록</span>
 						</div>
 					</div>
 					<div class="weekly_chart_wrapper">
@@ -75,7 +75,6 @@
 							<span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span>
 						</div>
 						<div class="chart_bars_container">
-							<!-- 높이(height)는 백엔드 값에 따라 퍼센트로 조절 가능 -->
 							<div class="bar_item" style="height: 60%;" data-score="3.0"></div>
 							<div class="bar_item" style="height: 75%;" data-score="3.8"></div>
 							<div class="bar_item" style="height: 95%;" data-score="4.8"></div>
@@ -85,6 +84,55 @@
 							<div class="bar_item" style="height: 80%;" data-score="4.0"></div>
 						</div>
 					</div>
+				</div>
+				<!-- 서브 리뷰 카테고리 필터 -->
+				<div class="mp_sub_review_category_filter">
+					<div class="sub_review_category_filter_header">
+						<div class="sub_review_category_filter_title">
+							<span class="material-symbols-outlined">trending_up</span>
+							<h4 class="text-sm font-bold">서브 리뷰 카테고리 필터</h4>
+						</div>
+					</div>
+					<button type="button" class="sub_review_category_filter_card active">
+						<div class="sub_review_category_filter_info_left">
+							<span class="sub_review_category_filter_label">전체 리뷰 보기</span>
+						</div>
+						<div class="sub_review_category_filter_info_right">
+							<span class="sub_review_category_filter_score font-mono active">n</span>
+						</div>
+					</button>
+					<button type="button" class="sub_review_category_filter_card">
+						<div class="sub_review_category_filter_info_left">
+							<span class="sub_review_category_filter_label">☕장소·식당·카페</span>
+						</div>
+						<div class="sub_review_category_filter_info_right">
+							<span class="sub_review_category_filter_score font-mono">n</span>
+						</div>
+					</button>
+					<button type="button" class="sub_review_category_filter_card">
+						<div class="sub_review_category_filter_info_left">
+							<span class="sub_review_category_filter_label">💻아이템·기기</span>
+						</div>
+						<div class="sub_review_category_filter_info_right">
+							<span class="sub_review_category_filter_score font-mono">n</span>
+						</div>
+					</button>
+					<button type="button" class="sub_review_category_filter_card">
+						<div class="sub_review_category_filter_info_left">
+							<span class="sub_review_category_filter_label">🚗이동수단·모빌리티</span>
+						</div>
+						<div class="sub_review_category_filter_info_right">
+							<span class="sub_review_category_filter_score font-mono">n</span>
+						</div>
+					</button>
+					<button type="button" class="sub_review_category_filter_card">
+						<div class="sub_review_category_filter_info_left">
+							<span class="sub_review_category_filter_label">🎬콘텐츠·미디어</span>
+						</div>
+						<div class="sub_review_category_filter_info_right">
+							<span class="sub_review_category_filter_score font-mono">n</span>
+						</div>
+					</button>
 				</div>
 			</div>
 		</div>
