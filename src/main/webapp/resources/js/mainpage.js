@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function (){
 	const review_create_button = document.querySelectorAll('.mp_top_right_column button');
-	const create_main_review = document.querySelector('.mp_bottom_main');
+	const create_main_review = document.querySelector('.main_review_container');
 	
 	review_create_button.forEach(button => {
 		button.addEventListener('click', function () {
