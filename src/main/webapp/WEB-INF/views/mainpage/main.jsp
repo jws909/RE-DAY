@@ -45,6 +45,85 @@
 					</div>
 					<div class="sort_filter_right">총 n개의 하루 리뷰</div>
 				</div>
+				<!-- 메인 리뷰 카드 -->
+				<div class="mp_review_card">
+					<div class="mp_review_header">
+						<div class="mp_review_author_info">
+							<div class="mp_author_avatar font-mono"></div>
+							<div class="mp_author_meta">
+								<div class="mp_author_name_row">
+									<span class="mp_author_name">승북이</span> <span
+										class="mp_author_level font-mono">lv.100 집에 얼른 가고 싶은 군산
+										촌뜨기</span> <span class="mp_author_badge">5</span>
+								</div>
+								<div class="mp_review_date_row">
+									<span class="material-symbols-outlined">calendar_today</span> <span
+										class="font-mono">2026-09-08</span> <span
+										class="mp_today_badge font-mono">TODAY</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="mp_review_score_box">
+							<span class="mp_score_title">오늘의 하루 평점</span>
+							<div class="mp_score_stars">
+								<span class="material-symbols-outlined star_fill">star</span> <span
+									class="font-mono font-bold">5</span>
+							</div>
+						</div>
+					</div>
+					<div class="mp_mood_tags_wrapper">
+						<span class="mp_mood_tag">피곤함</span>
+					</div>
+					<p class="mp_review_summary">집 가고 싶다~!!! 집 가고 싶다~!!!집 가고
+						싶다~!!!집 가고 싶다~!!!집 가고 싶다~!!!</p>
+
+					<div class="mp_review_image_placeholder">
+						<span class="material-symbols-outlined">image</span>
+						<p class="placeholder_title">'[오늘 하루 대표 이미지 영역]' :</p>
+						<span class="placeholder_sub">일기 대표 컷 / 장소 뷰 / 하이라이트 사진</span>
+					</div>
+
+					<!-- 서브 리뷰 목록 리본 -->
+					<div class="mp_sub_reviews_container">
+						<div class="mp_sub_reviews_header">
+							<div class="mp_sub_reviews_title">
+								<span class="material-symbols-outlined">layers</span> <span>이
+									날의 서브 리뷰 (n개)</span>
+							</div>
+							<span class="mp_sub_reviews_caption font-mono">세부 평가 항목</span>
+						</div>
+
+						<div class="mp_sub_reviews_grid">
+							<div class="mp_sub_review_item">
+								<div class="mp_sub_item_left">
+									<span class="mp_category_badge">카테고리 뱃지</span> <span
+										class="mp_sub_item_name">그냥 사람1</span> <span
+										class="material-symbols-outlined icon_verified">check_circle</span>
+								</div>
+								<div class="mp_sub_item_right">
+									<span class="material-symbols-outlined star_fill">star</span> <span
+										class="font-mono font-bold">5</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mp_review_footer">
+						<div class="mp_interaction_group">
+							<button type="button" class="mp_action_btn">
+								<span class="material-symbols-outlined icon_heart">favorite</span>
+								<span class="font-mono">100</span>
+							</button>
+							<span class="mp_action_info"> <span
+								class="material-symbols-outlined">chat_bubble</span> <span>댓글
+									100</span>
+							</span>
+						</div>
+						<div class="mp_detail_link">
+							<span>상세 보기</span> <span class="material-symbols-outlined">arrow_forward</span>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="mp_bottom_side">
 				<!-- 하루 평점 통계표 -->
@@ -93,7 +172,8 @@
 							<h4 class="text-sm font-bold">서브 리뷰 카테고리 필터</h4>
 						</div>
 					</div>
-					<button type="button" class="sub_review_category_filter_card active">
+					<button type="button"
+						class="sub_review_category_filter_card active">
 						<div class="sub_review_category_filter_info_left">
 							<span class="sub_review_category_filter_label">전체 리뷰 보기</span>
 						</div>
