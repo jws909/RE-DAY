@@ -5,9 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
-<link rel="icon" href="/images/logo/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/images/logo/favicon.ico"
-	type="image/x-icon">
+
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 <link href="/css/mainpage/explore.css" rel="stylesheet">
 <link rel="stylesheet"
