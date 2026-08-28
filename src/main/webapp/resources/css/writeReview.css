@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+/* RE:DAY - writeReview.css */
+
+.dashed-border {
+    border-style: dashed;
+}
+
+.star-fa {
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.star-fa:hover {
+    transform: scale(1.2);
+}
+
+/* Sub review animation */
+#subReviewFormBox {
+    transition: all 0.2s ease-in-out;
+}
