@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
-<link href="/css/mainpage.css" rel="stylesheet">
-<script src="/js/mainpage.js"></script>
+<link href="/css/mainpage/mainpage.css" rel="stylesheet">
+<script src="/js/maipage/mainpage.js"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
@@ -55,7 +55,7 @@
 									<div class="mp_author_name_row">
 										<span class="mp_author_name">승북이</span> <span
 											class="mp_author_level font-mono">lv.100 집에 얼른 가고 싶은
-											군산 촌뜨기</span> <span class="mp_author_badge">5</span>
+											군산 출신 막내 팀장</span> <span class="mp_author_badge">5</span>
 									</div>
 									<div class="mp_review_date_row">
 										<span class="material-symbols-outlined">calendar_today</span>

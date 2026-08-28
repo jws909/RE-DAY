@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function (){
 											<div class="mp_author_meta">
 												<div class="mp_author_name_row">
 													<span class="mp_author_name">승북이</span> <span
-														class="mp_author_level font-mono">lv.100 집에 얼른 가고 싶은 군산
-														촌뜨기</span> <span class="mp_author_badge">5</span>
+														class="mp_author_level font-mono">lv.100 집에 얼른 가고 싶은 군산 출신 막내 팀장
+														</span> <span class="mp_author_badge">5</span>
 												</div>
 												<div class="mp_review_date_row">
 													<span class="material-symbols-outlined">calendar_today</span> <span

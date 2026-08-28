@@ -11,4 +11,9 @@ public class MainPageController {
 	public String mainpage() {
 		return "mainpage/main";
 	}
+	
+	@GetMapping("/explore")
+	public String explore() {
+		return "mainpage/explore";
+	}
 }
