@@ -1,16 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<%@ include file="/WEB-INF/views/include/head.jsp"%>
-<link href="/css/mainpage/mainpage.css" rel="stylesheet">
-<script src="/js/mainpage/mainpage.js"></script>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-</head>
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8"%>
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
+	<link rel="icon" href="/images/logo/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/images/logo/favicon.ico" type="image/x-icon">
+	<%@ include file="/WEB-INF/views/include/head.jsp"%>
+	<link href="/css/mainpage/mainpage.css" rel="stylesheet">
+	<script src="/js/mainpage/mainpage.js"></script>
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+	</head>
 <body>
 	<!-- 상단 네비게이션 바 불러오기 -->
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
