@@ -12,6 +12,8 @@
 	<typeAliases>
 		<!-- typeAlias에 DTO 추가 -->
 		<typeAlias type="com.app.dto.test.TestMember" alias="TestMember"/>
+		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
+		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
 	</typeAliases>
 	
 </configuration>

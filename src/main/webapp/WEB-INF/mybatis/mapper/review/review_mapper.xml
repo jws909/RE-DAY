@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="review_mapper">
+
+	<insert id="saveDailyReview" parameterType="DailyReviewFormDTO">
+		<!-- order="BEFORE"로 시퀀스 값을 먼저 채번하여 DTO의 reviewId에 세팅 -->
+	    <selectKey keyProperty="reviewId" resultType="long" order="BEFORE">
+	        SELECT SEQ_DAILY_REVIEW.NEXTVAL FROM DUAL
+	    </selectKey>
+	    
+	    INSERT INTO DAILY_REVIEWS
+	    VALUES (
+	    	#{reviewId},
+	    	#{userId},
+	    	#{reviewDate},
+	    	#{totalRating},
+	    	#{moodTags},
+	    	#{overallComment},
+	    	#{mainImageUrl}
+	    )
+	</insert>
+	
+	<insert id="saveSubReview" parameterType="SubReviewDTO">
+		INSERT INTO SUB_REVIEWS
+		VALUES (
+			#{subReviewId},
+			#{reviewId},
+			#{category},
+			#{itemName},
+			#{subRating},
+			#{subComment},
+			#{locationBrand},
+			#{isCertified},
+			#{tags}
+		)
+	</insert>
+	
+</mapper>
