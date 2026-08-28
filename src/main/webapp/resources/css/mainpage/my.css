@@ -1,0 +1,402 @@
+@charset "UTF-8";
+
+/* 전체 컨테이너 */
+.my_container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* 상단 프로필/헤더 영역 */
+.my_top_column {
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 24px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.my_t_top {
+  font-size: 13px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.my_profile_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .my_profile_wrapper {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.my_profile_info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.my_avatar_box {
+  width: 68px;
+  height: 68px;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  font-size: 24px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.my_meta_content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.my_meta_row_top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.my_user_name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.my_badge_blue {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1d4ed8;
+  background-color: #eff6ff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #bfdbfe;
+}
+
+.my_streak_badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ea580c;
+  background-color: #fff7ed;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #fed7aa;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.my_streak_badge .icon_flame {
+  font-size: 14px;
+  color: #f97316;
+}
+
+.my_user_email {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.my_action_group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 테마 버튼 공통 */
+.my_theme_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #475569;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.my_theme_btn:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.my_theme_btn.active {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.my_theme_btn.active:hover {
+  background-color: #1d4ed8;
+}
+
+/* 통계 지표 섹션 */
+.my_bottom_column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.my_theme_filter_section {
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.my_theme_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.my_theme_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.my_theme_title .icon_compass {
+  color: #2563eb;
+}
+
+.my_theme_sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.my_stat_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .my_stat_grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.my_stat_card {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.my_stat_label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.my_stat_value {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.my_stat_value.rating {
+  color: #d97706;
+}
+
+.my_stat_value.sub {
+  color: #2563eb;
+}
+
+.my_stat_value.verify {
+  color: #059669;
+}
+
+.my_stat_unit {
+  font-size: 11px;
+  font-weight: normal;
+  color: #64748b;
+  margin-left: 2px;
+}
+
+/* 탭 네비게이션 & 탭 컨텐츠 */
+.my_content_section {
+  width: 100%;
+}
+
+.my_curation_tab_bar {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px dashed #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.my_curation_tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s;
+}
+
+.my_curation_tab:hover {
+  color: #0f172a;
+  background: #ffffff;
+}
+
+.my_curation_tab.active {
+  color: #0f172a;
+  background: #ffffff;
+  border-bottom: 2px solid #0f172a;
+}
+
+/* 카드 그리드 */
+.my_curation_grid {
+  display: grid;
+  gap: 16px;
+}
+
+.my_curation_grid.daily_view {
+  grid-template-columns: 1fr;
+}
+
+.my_curation_grid.sub_view {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .my_curation_grid.sub_view {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.my_card {
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.my_card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.my_card_category {
+  font-size: 11px;
+  font-weight: 700;
+  background-color: #f1f5f9;
+  color: #334155;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.my_card_date {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.my_card_rating {
+  font-weight: 700;
+  font-size: 13px;
+  color: #d97706;
+}
+
+.my_card_title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 2px 0 0;
+}
+
+.my_card_comment {
+  font-size: 12px;
+  color: #475569;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 4px 0 0;
+}
+
+.my_card_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 10px;
+  margin-top: 6px;
+}
+
+.my_card_sub_count {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.my_card_link {
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.my_card_link:hover {
+  text-decoration: underline;
+}
+
+/* 빈 상태 안내 카드 */
+.my_empty_card {
+  text-align: center;
+  padding: 48px 20px;
+  color: #94a3b8;
+  grid-column: 1 / -1;
+}
+
+.my_empty_card span {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
