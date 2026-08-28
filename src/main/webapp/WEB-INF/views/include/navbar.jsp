@@ -32,21 +32,21 @@
 		<!-- Nav Links -->
 		<nav class="flex items-center gap-1 sm:gap-2">
 			<!-- 피드 -->
-			<a href="${pageContext.request.contextPath}/"
+			<a href="${pageContext.request.contextPath}/RE:DAY/mainpage"
 				class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors border text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent">
 				<i class="fa-regular fa-calendar-days"></i> <span
 				class="hidden xs:inline">피드</span>
 			</a>
 
 			<!-- 탐색 & 트렌드 (나침반 아이콘 권장) -->
-			<a href="${pageContext.request.contextPath}/explore"
+			<a href="${pageContext.request.contextPath}/RE:DAY/explore"
 				class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors border text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent">
 				<i class="fa-regular fa-compass"></i> <span class="hidden xs:inline">탐색
 					& 트렌드</span>
 			</a>
 
 			<!-- 내 기록 -->
-			<a href="${pageContext.request.contextPath}/my"
+			<a href="${pageContext.request.contextPath}/RE:DAY/my"
 				class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors border text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent">
 				<i class="fa-regular fa-user"></i> <span class="hidden xs:inline">내
 					기록</span>
@@ -64,7 +64,7 @@
 				<c:choose>
 					<%-- 1. 로그인 상태 --%>
 					<c:when test="${not empty sessionScope.loginUser}">
-						<a href="${pageContext.request.contextPath}/my"
+						<a href="${pageContext.request.contextPath}/RE:DAY/my"
 							title="마이페이지(내 기록)로 이동"
 							class="flex items-center gap-1.5 p-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 text-xs transition-colors">
 							<div
