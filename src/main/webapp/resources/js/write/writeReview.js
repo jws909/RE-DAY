@@ -18,7 +18,7 @@ var POPULAR_MOOD_TAGS = [
 ];
 
 // 전역 상태(State) 변수들 (기본값 없음: 0점, 빈 태그, 빈 서브리뷰)
-var overallRating = 0.0;
+var totalRating = 0.0;
 var selectedMoodTags = [];
 var subReviews = [];
 
@@ -41,7 +41,7 @@ function setupInteractiveStarRating(containerId, hiddenInputId, textScoreId, ini
     if (isSub) {
         currentSubRating = currentScore;
     } else {
-        overallRating = currentScore;
+        totalRating = currentScore;
         if (hiddenInput) hiddenInput.value = currentScore;
     }
 
@@ -109,7 +109,7 @@ function setupInteractiveStarRating(containerId, hiddenInputId, textScoreId, ini
                 if (isSub) {
                     currentSubRating = chosenScore;
                 } else {
-                    overallRating = chosenScore;
+                    totalRating = chosenScore;
                     if (hiddenInput) hiddenInput.value = chosenScore;
                 }
                 currentScore = chosenScore;
@@ -120,7 +120,7 @@ function setupInteractiveStarRating(containerId, hiddenInputId, textScoreId, ini
 
     // 마우스가 영역을 벗어났을 때 확정된 점수로 복원
     container.addEventListener('mouseleave', function() {
-        var confirmedScore = isSub ? currentSubRating : overallRating;
+        var confirmedScore = isSub ? currentSubRating : totalRating;
         updateVisuals(confirmedScore);
     });
 }
@@ -177,7 +177,7 @@ function handleImageFileChange(input) {
 }
 
 function removeSelectedImage() {
-    var input = document.getElementById('imageFileInput');
+    var input = document.getElementById('mainImageFileInput');
     if (input) input.value = '';
     
     var previewImg = document.getElementById('previewImgElement');
@@ -245,8 +245,8 @@ function addCustomTag() {
 function openSubReviewForm() {
     var formBox = document.getElementById('subReviewFormBox');
     if (formBox) formBox.classList.remove('hidden');
-    var nameInput = document.getElementById('subNameInput');
-    if (nameInput) nameInput.focus();
+    var itemNameInput = document.getElementById('itemNameInput');
+    if (itemNameInput) itemNameInput.focus();
 }
 
 function closeSubReviewForm() {
@@ -256,16 +256,16 @@ function closeSubReviewForm() {
 }
 
 function resetSubForm() {
-    var nameInput = document.getElementById('subNameInput');
-    if (nameInput) nameInput.value = '';
-    var placeInput = document.getElementById('subPlaceInput');
-    if (placeInput) placeInput.value = '';
-    var commentInput = document.getElementById('subCommentInput');
-    if (commentInput) commentInput.value = '';
+    var itemNameInput = document.getElementById('itemNameInput');
+    if (itemNameInput) itemNameInput.value = '';
+    var locationBrandInput = document.getElementById('locationBrandInput');
+    if (locationBrandInput) locationBrandInput.value = '';
+    var subCommentInput = document.getElementById('subCommentInput');
+    if (subCommentInput) subCommentInput.value = '';
     var tagInput = document.getElementById('subTagInput');
     if (tagInput) tagInput.value = '';
-    var verifiedInput = document.getElementById('subVerifiedInput');
-    if (verifiedInput) verifiedInput.checked = true;
+    var isCertifiedInput = document.getElementById('isCertifiedInput');
+    if (isCertifiedInput) isCertifiedInput.checked = true;
     currentSubTags = [];
     renderSubTagsList();
     selectCategory('place');
@@ -317,22 +317,22 @@ function renderSubTagsList() {
 
 // 서브 리뷰 저장
 function saveSubReview() {
-    var nameInput = document.getElementById('subNameInput');
-    var name = nameInput ? nameInput.value.trim() : '';
-    if (!name) {
+    var itemNameInput = document.getElementById('itemNameInput');
+    var itemName = itemNameInput ? itemNameInput.value.trim() : '';
+    if (!itemName) {
         alert('서브 리뷰 항목명을 입력해주세요.');
-        if (nameInput) nameInput.focus();
+        if (itemNameInput) itemNameInput.focus();
         return;
     }
 
-    var commentInput = document.getElementById('subCommentInput');
-    var comment = (commentInput && commentInput.value.trim()) ? commentInput.value.trim() : '세부 평가 코멘트가 작성되지 않았습니다.';
+    var subCommentInput = document.getElementById('subCommentInput');
+    var subComment = (subCommentInput && subCommentInput.value.trim()) ? subCommentInput.value.trim() : '세부 평가 코멘트가 작성되지 않았습니다.';
     
-    var placeInput = document.getElementById('subPlaceInput');
-    var placeOrBrand = placeInput ? placeInput.value.trim() : '';
+    var locationBrandInput = document.getElementById('locationBrandInput');
+    var locationBrand = locationBrandInput ? locationBrandInput.value.trim() : '';
     
-    var verifiedInput = document.getElementById('subVerifiedInput');
-    var verified = verifiedInput ? verifiedInput.checked : true;
+    var isCertifiedInput = document.getElementById('isCertifiedInput');
+    var isCertified = isCertifiedInput ? (isCertifiedInput.checked ? 'Y' : 'N') : 'Y';
 
     var tagsCopy = [];
     if (currentSubTags.length > 0) {
@@ -345,11 +345,11 @@ function saveSubReview() {
 
     var newSub = {
         category: currentSubCategory,
-        name: name,
-        rating: currentSubRating,
-        comment: comment,
-        placeOrBrand: placeOrBrand,
-        verified: verified,
+        itemName: itemName,
+        subRating: currentSubRating,
+        subComment: subComment,
+        locationBrand: locationBrand,
+        isCertified: isCertified,
         tags: tagsCopy
     };
 
@@ -407,15 +407,16 @@ function renderSubReviewsList() {
     for (var idx = 0; idx < subReviews.length; idx++) {
         var sub = subReviews[idx];
         
-        var verifiedBadge = sub.verified 
+        var isCert = (sub.isCertified === 'Y' || sub.isCertified === true);
+        var verifiedBadge = isCert 
             ? '<span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">' +
               '<i class="fa-solid fa-circle-check text-emerald-600"></i> 내돈내산 인증</span>'
             : '';
 
-        var placeHtml = sub.placeOrBrand
+        var locationBrandHtml = sub.locationBrand
             ? '<p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">' +
               '<i class="fa-solid fa-location-dot text-slate-400 text-xs"></i>' +
-              '<span>' + sub.placeOrBrand + '</span></p>'
+              '<span>' + sub.locationBrand + '</span></p>'
             : '';
 
         var tagsHtml = '';
@@ -429,6 +430,8 @@ function renderSubReviewsList() {
             tagsHtml += '</div>';
         }
 
+        var currentRating = Number(sub.subRating) || 0.0;
+
         html += 
             '<div class="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-white/90 shadow-xs space-y-3 hover:border-slate-400 transition-all">' +
                 '<div class="flex items-center justify-between">' +
@@ -438,8 +441,8 @@ function renderSubReviewsList() {
                     '</div>' +
                     '<div class="flex items-center gap-2">' +
                         '<div class="flex items-center gap-1 font-mono text-xs font-bold text-slate-700">' +
-                            renderReadOnlyStarsHtml(sub.rating) +
-                            '<span>' + sub.rating.toFixed(1) + ' / 5.0</span>' +
+                            renderReadOnlyStarsHtml(currentRating) +
+                            '<span>' + currentRating.toFixed(1) + ' / 5.0</span>' +
                         '</div>' +
                         '<button type="button" onclick="deleteSubReview(' + idx + ')" class="text-xs text-rose-500 hover:text-rose-700 font-semibold px-2 py-0.5 border border-dashed border-rose-300 rounded bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer">' +
                             '삭제' +
@@ -448,12 +451,12 @@ function renderSubReviewsList() {
                 '</div>' +
 
                 '<div>' +
-                    '<h4 class="text-base font-bold text-slate-800">' + sub.name + '</h4>' +
-                    placeHtml +
+                    '<h4 class="text-base font-bold text-slate-800">' + (sub.itemName || '') + '</h4>' +
+                    locationBrandHtml +
                 '</div>' +
 
                 '<p class="text-sm text-slate-700 bg-slate-50 p-2.5 rounded border border-slate-200 leading-relaxed font-sans">' +
-                    sub.comment +
+                    (sub.subComment || '') +
                 '</p>' +
                 tagsHtml +
             '</div>';
@@ -477,12 +480,13 @@ function updateFormHiddenInputs() {
     for (var i = 0; i < subReviews.length; i++) {
         var sub = subReviews[i];
         var tagsStr = (sub.tags || []).join(',');
+        var certValue = (sub.isCertified === 'Y' || sub.isCertified === true) ? 'Y' : 'N';
         html += '<input type="hidden" name="subReviews[' + i + '].category" value="' + (sub.category || '') + '">' +
-                '<input type="hidden" name="subReviews[' + i + '].name" value="' + (sub.name || '') + '">' +
-                '<input type="hidden" name="subReviews[' + i + '].rating" value="' + (sub.rating || 0) + '">' +
-                '<input type="hidden" name="subReviews[' + i + '].comment" value="' + (sub.comment || '') + '">' +
-                '<input type="hidden" name="subReviews[' + i + '].placeOrBrand" value="' + (sub.placeOrBrand || '') + '">' +
-                '<input type="hidden" name="subReviews[' + i + '].verified" value="' + (sub.verified ? 'true' : 'false') + '">' +
+                '<input type="hidden" name="subReviews[' + i + '].itemName" value="' + (sub.itemName || '') + '">' +
+                '<input type="hidden" name="subReviews[' + i + '].subRating" value="' + (sub.subRating || 0) + '">' +
+                '<input type="hidden" name="subReviews[' + i + '].subComment" value="' + (sub.subComment || '') + '">' +
+                '<input type="hidden" name="subReviews[' + i + '].locationBrand" value="' + (sub.locationBrand || '') + '">' +
+                '<input type="hidden" name="subReviews[' + i + '].isCertified" value="' + certValue + '">' +
                 '<input type="hidden" name="subReviews[' + i + '].tags" value="' + tagsStr + '">';
     }
     container.innerHTML = html;
@@ -526,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 0.5점 단위 별점 컨트롤러 초기화 (0.0점 빈 별로 시작)
-    setupInteractiveStarRating('mainStarContainer', 'overallRatingInput', 'mainScoreText', 0.0, false);
+    setupInteractiveStarRating('mainStarContainer', 'totalRatingInput', 'mainScoreText', 0.0, false);
     setupInteractiveStarRating('subStarContainer', null, 'subScoreText', 0.0, true);
 
     // 태그 및 서브리뷰 목록 초기화 (선택/등록된 것 없는 깨끗한 상태)
@@ -538,18 +542,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (reviewForm) {
         reviewForm.addEventListener('submit', function(e) {
             // 종합 평점 유효성 검사 (0점인 경우)
-            if (overallRating <= 0) {
+            if (totalRating <= 0) {
                 alert('오늘 하루 종합 평점을 별점으로 선택해주세요.');
                 e.preventDefault();
                 return false;
             }
 
             // 총평 입력 유효성 검사
-            var summaryInput = document.getElementById('summaryInput');
-            var summary = summaryInput ? summaryInput.value.trim() : '';
-            if (!summary) {
+            var overallCommentInput = document.getElementById('overallCommentInput');
+            var overallComment = overallCommentInput ? overallCommentInput.value.trim() : '';
+            if (!overallComment) {
                 alert('오늘 하루 총평을 입력해주세요.');
-                if (summaryInput) summaryInput.focus();
+                if (overallCommentInput) overallCommentInput.focus();
                 e.preventDefault();
                 return false;
             }

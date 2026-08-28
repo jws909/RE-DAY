@@ -10,7 +10,7 @@
     <%@ include file="/WEB-INF/views/include/head.jsp"%>
 
 	<!-- 리뷰 작성 전용 스타일시트 분리 -->
-    <link href="<%=request.getContextPath()%>/css/writeReview.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/write/writeReview.css" rel="stylesheet">
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen pb-12 font-sans antialiased">
 
@@ -55,8 +55,9 @@
               class="space-y-8">
 
             <!-- Spring MVC Controller 바인딩용 Hidden 필드 (기본값 제거) -->
-            <input type="hidden" id="overallRatingInput" name="overallRating" value="0.0" />
+            <input type="hidden" id="totalRatingInput" name="totalRating" value="0.0" />
             <input type="hidden" id="moodTagsInput" name="moodTags" value="" />
+            <input type="hidden" id="isPublicInput" name="isPublic" value="Y" />
             <input type="hidden" id="subReviewsJsonInput" name="subReviewsJson" value="" />
             
             <!-- 서브 리뷰 1:N List DTO 자동 바인딩 컨테이너 -->
@@ -80,7 +81,7 @@
                     </span>
                 </div>
 
-                <!-- Date & Overall Score -->
+                <!-- Date & Total Score -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
@@ -90,7 +91,7 @@
                         <input
                             type="date"
                             id="reviewDate"
-                            name="date"
+                            name="reviewDate"
                             required
                             class="w-full px-3 py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:border-slate-800 bg-slate-50"
                         />
@@ -141,21 +142,21 @@
                     </div>
                 </div>
 
-                <!-- Daily Summary Textarea -->
+                <!-- Daily Overall Comment Textarea -->
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between">
                         <label class="block text-xs font-bold text-slate-700">
                             오늘 하루 총평 <span class="text-rose-500">*</span>
                         </label>
-                        <span id="summaryCharCount" class="text-[11px] font-mono text-slate-400">0 / 1,000자</span>
+                        <span id="overallCommentCharCount" class="text-[11px] font-mono text-slate-400">0 / 1,000자</span>
                     </div>
                     <textarea
                         rows="4"
-                        id="summaryInput"
-                        name="summary"
+                        id="overallCommentInput"
+                        name="overallComment"
                         required
                         maxlength="1000"
-                        oninput="document.getElementById('summaryCharCount').textContent = this.value.length + ' / 1,000자'"
+                        oninput="document.getElementById('overallCommentCharCount').textContent = this.value.length + ' / 1,000자'"
                         placeholder="오늘 하루 있었던 주요 일과와 총평을 일기처럼 자유롭게 적어주세요. (예: 오전엔 카페에서 생산적인 코딩, 오후엔 새로운 헤드폰 테스트와 저녁 드라이브...)"
                         class="w-full p-3 border-2 border-dashed border-slate-300 rounded-lg text-sm focus:outline-none focus:border-slate-800 bg-slate-50/50 leading-relaxed font-sans"
                     ></textarea>
@@ -171,8 +172,8 @@
                     <!-- Hidden Real File Input -->
                     <input 
                         type="file" 
-                        id="imageFileInput" 
-                        name="imageFile" 
+                        id="mainImageFileInput" 
+                        name="mainImageFile" 
                         accept="image/*"
                         onchange="handleImageFileChange(this)"
                         class="hidden" 
@@ -181,7 +182,7 @@
                     <div class="p-3 border-2 border-dashed border-slate-300 rounded-lg bg-slate-50 space-y-2">
                         <!-- Empty State Box (클릭 시 파일 선택) -->
                         <div id="imageUploadEmptyBox" 
-                             onclick="document.getElementById('imageFileInput').click()"
+                             onclick="document.getElementById('mainImageFileInput').click()"
                              class="h-28 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-lg bg-slate-100 flex flex-col items-center justify-center text-center p-3 cursor-pointer transition-colors group">
                             <i class="fa-regular fa-image text-2xl text-slate-400 group-hover:text-blue-600 mb-1 transition-colors"></i>
                             <span class="text-xs font-mono font-bold text-slate-600 group-hover:text-blue-600 transition-colors">
@@ -202,7 +203,7 @@
                                 <p id="previewFileSize" class="text-[10px] font-mono text-slate-400"></p>
                                 <div class="pt-1 flex items-center gap-2">
                                     <button type="button" 
-                                            onclick="document.getElementById('imageFileInput').click()"
+                                            onclick="document.getElementById('mainImageFileInput').click()"
                                             class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded text-xs font-mono transition-colors">
                                         사진 교체
                                     </button>
@@ -302,7 +303,7 @@
                         </label>
                         <input
                             type="text"
-                            id="subNameInput"
+                            id="itemNameInput"
                             placeholder="예: 성수 어니언 카페, 소니 WH-1000XM5, 쏘카 아이오닉 5, 로지텍 마우스"
                             class="w-full px-3 py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-600 bg-slate-50"
                         />
@@ -316,7 +317,7 @@
                             </label>
                             <input
                                 type="text"
-                                id="subPlaceInput"
+                                id="locationBrandInput"
                                 placeholder="예: 서울 성동구 성수동, 공식 스토어, 넷플릭스"
                                 class="w-full px-3 py-1.5 border border-slate-300 rounded-md text-xs bg-slate-50 focus:outline-none"
                             />
@@ -377,7 +378,7 @@
                         <label class="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-slate-800">
                             <input
                                 type="checkbox"
-                                id="subVerifiedInput"
+                                id="isCertifiedInput"
                                 checked
                                 class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-0 cursor-pointer"
                             />
@@ -428,6 +429,6 @@
     </div>
 
     <!-- 리뷰 작성 전용 스크립트 분리 -->
-    <script src="<%=request.getContextPath()%>/js/writeReview.js"></script>
+    <script src="<%=request.getContextPath()%>/js/write/writeReview.js"></script>
 </body>
 </html>
