@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 <link href="/css/mainpage/mainpage.css" rel="stylesheet">
-<script src="/js/maipage/mainpage.js"></script>
+<script src="/js/mainpage/mainpage.js"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
