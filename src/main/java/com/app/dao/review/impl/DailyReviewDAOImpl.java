@@ -16,7 +16,7 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
 	@Override
 	public long saveDailyReview(DailyReviewFormDTO formDTO) {
 
-		int result = sqlSessionTemplate.insert("review_mapper.saveDailyReviewDAO", formDTO);
+		int result = sqlSessionTemplate.insert("review_mapper.saveDailyReview", formDTO);
 		
 		long generatedReviewId = formDTO.getReviewId();
 		

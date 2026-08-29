@@ -11,11 +11,19 @@
 	        SELECT SEQ_DAILY_REVIEW.NEXTVAL FROM DUAL
 	    </selectKey>
 	    
-	    INSERT INTO DAILY_REVIEWS
+	    INSERT INTO DAILY_REVIEWS (
+	    	REVIEW_ID,
+	    	USER_ID,
+	    	REVIEW_DATE,
+	    	TOTAL_RATING,
+	    	MOOD_TAGS,
+	    	OVERALL_COMMENT,
+	    	MAIN_IMAGE_URL
+	    )
 	    VALUES (
 	    	#{reviewId},
 	    	#{userId},
-	    	#{reviewDate},
+	    	CURRENT_TIMESTAMP,
 	    	#{totalRating},
 	    	#{moodTags},
 	    	#{overallComment},
@@ -24,9 +32,19 @@
 	</insert>
 	
 	<insert id="saveSubReview" parameterType="SubReviewDTO">
-		INSERT INTO SUB_REVIEWS
+		INSERT INTO SUB_REVIEWS(
+			SUB_REVIEW_ID,
+			REVIEW_ID,
+			CATEGORY,
+			ITEM_NAME,
+			SUB_RATING,
+			SUB_COMMENT,
+			LOCATION_BRAND,
+			IS_CERTIFIED,
+			TAGS
+		)
 		VALUES (
-			#{subReviewId},
+			SEQ_SUB_REVIEW.NEXTVAL,
 			#{reviewId},
 			#{category},
 			#{itemName},
