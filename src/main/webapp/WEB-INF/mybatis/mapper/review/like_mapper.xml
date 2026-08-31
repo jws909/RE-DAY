@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="like_mapper">
+
+	<select id="checkExists" parameterType="LikeRequestDTO"
+		resultType="_int">
+		SELECT COUNT(*) FROM LIKES
+		WHERE USER_ID = #{userId} AND REVIEW_ID = #{reviewId}
+	</select>
+
+	<insert id="insert" parameterType="LikeRequestDTO">
+		<!-- order="BEFORE"로 시퀀스 값을 먼저 채번하여 DTO의 likeId에 세팅 -->
+		<selectKey keyProperty="likeId" resultType="long"
+			order="BEFORE">
+			SELECT SEQ_LIKES.NEXTVAL FROM DUAL
+		</selectKey>
+
+		INSERT INTO LIKES (
+		LIKE_ID,
+		USER_ID,
+		REVIEW_ID,
+		CREATED_AT
+		)
+		VALUES (
+		#{likeId},
+		#{userId},
+		#{reviewId},
+		CURRENT_TIMESTAMP
+		)
+	</insert>
+
+	<delete id="delete" parameterType="LikeRequestDTO">
+
+		DELETE FROM LIKES WHERE USER_ID = #{userId}
+		AND REVIEW_ID = #{reviewId}
+	</delete>
+</mapper>

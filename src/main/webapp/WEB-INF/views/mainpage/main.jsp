@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 	<%@ page language="java" contentType="text/html; charset=UTF-8"
 		pageEncoding="UTF-8"%>
 	<!DOCTYPE html>
@@ -11,6 +12,29 @@
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 	</head>
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<<<<<<< Updated upstream
+<title>Insert title here</title>
+=======
+<title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
+>>>>>>> Stashed changes
+<%@ include file="/WEB-INF/views/include/head.jsp"%>
+<link href="/css/mainpage/mainpage.css" rel="stylesheet">
+<script src="/js/mainpage/mainpage.js"></script>
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+>>>>>>> mainpage
 <body>
 	<!-- 상단 네비게이션 바 불러오기 -->
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
@@ -27,7 +51,7 @@
 					전자기기/탑승한 차량 등 세부 서브 리뷰를 함께 남겨보세요.</div>
 			</div>
 			<div class="mp_top_right_column">
-				<button type="button" id = "mp_review_write">
+				<button type="button" id="mp_review_write">
 					<span class="material-symbols-outlined">add</span>오늘의 하루 리뷰 작성하기
 				</button>
 			</div>
@@ -111,9 +135,10 @@
 						</div>
 						<div class="mp_review_footer">
 							<div class="mp_interaction_group">
-								<button type="button" class="mp_action_btn">
+								<button type="button" class="mp_action_btn like_btn"
+									data-review-id="1" data-liked="false">
 									<span class="material-symbols-outlined icon_heart">favorite</span>
-									<span class="font-mono">100</span>
+									<span class="font-mono like_count">${likeCount}</span>
 								</button>
 								<span class="mp_action_info"> <span
 									class="material-symbols-outlined">chat_bubble</span> <span>댓글

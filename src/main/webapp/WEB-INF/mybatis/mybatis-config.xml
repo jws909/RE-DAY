@@ -11,9 +11,19 @@
 
 	<typeAliases>
 		<!-- typeAlias에 DTO 추가 -->
+<<<<<<< HEAD
 		<typeAlias type="com.app.dto.test.TestMember" alias="TestMember"/>
 		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
 		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
+=======
+<<<<<<< Updated upstream
+=======
+		<typeAlias type="com.app.dto.test.TestMember" alias="TestMember"/>
+		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
+		<typeAlias type="com.app.dto.review.LikeRequestDTO" alias="LikeRequestDTO"/>
+		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
+>>>>>>> Stashed changes
+>>>>>>> mainpage
 	</typeAliases>
 	
 </configuration>
