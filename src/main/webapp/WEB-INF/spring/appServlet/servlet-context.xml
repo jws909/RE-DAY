@@ -21,12 +21,14 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 	<context:component-scan
 		base-package="com.app.dao" />
 	<!-- <context:component-scan base-package="com.app.config"/> -->
+	
 
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/"></beans:property>
 		<beans:property name="suffix" value=".jsp"></beans:property>
 	</beans:bean>
+	<resources location="file:///D:/fileStorage/" mapping="/fileStorage/**"></resources>
 	<resources location="/resources/" mapping="/**"></resources>
 
 	<beans:bean id="multipartResolver"
