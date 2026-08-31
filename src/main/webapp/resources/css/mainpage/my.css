@@ -19,29 +19,23 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.my_t_top {
-  font-size: 13px;
-  font-weight: 800;
-  color: #64748b;
-  letter-spacing: 0.05em;
-  margin-bottom: 12px;
-}
-
 .my_profile_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
-@media (min-width: 768px) {
-  .my_profile_wrapper {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+.my_challenger_card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px dashed #e2e8f0;
 }
 
-.my_profile_info {
+.my_challenger_info {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -66,7 +60,7 @@
 .my_meta_content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .my_meta_row_top {
@@ -123,80 +117,29 @@
   gap: 8px;
 }
 
-/* 테마 버튼 공통 */
-.my_theme_btn {
+/* 오늘 하루 쓰기 버튼 */
+.my_review_write {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   font-size: 13px;
   font-weight: 700;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  background-color: #ffffff;
-  color: #475569;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.my_theme_btn:hover {
-  background-color: #f8fafc;
-  color: #0f172a;
-}
-
-.my_theme_btn.active {
+  border-radius: 12px;
+  border: none;
   background-color: #2563eb;
   color: #ffffff;
-  border-color: #2563eb;
+  text-decoration: none;
+  cursor: pointer;
   box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  transition: background-color 0.2s;
 }
 
-.my_theme_btn.active:hover {
+.my_review_write:hover {
   background-color: #1d4ed8;
 }
 
-/* 통계 지표 섹션 */
-.my_bottom_column {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.my_theme_filter_section {
-  background: #ffffff;
-  border: 2px dashed #cbd5e1;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.my_theme_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed #e2e8f0;
-}
-
-.my_theme_title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.my_theme_title .icon_compass {
-  color: #2563eb;
-}
-
-.my_theme_sub {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
+/* 통계 지표 그리드 */
 .my_stat_grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -250,16 +193,17 @@
   margin-left: 2px;
 }
 
-/* 탭 네비게이션 & 탭 컨텐츠 */
-.my_content_section {
-  width: 100%;
+/* 하단 컨텐츠 영역 */
+.my_bottom_column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .my_curation_tab_bar {
   display: flex;
   gap: 8px;
   border-bottom: 2px dashed #cbd5e1;
-  margin-bottom: 16px;
 }
 
 .my_curation_tab {
@@ -280,7 +224,6 @@
 
 .my_curation_tab:hover {
   color: #0f172a;
-  background: #ffffff;
 }
 
 .my_curation_tab.active {
@@ -289,7 +232,7 @@
   border-bottom: 2px solid #0f172a;
 }
 
-/* 카드 그리드 */
+/* 카드 목록 그리드 */
 .my_curation_grid {
   display: grid;
   gap: 16px;
@@ -354,13 +297,14 @@
 }
 
 .my_card_comment {
-  font-size: 12px;
+  font-size: 13px;
   color: #475569;
   background-color: #f8fafc;
   border: 1px solid #f1f5f9;
   border-radius: 8px;
   padding: 10px;
   margin: 4px 0 0;
+  line-height: 1.5;
 }
 
 .my_card_footer {
@@ -388,15 +332,18 @@
   text-decoration: underline;
 }
 
-/* 빈 상태 안내 카드 */
+/* 빈 목록 상태 카드 */
 .my_empty_card {
   text-align: center;
   padding: 48px 20px;
   color: #94a3b8;
   grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-.my_empty_card span {
-  font-size: 36px;
-  margin-bottom: 8px;
+.my_empty_card span.material-symbols-outlined {
+  font-size: 40px;
 }
