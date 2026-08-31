@@ -14,6 +14,7 @@
 		<typeAlias type="com.app.dto.test.TestMember" alias="TestMember"/>
 		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
 		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
+		<typeAlias type="com.app.dto.member.MemberDTO" alias="MemberDTO"/>
 	</typeAliases>
 	
 </configuration>
