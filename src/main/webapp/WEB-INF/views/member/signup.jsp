@@ -9,23 +9,27 @@
 <html lang="ko">
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
 <title>RE:DAY 회원가입</title>
 
+
 <style>
 
-/* ===============================
+/* ==========================================
    기본 설정
-================================ */
+========================================== */
 
 * {
     box-sizing: border-box;
 }
 
 body {
+
     margin: 0;
 
     font-family:
@@ -39,9 +43,9 @@ body {
 }
 
 
-/* ===============================
-   전체 영역
-================================ */
+/* ==========================================
+   전체 페이지
+========================================== */
 
 .signup-page {
 
@@ -50,13 +54,14 @@ body {
     min-height: 100vh;
 
     padding-top: 45px;
+
     padding-bottom: 80px;
 }
 
 
-/* ===============================
-   회원가입 전체 폭
-================================ */
+/* ==========================================
+   회원가입 전체 영역
+========================================== */
 
 .signup-container {
 
@@ -68,45 +73,9 @@ body {
 }
 
 
-.signup-description {
-    margin-top: 8px;
-    margin-bottom: 26px;
-
-    text-align: center;
-
-    color: #64748b;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* 회원가입 오류 메시지 */
-.signup-error {
-
-    margin-bottom: 18px;
-    padding: 10px 12px;
-
-    border: 1px solid #fecaca;
-    border-radius: 8px;
-
-    background-color: #fef2f2;
-
-    color: #dc2626;
-
-    font-size: 12px;
-}
-
-
-/* 입력 그룹 */
-.form-group {
-    margin-bottom: 17px;
-}
-
-/* ===============================
-   메인 피드 돌아가기
-================================ */
+/* ==========================================
+   메인으로 돌아가기
+========================================== */
 
 .back-link {
 
@@ -123,21 +92,23 @@ body {
     text-decoration: none;
 
     font-size: 14px;
+
+    transition: 0.2s;
 }
 
 .back-link:hover {
 
-    color: #2563eb;
+    color: #0f172a;
 }
 
 
-/* ===============================
+/* ==========================================
    회원가입 카드
-================================ */
+========================================== */
 
 .signup-card {
 
-    background-color: white;
+    background-color: #ffffff;
 
     border: 2px dashed #cbd5e1;
 
@@ -147,37 +118,41 @@ body {
 }
 
 
-/* ===============================
-   RE 로고
-================================ */
+/* ==========================================
+   RE:DAY 로고
+========================================== */
 
 .logo-box {
 
-    width: 48px;
-    height: 48px;
+    width: 72px;
 
-    margin: 0 auto 12px;
+    height: 72px;
+
+    margin: 0 auto 14px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
-
-    background-color: #2563eb;
-
-    color: white;
-
-    border-radius: 12px;
-
-    font-size: 16px;
-
-    font-weight: bold;
 }
 
 
-/* ===============================
+.logo-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+/* ==========================================
    제목
-================================ */
+========================================== */
 
 .signup-title {
 
@@ -196,6 +171,7 @@ body {
 .signup-description {
 
     margin-top: 8px;
+
     margin-bottom: 26px;
 
     text-align: center;
@@ -208,9 +184,31 @@ body {
 }
 
 
-/* ===============================
+/* ==========================================
+   서버 회원가입 오류
+========================================== */
+
+.signup-error {
+
+    margin-bottom: 18px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 8px;
+
+    background-color: #fef2f2;
+
+    color: #dc2626;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================
    입력 그룹
-================================ */
+========================================== */
 
 .form-group {
 
@@ -224,23 +222,23 @@ body {
 
     margin-bottom: 7px;
 
+    color: #24324a;
+
     font-size: 14px;
 
     font-weight: 600;
-
-    color: #24324a;
 }
 
 
-/* ===============================
+/* ==========================================
    입력창
-================================ */
+========================================== */
 
 .form-input {
 
     width: 100%;
 
-    height: 38px;
+    height: 42px;
 
     padding: 0 13px;
 
@@ -250,9 +248,9 @@ body {
 
     background-color: #f8fafc;
 
-    outline: none;
-
     color: #334155;
+
+    outline: none;
 
     font-size: 13px;
 
@@ -270,17 +268,19 @@ body {
 
     border-color: #2563eb;
 
-    background-color: white;
+    background-color: #ffffff;
 }
 
 
-/* ===============================
-   비밀번호 메시지
-================================ */
+/* ==========================================
+   메시지
+========================================== */
 
 .message {
 
     display: block;
+
+    min-height: 16px;
 
     margin-top: 5px;
 
@@ -300,13 +300,14 @@ body {
 }
 
 
-/* ===============================
+/* ==========================================
    관심 키워드
-================================ */
+========================================== */
 
 .interest-section {
 
     margin-top: 6px;
+
     margin-bottom: 17px;
 }
 
@@ -329,11 +330,11 @@ body {
 
     flex-wrap: wrap;
 
-    gap: 7px;
+    gap: 8px;
 }
 
 
-/* 실제 체크박스 숨기기 */
+/* 실제 checkbox 숨기기 */
 
 .interest-item input {
 
@@ -347,11 +348,11 @@ body {
 
     display: inline-block;
 
-    padding: 6px 10px;
+    padding: 7px 11px;
 
     border: 1px solid #d6deea;
 
-    border-radius: 6px;
+    border-radius: 7px;
 
     background-color: #f8fafc;
 
@@ -373,24 +374,23 @@ body {
 }
 
 
-/* 선택된 키워드 */
+/* 선택 상태 */
 
 .interest-item input:checked + span {
 
     border-color: #2563eb;
-    
+
     background-color: #2563eb;
-    
+
     color: #ffffff;
-    
+
     font-weight: 600;
-    
 }
 
 
-/* ===============================
+/* ==========================================
    구분선
-================================ */
+========================================== */
 
 .divider {
 
@@ -398,13 +398,13 @@ body {
 
     border-top: 1px solid #edf0f5;
 
-    margin: 16px 0;
+    margin: 19px 0;
 }
 
 
-/* ===============================
-   약관
-================================ */
+/* ==========================================
+   이용약관
+========================================== */
 
 .terms-area {
 
@@ -421,6 +421,7 @@ body {
 .terms-area input {
 
     width: 16px;
+
     height: 16px;
 
     margin-top: 2px;
@@ -441,9 +442,9 @@ body {
 }
 
 
-/* ===============================
+/* ==========================================
    회원가입 버튼
-================================ */
+========================================== */
 
 .signup-button {
 
@@ -457,7 +458,7 @@ body {
 
     background-color: #2563eb;
 
-    color: white;
+    color: #ffffff;
 
     font-size: 14px;
 
@@ -486,9 +487,9 @@ body {
 }
 
 
-/* ===============================
+/* ==========================================
    로그인 이동
-================================ */
+========================================== */
 
 .login-area {
 
@@ -512,23 +513,23 @@ body {
 
     color: #0f172a;
 
-    text-decoration: none;
+    text-decoration: underline;
 
     font-weight: bold;
+
+    transition: 0.2s;
 }
 
 
 .login-link:hover {
 
-    color: #2563eb;
-
-    text-decoration: underline;
+    color: #000000;
 }
 
 
-/* ===============================
+/* ==========================================
    모바일
-================================ */
+========================================== */
 
 @media (max-width: 500px) {
 
@@ -543,6 +544,14 @@ body {
         padding: 25px 20px;
     }
 
+
+    .logo-box {
+
+        width: 65px;
+
+        height: 65px;
+    }
+
 }
 
 </style>
@@ -552,17 +561,20 @@ body {
 
 <body>
 
+
 <div class="signup-page">
+
 
     <div class="signup-container">
 
 
-        <!-- =============================
+        <!-- ==================================
              메인 피드로 돌아가기
-        ============================== -->
+        =================================== -->
 
-        <a href="${pageContext.request.contextPath}/"
-           class="back-link">
+        <a
+            href="${pageContext.request.contextPath}/"
+            class="back-link">
 
             ← 메인 피드로 돌아가기
 
@@ -570,47 +582,68 @@ body {
 
 
 
-        <!-- =============================
+        <!-- ==================================
              회원가입 카드
-        ============================== -->
+        =================================== -->
 
         <div class="signup-card">
 
 
-            <!-- RE 로고 -->
+            <!-- ==================================
+                 RE:DAY 로고
+            =================================== -->
 
             <div class="logo-box">
-                RE
+
+                <img
+                    src="${pageContext.request.contextPath}/resources/images/logo/RE_DAY_LOGO.png"
+                    alt="RE:DAY 로고"
+                    class="logo-image">
+
             </div>
 
 
 
-            <!-- 제목 -->
+            <!-- ==================================
+                 제목
+            =================================== -->
 
             <h1 class="signup-title">
+
                 RE:DAY 회원가입
+
             </h1>
 
 
             <p class="signup-description">
 
                 나만의 하루를 1:N 서브 리뷰로 기록하고
+                <br>
                 트렌드를 시작하세요.
 
             </p>
-            
-            <!-- 회원가입 오류 메시지 -->
-			<c:if test="${not empty errorMessage}">
-    			<div class="signup-error">
-        			<c:out value="${errorMessage}" />
-    			</div>
-			</c:if>
 
 
 
-            <!-- =============================
-                 회원가입 Form
-            ============================== -->
+            <!-- ==================================
+                 서버 회원가입 오류
+            =================================== -->
+
+            <c:if test="${not empty errorMessage}">
+
+                <div class="signup-error">
+
+                    <c:out value="${errorMessage}" />
+
+                </div>
+
+            </c:if>
+
+
+
+            <!-- ==================================
+                 회원가입 FORM
+            =================================== -->
 
             <form
                 action="${pageContext.request.contextPath}/member/signup"
@@ -618,17 +651,18 @@ body {
                 id="signupForm">
 
 
-                <!-- =============================
+                <!-- ==================================
                      활동 닉네임
-                ============================== -->
+                =================================== -->
 
                 <div class="form-group">
+
 
                     <label
                         for="nickname"
                         class="form-label">
 
-                        ♙ 활동 닉네임
+                        ♟ 활동 닉네임
 
                     </label>
 
@@ -639,17 +673,20 @@ body {
                         name="nickname"
                         class="form-input"
                         placeholder="예: 루틴러_민, 테크리뷰어"
+                        autocomplete="nickname"
                         required>
+
 
                 </div>
 
 
 
-                <!-- =============================
+                <!-- ==================================
                      이메일
-                ============================== -->
+                =================================== -->
 
                 <div class="form-group">
+
 
                     <label
                         for="email"
@@ -666,46 +703,51 @@ body {
                         name="email"
                         class="form-input"
                         placeholder="example@reday.app"
+                        autocomplete="email"
                         required>
+
 
                 </div>
 
 
 
-                <!-- =============================
+                <!-- ==================================
                      비밀번호
-                ============================== -->
+                =================================== -->
 
                 <div class="form-group">
+
 
                     <label
                         for="memberPw"
                         class="form-label">
 
-                        ♙ 비밀번호
+                        ♟ 비밀번호
 
                     </label>
 
 
                     <input
-  					  type="password"
- 	 				  id="memberPwCheck"
-   					  name="memberPwCheck"
-   					  class="form-input"
-    					placeholder="비밀번호 재입력"
-    					minlength="8"
-    					required>	
-    					
-    					
+                        type="password"
+                        id="memberPw"
+                        name="memberPw"
+                        class="form-input"
+                        placeholder="8자 이상 입력해주세요"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required>
+
+
                 </div>
 
 
 
-                <!-- =============================
+                <!-- ==================================
                      비밀번호 확인
-                ============================== -->
+                =================================== -->
 
                 <div class="form-group">
+
 
                     <label
                         for="memberPwCheck"
@@ -722,6 +764,7 @@ body {
                         class="form-input"
                         placeholder="비밀번호 재입력"
                         minlength="8"
+                        autocomplete="new-password"
                         required>
 
 
@@ -730,13 +773,14 @@ body {
                         class="message">
                     </span>
 
+
                 </div>
 
 
 
-                <!-- =============================
+                <!-- ==================================
                      관심 라이프스타일
-                ============================== -->
+                =================================== -->
 
                 <div class="interest-section">
 
@@ -749,7 +793,6 @@ body {
                     </div>
 
 
-
                     <div class="interest-list">
 
 
@@ -758,11 +801,9 @@ body {
                         <label class="interest-item">
 
                             <input
-    							type="checkbox"
-    							id="terms"
-    							name="termsAgreed"
-    							value="true"
-    							required>
+                                type="checkbox"
+                                name="interests"
+                                value="재택근무">
 
                             <span>
                                 #재택근무
@@ -823,7 +864,7 @@ body {
 
 
 
-                        <!-- 전기차 -->
+                        <!-- 모빌리티 -->
 
                         <label class="interest-item">
 
@@ -857,7 +898,7 @@ body {
 
 
 
-                        <!-- 맛집 -->
+                        <!-- 맛집탐방 -->
 
                         <label class="interest-item">
 
@@ -896,42 +937,50 @@ body {
 
 
 
+                <!-- ==================================
+                     구분선
+                =================================== -->
+
                 <hr class="divider">
 
 
 
-                <!-- =============================
+                <!-- ==================================
                      이용약관
-                ============================== -->
+                =================================== -->
 
                 <div class="terms-area">
+
 
                     <input
                         type="checkbox"
                         id="terms"
+                        name="termsAgreed"
+                        value="true"
                         required>
 
 
                     <label for="terms">
 
                         [필수] 서비스 이용약관 및
-                        개인정보 처리방침 동의
+                        개인정보 처리방침에 동의합니다.
 
                     </label>
+
 
                 </div>
 
 
 
-                <!-- =============================
+                <!-- ==================================
                      회원가입 버튼
-                ============================== -->
+                =================================== -->
 
                 <button
                     type="submit"
                     class="signup-button">
 
-                    ♙ 회원가입 완료 &amp; 1일차 시작
+                    ♟ 회원가입 완료 &amp; 1일차 시작
 
                 </button>
 
@@ -940,28 +989,33 @@ body {
 
 
 
-            <!-- =============================
+            <!-- ==================================
                  로그인 이동
-            ============================== -->
+            =================================== -->
 
             <div class="login-area">
 
+
                 이미 계정이 있으신가요?
 
+
                 <a
-                    href="${pageContext.request.contextPath}/member/login"
+                    href="${pageContext.request.contextPath}/member/signin"
                     class="login-link">
 
                     로그인하기
 
                 </a>
 
+
             </div>
 
 
         </div>
 
+
     </div>
+
 
 </div>
 
@@ -970,7 +1024,7 @@ body {
 <script>
 
 /* ==========================================
-   비밀번호 확인
+   요소 가져오기
 ========================================== */
 
 const signupForm =
@@ -985,45 +1039,67 @@ const passwordCheck =
 const pwMessage =
     document.getElementById("pwMessage");
 
+const terms =
+    document.getElementById("terms");
 
-/* 입력할 때 바로 비교 */
 
-passwordCheck.addEventListener(
+
+/* ==========================================
+   비밀번호 확인 함수
+========================================== */
+
+function checkPassword() {
+
+
+    if (passwordCheck.value === "") {
+
+        pwMessage.textContent = "";
+
+        pwMessage.className =
+            "message";
+
+        return false;
+    }
+
+
+    if (
+        password.value
+        ===
+        passwordCheck.value
+    ) {
+
+        pwMessage.textContent =
+            "비밀번호가 일치합니다.";
+
+        pwMessage.className =
+            "message success-message";
+
+        return true;
+    }
+
+
+    pwMessage.textContent =
+        "비밀번호가 일치하지 않습니다.";
+
+    pwMessage.className =
+        "message error-message";
+
+    return false;
+}
+
+
+
+/* ==========================================
+   비밀번호 입력 시 검사
+========================================== */
+
+password.addEventListener(
     "input",
     function() {
 
-        if (passwordCheck.value === "") {
+        if (passwordCheck.value !== "") {
 
-            pwMessage.textContent = "";
-
-            pwMessage.className =
-                "message";
-
-            return;
-        }
-
-
-        if (
-            password.value
-            ===
-            passwordCheck.value
-        ) {
-
-            pwMessage.textContent =
-                "비밀번호가 일치합니다.";
-
-            pwMessage.className =
-                "message success-message";
-
-        }
-
-        else {
-
-            pwMessage.textContent =
-                "비밀번호가 일치하지 않습니다.";
-
-            pwMessage.className =
-                "message error-message";
+            checkPassword();
         }
 
     }
@@ -1031,8 +1107,19 @@ passwordCheck.addEventListener(
 
 
 
+passwordCheck.addEventListener(
+    "input",
+    function() {
+
+        checkPassword();
+
+    }
+);
+
+
+
 /* ==========================================
-   회원가입 버튼 클릭
+   회원가입 제출
 ========================================== */
 
 signupForm.addEventListener(
@@ -1057,21 +1144,11 @@ signupForm.addEventListener(
 
 
 
-        /* 비밀번호 확인 */
+        /* 비밀번호 일치 검사 */
 
-        if (
-            password.value
-            !==
-            passwordCheck.value
-        ) {
+        if (!checkPassword()) {
 
             event.preventDefault();
-
-            pwMessage.textContent =
-                "비밀번호가 일치하지 않습니다.";
-
-            pwMessage.className =
-                "message error-message";
 
             passwordCheck.focus();
 
@@ -1080,11 +1157,7 @@ signupForm.addEventListener(
 
 
 
-        /* 약관 체크 */
-
-        const terms =
-            document.getElementById("terms");
-
+        /* 이용약관 검사 */
 
         if (!terms.checked) {
 
@@ -1094,8 +1167,11 @@ signupForm.addEventListener(
                 "서비스 이용약관 및 개인정보 처리방침에 동의해주세요."
             );
 
+            terms.focus();
+
             return;
         }
+
 
     }
 );

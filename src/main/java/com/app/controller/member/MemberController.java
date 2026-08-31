@@ -20,12 +20,14 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    // 로그인 페이지
+
+    // 로그인 페이지 이동
     @GetMapping("/signin")
     public String signin() {
 
         return "member/signin";
     }
+
 
     // 로그인 처리
     @PostMapping("/signin")
@@ -37,20 +39,37 @@ public class MemberController {
         // DB에서 이메일 + 비밀번호 확인
         MemberDTO loginUser = memberService.login(memberDTO);
 
+        // 로그인 결과 확인용
+        System.out.println("로그인 입력값 : " + memberDTO);
+        System.out.println("로그인 결과 : " + loginUser);
+
+
         // 로그인 실패
         if (loginUser == null) {
+
             model.addAttribute(
-                "loginError",
-                "이메일 또는 비밀번호가 올바르지 않습니다."
+                    "loginError",
+                    "이메일 또는 비밀번호가 올바르지 않습니다."
             );
 
             return "member/signin";
         }
 
+
         // 로그인 성공
         session.setAttribute("loginUser", loginUser);
 
-        return "redirect:/RE:DAY/mainpage";
+        // 메인페이지로 이동
+        return "redirect:/";
+
+    }
+
+
+    // 회원가입 페이지 이동
+    @GetMapping("/signup")
+    public String signup() {
+
+        return "member/signup";
     }
 
 }
