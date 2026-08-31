@@ -30,7 +30,7 @@
 		</a>
 
 		<!-- Nav Links -->
-		<nav class="flex items-center gap-1 sm:gap-2">
+		<nav class="main-nav flex items-center gap-1 sm:gap-2">
 			<!-- 피드 -->
 			<a href="${pageContext.request.contextPath}/RE:DAY/mainpage"
 				class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors border text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent">
