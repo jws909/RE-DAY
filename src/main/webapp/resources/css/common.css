@@ -23,3 +23,25 @@
     }
 
 }
+
+/* =========================================
+   공통 Header 모바일 추가 설정
+   ========================================= */
+
+@media (max-width: 767px) {
+
+    header {
+        margin-bottom: 20px !important;
+    }
+
+    #mobileMenu {
+        width: 100%;
+    }
+
+    #mobileMenu a,
+    #mobileMenu button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}

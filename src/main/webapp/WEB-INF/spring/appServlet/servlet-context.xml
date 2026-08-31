@@ -29,11 +29,13 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 	<resources location="file:///D:/fileStorage/" mapping="/fileStorage/**" />
 	<resources location="/resources/" mapping="/**" />
 
+
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="10485760" /> <!-- 10MB -->
 		<beans:property name="defaultEncoding" value="UTF-8" />
 	</beans:bean>
+
 
 	<annotation-driven>
 		<message-converters>

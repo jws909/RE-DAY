@@ -5,8 +5,10 @@
 }
 
 .ex_container {
-  width: 1100px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 /* 상단바 */
@@ -447,4 +449,510 @@
   font-size: 11px;
   line-height: 1.4;
   color: #64748b;
+}
+
+@media (max-width: 767px) {
+
+  .ex_container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 12px;
+  }
+
+.ex_b_bottom_column {
+    flex-direction: column;
+    width: 100%;
+    gap: 24px;
+  }
+
+  .ex_bottom_left {
+    width: 100%;
+  }
+
+  .ex_bottom_right {
+    width: 100%;
+  }
+  
+  .ex_top_column {
+  width: 100%;
+  min-height: auto;
+  padding: 20px 16px;
+  border-radius: 20px;
+}
+
+.ex_t_top {
+  width: auto;
+  max-width: 100%;
+  padding: 4px 10px;
+  font-size: 11px;
+}
+
+.ex_t_middle h1 {
+  font-size: 22px;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.ex_t_bottom {
+  font-size: 12px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.ex_theme_filter_section {
+  padding: 16px;
+  border-radius: 16px;
+  gap: 14px;
+}
+
+.ex_theme_header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.ex_theme_title {
+  width: 100%;
+  font-size: 13px;
+}
+
+.ex_theme_sub {
+  font-size: 11px;
+}
+
+.ex_theme_list {
+  width: 100%;
+  gap: 8px;
+}
+
+.ex_theme_btn {
+  max-width: 100%;
+  padding: 7px 10px;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.theme_label {
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.theme_count {
+  flex-shrink: 0;
+}
+
+/* =========================================
+   모바일 - 스트릭 챌린저 영역
+   ========================================= */
+
+.ex_section_header {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ex_section_title {
+  min-width: 0;
+}
+
+.ex_section_title h2 {
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.ex_badge_orange,
+.ex_badge_blue {
+  flex-shrink: 0;
+  font-size: 10px;
+  padding: 3px 6px;
+}
+
+
+/* 챌린저 카드 */
+.ex_challenger_card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding: 14px;
+}
+
+
+/* 유저 정보 */
+.ex_challenger_info {
+  width: 100%;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.ex_streak_box {
+  flex-shrink: 0;
+}
+
+
+/* 이름 / 레벨 영역 */
+.ex_challenger_meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.meta_row_top {
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.ex_challenger_name {
+  flex-shrink: 0;
+}
+
+.streak_badge {
+  max-width: 100%;
+}
+
+
+/* 아래쪽 유저 설명 */
+.meta_row_bottom {
+  flex-wrap: wrap;
+  line-height: 1.5;
+  gap: 4px;
+}
+
+
+/* 응원 버튼 */
+.ex_cheer_btn {
+  width: 100%;
+  justify-content: center;
+  padding: 8px 12px;
+}
+/* =========================================
+   모바일 - 트렌드 / 큐레이션 영역
+   ========================================= */
+
+.ex_curation_tab_bar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px;
+}
+
+.ex_curation_tab {
+  flex: 1 1 calc(50% - 6px);
+  min-width: 0;
+  padding: 8px 6px;
+  font-size: 11px;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.ex_curation_grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.ex_curation_card {
+  width: 100%;
+  padding: 14px;
+}
+
+.ex_curation_card .card_header {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ex_curation_card .category_label {
+  min-width: 0;
+}
+
+.ex_curation_card .mention_cnt {
+  flex-shrink: 0;
+}
+
+.curation_title {
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.curation_desc {
+  font-size: 11px;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+/* =========================================
+   모바일 - Explore 전체 마무리 정리
+   ========================================= */
+
+.ex_bottom_column {
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.ex_b_bottom_column {
+  gap: 28px;
+}
+
+.ex_section_header {
+  flex-wrap: wrap;
+}
+
+.ex_section_desc {
+  font-size: 11px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.ex_streak_banner {
+  padding: 12px;
+}
+
+.ex_streak_banner .banner_title {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.ex_streak_banner .banner_desc {
+  font-size: 10px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.ex_theme_filter_section,
+.ex_challenger_card,
+.ex_curation_card,
+.ex_streak_banner {
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+}
+
+/* =========================================
+   EXPLORE MOBILE FINAL
+   ========================================= */
+
+@media screen and (max-width: 767px) {
+
+  /* 전체 컨테이너 */
+  .ex_container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 12px !important;
+    margin: 0 auto !important;
+  }
+
+  /* 상단 배너 */
+  .ex_top_column {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding: 20px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .ex_t_top {
+    width: auto !important;
+    max-width: 100%;
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .ex_t_middle h1 {
+    font-size: 20px !important;
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+
+  .ex_t_bottom {
+    font-size: 11px;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+
+  /* 테마 필터 */
+  .ex_theme_filter_section {
+    width: 100% !important;
+    padding: 16px !important;
+  }
+
+  .ex_theme_header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .ex_theme_list {
+    width: 100%;
+  }
+
+
+  /* ★ 핵심: PC 2열 → 모바일 1열 */
+  .ex_b_bottom_column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 28px !important;
+  }
+
+  .ex_bottom_left {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ex_bottom_right {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+
+  /* 섹션 제목 */
+  .ex_section_header {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+
+  /* 스트릭 카드 */
+  .ex_challenger_card {
+    width: 100% !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .ex_challenger_info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ex_challenger_meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .meta_row_top,
+  .meta_row_bottom {
+    flex-wrap: wrap;
+  }
+
+  .ex_cheer_btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+
+  /* 트렌드 탭 */
+  .ex_curation_tab_bar {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .ex_curation_tab {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+    padding: 8px 5px;
+    font-size: 11px;
+  }
+
+
+  /* 트렌드 카드 2열 → 1열 */
+  .ex_curation_grid {
+    width: 100%;
+    grid-template-columns: 1fr !important;
+  }
+
+  .ex_curation_card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+
+  /* 가로 스크롤 방지 */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* 모바일 테마 버튼 2열 정리 */
+.ex_theme_btn {
+  flex: 1 1 calc(50% - 4px);
+  min-width: 0;
+  justify-content: space-between;
+}
+
+.ex_theme_btn:first-child {
+  flex-basis: 100%;
+}
+
+.theme_label {
+  min-width: 0;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.theme_count {
+  flex-shrink: 0;
+  font-size: 10px;
+}
+
+/* 모바일 스트릭 카드 내부 정리 */
+.ex_challenger_info {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ex_challenger_meta {
+  overflow: hidden;
+}
+
+.meta_row_top {
+  align-items: center;
+}
+
+.ex_challenger_name {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.streak_badge {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.meta_row_bottom {
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.user_level,
+.review_stats {
+  word-break: keep-all;
+}
+
+/* 모바일 - 트렌드 섹션 헤더 정리 */
+.ex_bottom_right .ex_section_header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.ex_bottom_right .ex_badge_blue {
+  align-self: flex-start;
+}
+
+.ex_curation_card .card_header {
+  width: 100%;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ex_curation_card .mention_cnt {
+  white-space: nowrap;
+}
+
 }
