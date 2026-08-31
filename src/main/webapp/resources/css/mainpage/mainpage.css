@@ -716,3 +716,231 @@
 	font-size: 16px;
 	transition: transform 0.2s ease;
 }
+<<<<<<< Updated upstream
+=======
+
+/* 좋아요 버튼이 활성화(active) 되었을 때 스타일 */
+.like_btn.active .icon_heart {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    color: #ff4757; 
+}
+
+
+.like_btn:hover .icon_heart {
+    color: #ff4757;
+}
+
+/*===========모바일 반응형 */
+
+@media (max-width: 767px) {
+
+	/* 하단 영역을 세로 1열로 변경 */
+	.mp_bottom_column{
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 20px;
+	}
+
+	/* 메인 리뷰 영역 */
+	.mp_bottom_main{
+		width: 100%;
+	}
+
+	/* 오른쪽 사이드 영역 */
+	.mp_bottom_side{
+		width: 100%;
+	}
+
+}
+
+/* 모바일 반응형 - 상단 배너*/
+
+@media (max-width: 767px) {
+
+	/* 상단 배너 전체를 세로 배치 */
+	.mp_top_column {
+		flex-direction: column;
+		width: 100%;
+		min-height: auto;
+	}
+
+	/* 왼쪽 내용 */
+	.mp_top_left_column {
+		width: 100%;
+	}
+
+	/* 오른쪽 버튼 영역 */
+	.mp_top_right_column {
+		width: 100%;
+	}
+
+}
+@media (max-width: 767px) {
+
+	/* 전체 컨테이너 */
+	.mp_container {
+		width: 100%;
+		max-width: 100%;
+		padding: 0 12px;
+	}
+	
+	/* 상단 배너 */
+	.mp_top_column {
+		flex-direction: column;
+		width: 100%;
+		min-height: auto;
+	}
+
+	.mp_top_left_column {
+		width: 100%;
+	}
+
+	.mp_top_right_column {
+		width: 100%;
+	}
+
+	/* 하단 콘텐츠 */
+	.mp_bottom_column {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 20px;
+	}
+
+	.mp_bottom_main {
+		width: 100%;
+	}
+
+	.mp_bottom_side {
+		width: 100%;
+	}
+
+	/* 정렬/필터바 */
+	.sort_filter_bar {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 8px;
+		padding: 8px;
+	}
+
+	.sort_filter_left {
+		width: 100%;
+		flex-wrap: wrap;
+	}
+
+	.filter_button {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.filter_button button {
+		flex: 1;
+		padding: 6px 8px;
+		font-size: 12px;
+	}
+
+	.sort_filter_right {
+		width: 100%;
+		text-align: right;
+		font-size: 11px;
+	}
+}
+/* =========================================
+   모바일 - 리뷰 카드 상단 영역
+   ========================================= */
+
+@media (max-width: 767px) {
+
+	/* 리뷰 카드 헤더를 세로 구조로 변경 */
+	.mp_review_header {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 10px;
+	}
+
+	/* 작성자 정보가 카드 전체 폭 사용 */
+	.mp_review_author_info {
+		width: 100%;
+		min-width: 0;
+	}
+
+	/* 작성자 이름 / 레벨 / 뱃지 영역 */
+	.mp_author_name_row {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		min-width: 0;
+	}
+
+	/* 작성자 이름은 줄바꿈되지 않도록 */
+	.mp_author_name {
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+
+	/* 긴 레벨 문구는 남은 공간에서 줄바꿈 */
+	.mp_author_level {
+		min-width: 0;
+		flex: 1;
+		overflow-wrap: break-word;
+	}
+
+	/* 숫자 뱃지는 찌그러지지 않도록 */
+	.mp_author_badge {
+		flex-shrink: 0;
+	}
+
+	/* 평점 영역 */
+	.mp_review_score_box {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	/* 리뷰 감정 태그 */
+	.mp_mood_tags_wrapper {
+		width: 100%;
+		margin-top: 10px;
+		margin-bottom: 8px;
+	}
+
+	.mp_mood_tag {
+		display: inline-block;
+		max-width: 100%;
+		white-space: nowrap;
+	}
+
+	/* 리뷰 본문 */
+	.mp_review_summary {
+		width: 100%;
+		margin: 8px 0 12px;
+		line-height: 1.6;
+		overflow-wrap: break-word;
+		word-break: keep-all;
+	}
+
+	/* 리뷰 대표 이미지 영역 */
+	.mp_review_image_placeholder {
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+		min-height: 140px;
+		padding: 20px 12px;
+	}
+
+	.mp_review_image_placeholder .placeholder_title {
+		max-width: 100%;
+		text-align: center;
+		overflow-wrap: break-word;
+	}
+
+	.mp_review_image_placeholder .placeholder_sub {
+		display: block;
+		max-width: 100%;
+		text-align: center;
+		overflow-wrap: break-word;
+	}
+
+}
+
+
+>>>>>>> Stashed changes
