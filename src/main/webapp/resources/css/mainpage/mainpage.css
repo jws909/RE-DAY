@@ -718,10 +718,6 @@
 	font-size: 16px;
 	transition: transform 0.2s ease;
 }
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
 
 /* 좋아요 버튼이 활성화(active) 되었을 때 스타일 */
 .like_btn.active .icon_heart {
@@ -733,7 +729,6 @@
 .like_btn:hover .icon_heart {
     color: #ff4757;
 }
->>>>>>> mainpage
 
 /*===========모바일 반응형 */
 
@@ -947,8 +942,3 @@
 
 }
 
-
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> mainpage

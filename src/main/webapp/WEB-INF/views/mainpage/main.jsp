@@ -1,40 +1,16 @@
-<<<<<<< HEAD
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-		pageEncoding="UTF-8"%>
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="UTF-8">
-	<title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
-	<%@ include file="/WEB-INF/views/include/head.jsp"%>
-	<link href="/css/mainpage/mainpage.css" rel="stylesheet">
-	<script src="/js/mainpage/mainpage.js"></script>
-	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-	</head>
-=======
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<<<<<<< Updated upstream
-<title>Insert title here</title>
-=======
 <title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
->>>>>>> Stashed changes
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 <link href="/css/mainpage/mainpage.css" rel="stylesheet">
 <script src="/js/mainpage/mainpage.js"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
->>>>>>> mainpage
 <body>
 	<!-- 상단 네비게이션 바 불러오기 -->
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>

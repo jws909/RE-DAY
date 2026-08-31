@@ -30,7 +30,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-
 		<!--
 		https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
 		<dependency>
@@ -99,31 +98,6 @@
 			<artifactId>ojdbc10</artifactId>
 			<version>19.21.0.0</version>
 		</dependency>
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-	
-		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->		
-		<dependency>		
-			<groupId>org.apache.logging.log4j</groupId>	
-			<artifactId>log4j-core</artifactId>	
-			<version>2.22.1</version>	
-		</dependency>	
-			
-		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->		
-		<dependency>		
-			<groupId>org.apache.logging.log4j</groupId>	
-			<artifactId>log4j-api</artifactId>	
-			<version>2.22.1</version>	
-		</dependency>		
-		
-		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->		
-		<dependency>		
-			<groupId>org.apache.logging.log4j</groupId>	
-			<artifactId>log4j-slf4j2-impl</artifactId>	
-			<version>2.22.1</version>	
-=======
->>>>>>> mainpage
 
 		<!--
 		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -131,8 +105,6 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>2.22.1</version>
-<<<<<<< HEAD
-=======
 		</dependency>
 
 		<!--
@@ -149,20 +121,6 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j2-impl</artifactId>
 			<version>2.22.1</version>
-		</dependency>
-
-		<!-- Apache Commons FileUpload -->
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.5</version>
-		</dependency>
-
-		<!-- Apache Commons IO -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.14.0</version>
 		</dependency>
 
 		<!-- Jackson ObjectMapper -->
@@ -170,24 +128,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.15.2</version> <!-- 버전은 프로젝트에 맞게 -->
->>>>>>> Stashed changes
->>>>>>> mainpage
-		</dependency>
-
-		<!--
-		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.22.1</version>
-		</dependency>
-
-		<!--
-		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j2-impl</artifactId>
-			<version>2.22.1</version>
 		</dependency>
 
 		<!-- Apache Commons FileUpload -->
@@ -203,7 +143,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.14.0</version>
 		</dependency>
-		
+
 	</dependencies>
 
 </project>
