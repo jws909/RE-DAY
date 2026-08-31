@@ -103,4 +103,13 @@ public class MemberDAO {
                 memberNo
         );
     }
+    // 이메일 로그인
+    	public MemberDTO login(MemberDTO member) {
+
+    		return sqlSession.selectOne(
+    				"member.login",
+    				member
+    			);
+    	}
+    
 }

@@ -199,4 +199,26 @@
     </delete>
 
 
+	<!-- =====================================
+     	이메일 로그인
+	====================================== -->
+
+	<select id="login"
+        	parameterType="com.app.dto.MemberDTO"
+        	resultType="com.app.dto.MemberDTO">
+
+    	SELECT
+        	MEMBER_NO AS memberNo,
+        	NICKNAME AS nickname,
+        	EMAIL AS email,
+        	MEMBER_PW AS memberPw,
+        	PROFILE_IMAGE AS profileImage,
+        	INTRODUCTION AS introduction
+
+    	FROM MEMBER
+
+   		WHERE EMAIL = #{email}
+      		AND MEMBER_PW = #{memberPw}
+
+	</select>
 </mapper>

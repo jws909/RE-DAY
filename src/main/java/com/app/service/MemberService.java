@@ -135,4 +135,9 @@ public class MemberService {
 
         return result;
     }
+    // 로그인
+    	public MemberDTO login(MemberDTO member) {
+
+    		return memberDAO.login(member);
+    	}
 }

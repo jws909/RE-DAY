@@ -327,14 +327,82 @@ public class MemberController {
                             loginMember.getMemberNo()
                     );
 
-
             session.setAttribute(
                     "loginMember",
                     updatedMember
             );
         }
 
-
         return "redirect:/member/profile";
-    }
+
+        }
+
+
+        // ==========================================
+        // 로그인 페이지
+        // ==========================================
+
+        @GetMapping("/login")
+        public String loginPage() {
+
+            return "member/login";
+        }
+
+
+        // ==========================================
+        // 이메일 로그인
+        // ==========================================
+
+        @PostMapping("/login")
+        public String login(
+                MemberDTO member,
+                HttpSession session,
+                Model model) {
+
+            MemberDTO loginMember =
+                    memberService.login(member);
+
+
+            if (loginMember == null) {
+
+                model.addAttribute(
+                        "errorMessage",
+                        "이메일 또는 비밀번호가 일치하지 않습니다."
+                );
+
+                model.addAttribute(
+                        "email",
+                        member.getEmail()
+                );
+
+                return "member/login";
+            }
+
+
+            session.setAttribute(
+                    "loginMember",
+                    loginMember
+            );
+
+
+            return "redirect:/";
+        }
+
+
+        // ==========================================
+        // 로그아웃
+        // ==========================================
+
+        @GetMapping("/logout")
+        public String logout(
+                HttpSession session) {
+
+            session.invalidate();
+
+            return "redirect:/";
+        }
+
+
+        // MemberController 클래스 마지막
+        
 }
