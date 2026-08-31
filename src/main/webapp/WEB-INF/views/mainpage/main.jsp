@@ -27,7 +27,7 @@
 					전자기기/탑승한 차량 등 세부 서브 리뷰를 함께 남겨보세요.</div>
 			</div>
 			<div class="mp_top_right_column">
-				<button type="button">
+				<button type="button" id = "mp_review_write">
 					<span class="material-symbols-outlined">add</span>오늘의 하루 리뷰 작성하기
 				</button>
 			</div>
