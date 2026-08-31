@@ -69,14 +69,14 @@
 							class="flex items-center gap-1.5 p-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 text-xs transition-colors">
 							<div
 								class="w-6 h-6 rounded-md bg-slate-800 text-white font-mono font-bold flex items-center justify-center text-[11px]">
-								${not empty sessionScope.loginUser.avatar ? sessionScope.loginUser.avatar : 'R'}
+								${not empty sessionScope.loginUser.profileImg ? sessionScope.loginUser.profileImg : 'R'}
 							</div>
 							<div class="hidden md:flex items-center gap-1 text-[11px]">
 								<span class="font-bold text-slate-800 truncate max-w-[80px]">
-									${sessionScope.loginUser.name} </span> <span
+									${sessionScope.loginUser.nickname}</span> <span
 									class="text-orange-600 font-mono flex items-center font-bold">
 									<i class="fa-solid fa-fire text-orange-500 text-xs mr-0.5"></i>
-									${sessionScope.loginUser.streakDays}일
+									${sessionScope.loginUser.streakCount}일
 								</span>
 							</div>
 						</a>

@@ -15,6 +15,7 @@
 		<typeAlias type="com.app.dto.test.TestMember" alias="TestMember"/>
 		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
 		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
+<<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 =======
@@ -24,6 +25,11 @@
 		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
 >>>>>>> Stashed changes
 >>>>>>> mainpage
+=======
+		<typeAlias type="com.app.dto.member.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.app.dto.file.FileInfo" alias="FileInfo"/>
+		<typeAlias type="com.app.dto.review.DailyReviewImage" alias="DailyReviewImage"/>
+>>>>>>> 83c06e7b057e1506f4fb7188bf8bfba3424c11df
 	</typeAliases>
 	
 </configuration>
