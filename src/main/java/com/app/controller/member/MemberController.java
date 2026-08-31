@@ -60,7 +60,7 @@ public class MemberController {
         session.setAttribute("loginUser", loginUser);
 
         // 메인페이지로 이동
-        return "redirect:/";
+        return "redirect:/RE:DAY/mainpage";
 
     }
 
