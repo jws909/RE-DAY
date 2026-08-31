@@ -5,6 +5,8 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- Font Awesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+<link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/common.css">
+      
 <link rel="icon" href="/images/logo/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/images/logo/favicon.ico" type="image/x-icon">

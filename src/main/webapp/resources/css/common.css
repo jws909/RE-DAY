@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/* =========================================
+   RE:DAY 공통 반응형 스타일
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+/* 공통 Header */
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 모바일 */
+@media (max-width: 767px) {
+
+    .main-nav {
+        gap: 2px;
+    }
+
+}
