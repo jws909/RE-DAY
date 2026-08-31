@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.app.dao.review.DailyReviewDAO;
 import com.app.dto.review.DailyReviewFormDTO;
+import com.app.dto.review.DailyReviewImage;
 
 @Repository
 public class DailyReviewDAOImpl implements DailyReviewDAO {
@@ -25,6 +26,22 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public int saveDailyReviewImage(DailyReviewImage dailyReviewImage) {
+
+		int result = sqlSessionTemplate.insert("review_mapper.saveDailyReviewImage", dailyReviewImage);
+		
+		return result;
+	}
+
+	@Override
+	public DailyReviewImage findDailyReviewImageByReviewId(String reviewId) {
+
+		DailyReviewImage dailyReviewImage = sqlSessionTemplate.selectOne("review_mapper.findDailyReviewImageByReviewId", reviewId);
+		
+		return dailyReviewImage;
 	}
 	
 }
