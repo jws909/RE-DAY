@@ -56,4 +56,18 @@
 		)
 	</insert>
 	
+	<insert id="saveDailyReviewImage" parameterType="DailyReviewImage">
+		INSERT INTO DAILY_REVIEW_IMAGE
+		VALUES (
+			#{reviewId},
+			#{fileName}
+		)
+	</insert>
+	
+	<select id="findDailyReviewImageByReviewId" resultType="DailyReviewImage" parameterType="String">
+		SELECT *
+		FROM DAILY_REVIEW_IMAGE
+		WHERE REVIEW_ID = #{reviewId}	
+	</select>
+	
 </mapper>

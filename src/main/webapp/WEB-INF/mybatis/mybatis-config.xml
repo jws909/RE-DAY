@@ -15,6 +15,8 @@
 		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
 		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
 		<typeAlias type="com.app.dto.member.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.app.dto.file.FileInfo" alias="FileInfo"/>
+		<typeAlias type="com.app.dto.review.DailyReviewImage" alias="DailyReviewImage"/>
 	</typeAliases>
 	
 </configuration>

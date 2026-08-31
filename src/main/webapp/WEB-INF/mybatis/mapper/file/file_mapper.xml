@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		   
+<mapper namespace="file_mapper">
+
+	<insert id="saveFileInfo" parameterType="FileInfo">
+		INSERT INTO FILE_INFO
+		VALUES (
+			#{fileName},
+			#{originalFileName},
+			#{filePath},
+			#{urlFilePath}
+		)
+	</insert>
+	
+	<select id="findFileInfoByFileName" parameterType="String" resultType="FileInfo">
+		SELECT *
+		FROM FILE_INFO
+		WHERE FILE_NAME = #{fileName}
+	</select>
+	
+</mapper>
