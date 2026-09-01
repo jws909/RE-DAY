@@ -17,6 +17,7 @@ public class DailyReviewFormDTO {
     private String mainImageUrl;            // main_image_url (DB 저장용 URL/경로)
     private MultipartFile mainImageFile;    // mainImageFile (업로드된 실제 파일)
     private String isPublic;          		// is_public ('Y' / 'N')
+    private int likeCount;
     
     // 1:N 서브 리뷰 목록 바인딩
     private List<SubReviewDTO> subReviews;  // subReviews[0], subReviews[1]...

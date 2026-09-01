@@ -37,11 +37,19 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
 	}
 
 	@Override
-	public DailyReviewImage findDailyReviewImageByReviewId(String reviewId) {
+	public DailyReviewImage findDailyReviewImageByReviewId(long reviewId) {
 
 		DailyReviewImage dailyReviewImage = sqlSessionTemplate.selectOne("review_mapper.findDailyReviewImageByReviewId", reviewId);
 		
 		return dailyReviewImage;
+	}
+
+	@Override
+	public DailyReviewFormDTO findReviewDetailByReviewId(long reviewId) {
+
+		DailyReviewFormDTO formDTO = sqlSessionTemplate.selectOne("review_mapper.findReviewDetailByReviewId", reviewId);
+		
+		return formDTO;
 	}
 	
 }

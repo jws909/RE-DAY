@@ -7,6 +7,8 @@ public interface ReviewService {
 	public long createDailyReviewWithSubReviews(DailyReviewFormDTO formDTO);
 	
 	public int saveDailyReviewImage(DailyReviewImage dailyReviewImage);
-	public DailyReviewImage findDailyReviewImageByReviewId(String reviewId);
+	public DailyReviewImage findDailyReviewImageByReviewId(long reviewId);
+	
+	public DailyReviewFormDTO findReviewDetailByReviewId(long reviewId); 
 	
 }
