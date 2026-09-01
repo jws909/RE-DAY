@@ -132,6 +132,7 @@ public class ReviewServiceImpl implements ReviewService {
 	    );
 	}
 	
+	// MY 페이지 - 데일리 기록별 서브 리뷰 조회
 	@Override
 	public List<SubReviewDTO> findSubReviewsByReviewId(
 	        Long reviewId) {
@@ -140,11 +141,29 @@ public class ReviewServiceImpl implements ReviewService {
 	            reviewId
 	    );
 	}
-	
+
+	// MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+	@Override
+	public List<SubReviewDTO> findSubReviewsByUserId(
+	        String userId) {
+
+	    return subReviewDAO.findSubReviewsByUserId(
+	            userId
+	    );
+	}
+
+	// MY 페이지 - 내가 좋아요한 리뷰 개수
 	@Override
 	public int countLikesByUserId(String userId) {
 
 	    return likeDAO.countLikesByUserId(userId);
 	}
+
+	// MY 페이지 - 내가 좋아요한 리뷰 목록
+	@Override
+	public List<DailyReviewFormDTO> findLikedReviewsByUserId(String userId) {
+	    return likeDAO.findLikedReviewsByUserId(userId);
+	}
+	
 	
 }

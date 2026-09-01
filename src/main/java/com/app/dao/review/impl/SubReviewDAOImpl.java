@@ -1,5 +1,7 @@
 package com.app.dao.review.impl;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -7,28 +9,44 @@ import org.springframework.stereotype.Repository;
 import com.app.dao.review.SubReviewDAO;
 import com.app.dto.review.SubReviewDTO;
 
-import java.util.List;
-
 @Repository
 public class SubReviewDAOImpl implements SubReviewDAO {
-	
-	@Autowired
-	SqlSessionTemplate sqlSessionTemplate;
 
-	@Override
-	public int saveSubReview(SubReviewDTO saveDTO) {
+    @Autowired
+    SqlSessionTemplate sqlSessionTemplate;
 
-		int result = sqlSessionTemplate.insert("review_mapper.saveSubReview", saveDTO);
-		
-		return result;
-	}
-	@Override
-	public List<SubReviewDTO> findSubReviewsByReviewId(
-	        Long reviewId) {
+    // 서브 리뷰 저장
+    @Override
+    public int saveSubReview(SubReviewDTO saveDTO) {
 
-	    return sqlSessionTemplate.selectList(
-	            "review_mapper.findSubReviewsByReviewId",
-	            reviewId
-	    );
-	}
+        int result =
+                sqlSessionTemplate.insert(
+                        "review_mapper.saveSubReview",
+                        saveDTO
+                );
+
+        return result;
+    }
+
+    // MY 페이지 - 데일리 기록별 서브 리뷰 조회
+    @Override
+    public List<SubReviewDTO> findSubReviewsByReviewId(
+            Long reviewId) {
+
+        return sqlSessionTemplate.selectList(
+                "review_mapper.findSubReviewsByReviewId",
+                reviewId
+        );
+    }
+
+    // MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+    @Override
+    public List<SubReviewDTO> findSubReviewsByUserId(
+            String userId) {
+
+        return sqlSessionTemplate.selectList(
+                "review_mapper.findSubReviewsByUserId",
+                userId
+        );
+    }
 }

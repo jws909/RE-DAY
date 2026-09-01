@@ -94,7 +94,7 @@
             JOIN DAILY_REVIEWS DR
               ON SR.REVIEW_ID = DR.REVIEW_ID
             WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = '장소'
+              AND SR.CATEGORY = 'place'
         ) AS PLACE_COUNT,
 
         (
@@ -103,7 +103,7 @@
             JOIN DAILY_REVIEWS DR
               ON SR.REVIEW_ID = DR.REVIEW_ID
             WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = '아이템'
+              AND SR.CATEGORY = 'item'
         ) AS ITEM_COUNT,
 
         (
@@ -112,7 +112,7 @@
             JOIN DAILY_REVIEWS DR
               ON SR.REVIEW_ID = DR.REVIEW_ID
             WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = '이동수단'
+             AND SR.CATEGORY = 'transport'
         ) AS TRANSPORT_COUNT,
 
         (
@@ -121,7 +121,7 @@
             JOIN DAILY_REVIEWS DR
               ON SR.REVIEW_ID = DR.REVIEW_ID
             WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = '콘텐츠'
+              AND SR.CATEGORY = 'content'
         ) AS CONTENT_COUNT
 
     FROM DUAL
