@@ -1,4 +1,4 @@
-package com.app.controller.review.likes;
+package com.app.controller.review;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;

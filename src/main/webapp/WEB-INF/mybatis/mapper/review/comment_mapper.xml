@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comment_mapper">
+
+	<insert id="saveComment" parameterType="CommentDTO">
+		<selectKey keyProperty="commentId" resultType="long"
+			order="BEFORE">
+			SELECT SEQ_COMMENTS.NEXTVAL FROM DUAL
+		</selectKey>
+
+		INSERT INTO COMMENTS
+		VALUES (
+		#{commentId},
+		#{reviewId},
+		#{userId},
+		#{content},
+		CURRENT_TIMESTAMP,
+		CURRENT_TIMESTAMP
+		)
+	</insert>
+
+	<select id="findCommentList" resultType="CommentDTO" parameterType="long">
+		select *
+		from COMMENTS
+		WHERE review_id = #{reviewId}
+		order by comment_id
+	</select>
+
+	<select id="findCommentByCommentId" resultType="CommentDTO"
+		parameterType="long">
+		select *
+		from comments
+		where comment_id = #{commentId}
+	</select>
+
+
+	<delete id="removeComment" parameterType="long">
+		delete from comments
+		where comment_id = #{commentId}
+	</delete>
+
+	<update id="modifyComment" parameterType="CommentDTO">
+		UPDATE COMMENTS
+		SET
+		review_id = #{reviewId},
+		content = #{content},
+		updated_at = CURRENT_TIMESTAMP
+		WHERE COMMENT_ID = #{commentId}
+	</update>
+</mapper>

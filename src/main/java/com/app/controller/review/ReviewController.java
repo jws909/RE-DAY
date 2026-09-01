@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.review.DailyReviewFormDTO;
+import com.app.service.review.CommentService;
 import com.app.service.review.ReviewService;
 import com.app.util.DateUtil;
 
@@ -21,6 +22,9 @@ public class ReviewController {
 	
 	@Autowired
 	ReviewService reviewService;
+	
+	@Autowired
+	CommentService commentService;
 
 	@GetMapping("/RE:DAY/review/write")
 	public String writeReview() {
@@ -60,6 +64,7 @@ public class ReviewController {
 		
 		DailyReviewFormDTO review = reviewService.findReviewDetailByReviewId(reviewId);
 		
+		model.addAttribute("comments", commentService.findCommentList(reviewId));
 		model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
 		model.addAttribute("review", review);
 		model.addAttribute("subReviews", review.getSubReviews());
