@@ -1,26 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"?>						
-<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"						
-					"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-	
-	<settings>
-		<setting name="mapUnderscoreToCamelCase" value="true"/>
-		<setting name="jdbcTypeForNull" value="NULL" />
-	</settings>
 
-	<typeAliases>
-		<!-- typeAlias에 DTO 추가 -->
-		<typeAlias type="com.app.dto.test.TestMember" alias="TestMember"/>
-		<typeAlias type="com.app.dto.review.DailyReviewFormDTO" alias="DailyReviewFormDTO"/>
-		<typeAlias type="com.app.dto.review.SubReviewDTO" alias="SubReviewDTO"/>
-		<typeAlias type="com.app.dto.review.LikeRequestDTO" alias="LikeRequestDTO"/>
-		<typeAlias type="com.app.dto.member.MemberDTO" alias="MemberDTO"/>
-		<typeAlias type="com.app.dto.file.FileInfo" alias="FileInfo"/>
-		<typeAlias type="com.app.dto.review.DailyReviewImage" alias="DailyReviewImage"/>
-		<typeAlias type="com.app.dto.review.CommentDTO" alias="CommentDTO"/>
+    <settings>
+
+        <setting
+            name="mapUnderscoreToCamelCase"
+            value="true" />
+
+        <setting
+            name="jdbcTypeForNull"
+            value="NULL" />
+
+    </settings>
 
 
-	</typeAliases>
-	
+    <typeAliases>
+
+        <!-- typeAlias에 DTO 추가 -->
+
+        <typeAlias
+            type="com.app.dto.test.TestMember"
+            alias="TestMember" />
+
+        <typeAlias
+            type="com.app.dto.review.DailyReviewFormDTO"
+            alias="DailyReviewFormDTO" />
+
+        <typeAlias
+            type="com.app.dto.review.SubReviewDTO"
+            alias="SubReviewDTO" />
+
+        <typeAlias
+            type="com.app.dto.review.LikeRequestDTO"
+            alias="LikeRequestDTO" />
+
+        <typeAlias
+            type="com.app.dto.member.MemberDTO"
+            alias="MemberDTO" />
+
+        <typeAlias
+            type="com.app.dto.file.FileInfo"
+            alias="FileInfo" />
+
+        <typeAlias
+            type="com.app.dto.review.DailyReviewImage"
+            alias="DailyReviewImage" />
+
+        <typeAlias
+            type="com.app.dto.review.CommentDTO"
+            alias="CommentDTO" />
+
+        <typeAlias
+            type="com.app.dto.member.MyPageStatsDTO"
+            alias="MyPageStatsDTO" />
+
+    </typeAliases>
+
 </configuration>

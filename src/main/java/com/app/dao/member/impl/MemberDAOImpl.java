@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.app.dao.member.MemberDAO;
 import com.app.dto.member.MemberDTO;
+import com.app.dto.member.MyPageStatsDTO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -21,4 +22,23 @@ public class MemberDAOImpl implements MemberDAO {
                 memberDTO
         );
     }
+
+    @Override
+    public int updateProfileImg(MemberDTO memberDTO) {
+
+        return sqlSessionTemplate.update(
+                "member_mapper.updateProfileImg",
+                memberDTO
+        );
+    }
+
+    @Override
+    public MyPageStatsDTO findMyPageStats(String userId) {
+
+        return sqlSessionTemplate.selectOne(
+                "member_mapper.findMyPageStats",
+                userId
+        );
+    }
+
 }

@@ -35,5 +35,12 @@ public class LikeDAOImpl implements LikeDAO {
 	
 		return result;
 	}
+	@Override
+	public int countLikesByUserId(String userId) {
 
+	    return sqlSessionTemplate.selectOne(
+	            "like_mapper.countLikesByUserId",
+	            userId
+	    );
+	}
 }
