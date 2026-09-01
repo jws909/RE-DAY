@@ -1,15 +1,20 @@
 package com.app.controller.review;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.service.review.ReviewService;
+import com.app.util.DateUtil;
 
 @Controller
 public class ReviewController {
@@ -50,8 +55,15 @@ public class ReviewController {
 		
 	}
 	
-	@GetMapping("/RE:DAY/review/detail")
-	public String reviewDetail() {
+	@GetMapping("/RE:DAY/review/detail/{reviewId}")
+	public String reviewDetail(@PathVariable long reviewId, Model model) {
+		
+		DailyReviewFormDTO review = reviewService.findReviewDetailByReviewId(reviewId);
+		
+		model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
+		model.addAttribute("review", review);
+		model.addAttribute("subReviews", review.getSubReviews());
+		
 		return "detail/reviewDetail";
 	}
 	

@@ -104,11 +104,19 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public DailyReviewImage findDailyReviewImageByReviewId(String reviewId) {
+	public DailyReviewImage findDailyReviewImageByReviewId(long reviewId) {
 
 		DailyReviewImage dailyReviewImage = dailyReviewDAO.findDailyReviewImageByReviewId(reviewId);
 		
 		return dailyReviewImage;
+	}
+
+	@Override
+	public DailyReviewFormDTO findReviewDetailByReviewId(long reviewId) {
+		
+		DailyReviewFormDTO formDTO = dailyReviewDAO.findReviewDetailByReviewId(reviewId);
+		
+		return formDTO;
 	}
 	
 }

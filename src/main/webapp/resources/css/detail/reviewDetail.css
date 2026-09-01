@@ -3,12 +3,42 @@
 /**
  * RE:DAY - reviewDetail.css
  * 리뷰 상세 페이지 전용 스타일시트
- * (와이어프레임 톤앤매너, 점선 테두리, 별점 시각화 및 반응형 효과)
+ * (와이어프레임 톤앤매너, 점선 테두리, 스트릭 뱃지 효과, 별점 시각화 및 반응형 효과)
  */
 
 /* 점선 테두리 및 스켈레톤 와이어프레임 기본 스타일 */
 .dashed-border {
     border-style: dashed;
+}
+
+/* 스트릭(연속 기록) 불꽃 뱃지 은은한 애니메이션 */
+.streak-badge {
+    transition: all 0.2s ease-in-out;
+}
+
+.streak-badge i {
+    animation: flame-flicker 1.8s infinite ease-in-out;
+    display: inline-block;
+    transform-origin: center bottom;
+}
+
+@keyframes flame-flicker {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 1px rgba(249, 115, 22, 0.4));
+    }
+    25% {
+        transform: scale(1.1) rotate(-3deg);
+        filter: drop-shadow(0 0 3px rgba(249, 115, 22, 0.6));
+    }
+    50% {
+        transform: scale(1.05) rotate(2deg);
+        filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.5));
+    }
+    75% {
+        transform: scale(1.15) rotate(-2deg);
+        filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.7));
+    }
 }
 
 /* 별점 아이콘 트랜지션 */
