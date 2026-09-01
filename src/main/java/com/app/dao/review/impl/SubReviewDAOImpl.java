@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.app.dao.review.SubReviewDAO;
 import com.app.dto.review.SubReviewDTO;
 
+import java.util.List;
+
 @Repository
 public class SubReviewDAOImpl implements SubReviewDAO {
 	
@@ -20,5 +22,13 @@ public class SubReviewDAOImpl implements SubReviewDAO {
 		
 		return result;
 	}
+	@Override
+	public List<SubReviewDTO> findSubReviewsByReviewId(
+	        Long reviewId) {
 
+	    return sqlSessionTemplate.selectList(
+	            "review_mapper.findSubReviewsByReviewId",
+	            reviewId
+	    );
+	}
 }

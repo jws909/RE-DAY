@@ -8,7 +8,8 @@
 	<select id="checkExists" parameterType="LikeRequestDTO"
 		resultType="_int">
 		SELECT COUNT(*) FROM LIKES
-		WHERE USER_ID = #{userId} AND REVIEW_ID = #{reviewId}
+		WHERE USER_ID = #{userId} AND
+		REVIEW_ID = #{reviewId}
 	</select>
 
 	<insert id="insert" parameterType="LikeRequestDTO">
@@ -34,7 +35,17 @@
 
 	<delete id="delete" parameterType="LikeRequestDTO">
 
-		DELETE FROM LIKES WHERE USER_ID = #{userId}
+		DELETE FROM LIKES WHERE
+		USER_ID = #{userId}
 		AND REVIEW_ID = #{reviewId}
 	</delete>
+
+	<select id="countLikesByUserId" parameterType="String"
+		resultType="int">
+
+		SELECT COUNT(*)
+		FROM LIKES
+		WHERE USER_ID = #{userId}
+
+	</select>
 </mapper>

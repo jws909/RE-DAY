@@ -16,6 +16,8 @@ import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
 import com.app.service.review.ReviewService;
 import com.app.util.FileManager;
+import java.util.List;
+import com.app.dao.review.LikeDAO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -25,6 +27,8 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Autowired
 	SubReviewDAO subReviewDAO;
+	@Autowired
+	LikeDAO likeDAO;
 	
 	@Autowired
 	FileDAO fileDAO;
@@ -117,6 +121,30 @@ public class ReviewServiceImpl implements ReviewService {
 		DailyReviewFormDTO formDTO = dailyReviewDAO.findReviewDetailByReviewId(reviewId);
 		
 		return formDTO;
+	}
+	
+	@Override
+	public List<DailyReviewFormDTO> findDailyReviewsByUserId(
+	        String userId) {
+
+	    return dailyReviewDAO.findDailyReviewsByUserId(
+	            userId
+	    );
+	}
+	
+	@Override
+	public List<SubReviewDTO> findSubReviewsByReviewId(
+	        Long reviewId) {
+
+	    return subReviewDAO.findSubReviewsByReviewId(
+	            reviewId
+	    );
+	}
+	
+	@Override
+	public int countLikesByUserId(String userId) {
+
+	    return likeDAO.countLikesByUserId(userId);
 	}
 	
 }

@@ -1,130 +1,264 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC
-		   "-//mybatis.org//DTD Mapper 3.0//EN" 
-		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="review_mapper">
 
-	<resultMap id="dailyReviewDetailMap"
-		type="DailyReviewFormDTO">
-		<!-- 메인 데일리 리뷰 컬럼 매핑 -->
-		<id property="reviewId" column="REVIEW_ID" />
-		<result property="userId" column="USER_ID" />
-		<result property="reviewDate" column="REVIEW_DATE" />
-		<result property="totalRating" column="TOTAL_RATING" />
-		<result property="moodTags" column="MOOD_TAGS" />
-		<result property="overallComment" column="OVERALL_COMMENT" />
-		<result property="mainImageUrl" column="MAIN_IMAGE_URL" />
+    <!-- =========================================
+         데일리 리뷰 상세 조회 ResultMap
+    ========================================== -->
+    <resultMap id="dailyReviewDetailMap"
+               type="DailyReviewFormDTO">
 
-		<!-- 1:N 서브리뷰 리스트 컬렉션 매핑 -->
-		<collection property="subReviews" ofType="SubReviewDTO"
-			javaType="java.util.ArrayList">
-			<id property="subReviewId" column="SUB_REVIEW_ID" />
-			<result property="reviewId" column="SUB_REVIEW_FK" />
-			<result property="category" column="CATEGORY" />
-			<result property="itemName" column="ITEM_NAME" />
-			<result property="subRating" column="SUB_RATING" />
-			<result property="subComment" column="SUB_COMMENT" />
-			<result property="locationBrand" column="LOCATION_BRAND" />
-			<result property="isCertified" column="IS_CERTIFIED" />
-			<result property="tags" column="TAGS" />
-		</collection>
-	</resultMap>
+        <!-- 메인 데일리 리뷰 컬럼 매핑 -->
+        <id property="reviewId"
+            column="REVIEW_ID"/>
 
-	<select id="findReviewDetailByReviewId" parameterType="long"
-		resultMap="dailyReviewDetailMap">
-		SELECT
-			d.REVIEW_ID,
-			d.USER_ID,
-			TO_CHAR(d.REVIEW_DATE, 'YYYY-MM-DD') AS REVIEW_DATE,
-			d.TOTAL_RATING,
-			d.MOOD_TAGS,
-			d.OVERALL_COMMENT,
-			d.MAIN_IMAGE_URL,
-			-- 서브 리뷰 컬럼들
-			s.SUB_REVIEW_ID,
-			s.REVIEW_ID AS SUB_REVIEW_FK,
-			s.CATEGORY,
-			s.ITEM_NAME,
-			s.SUB_RATING,
-			s.SUB_COMMENT,
-			s.LOCATION_BRAND,
-			s.IS_CERTIFIED,
-			s.TAGS
-		FROM DAILY_REVIEWS d
-		LEFT JOIN SUB_REVIEWS s ON d.REVIEW_ID = s.REVIEW_ID
-		WHERE d.REVIEW_ID = #{reviewId}
-		ORDER BY s.SUB_REVIEW_ID ASC
-	</select>
+        <result property="userId"
+                column="USER_ID"/>
 
-	<insert id="saveDailyReview" parameterType="DailyReviewFormDTO">
-		<!-- order="BEFORE"로 시퀀스 값을 먼저 채번하여 DTO의 reviewId에 세팅 -->
-		<selectKey keyProperty="reviewId" resultType="long"
-			order="BEFORE">
-			SELECT SEQ_DAILY_REVIEW.NEXTVAL FROM DUAL
-		</selectKey>
+        <result property="reviewDate"
+                column="REVIEW_DATE"/>
 
-		INSERT INTO DAILY_REVIEWS (
-		REVIEW_ID,
-		USER_ID,
-		REVIEW_DATE,
-		TOTAL_RATING,
-		MOOD_TAGS,
-		OVERALL_COMMENT,
-		MAIN_IMAGE_URL
-		)
-		VALUES (
-		#{reviewId},
-		#{userId},
-		CURRENT_TIMESTAMP,
-		#{totalRating},
-		#{moodTags},
-		#{overallComment},
-		#{mainImageUrl}
-		)
-	</insert>
+        <result property="totalRating"
+                column="TOTAL_RATING"/>
 
-	<insert id="saveSubReview" parameterType="SubReviewDTO">
-		INSERT INTO
-		SUB_REVIEWS(
-		SUB_REVIEW_ID,
-		REVIEW_ID,
-		CATEGORY,
-		ITEM_NAME,
-		SUB_RATING,
-		SUB_COMMENT,
-		LOCATION_BRAND,
-		IS_CERTIFIED,
-		TAGS
-		)
-		VALUES (
-		SEQ_SUB_REVIEW.NEXTVAL,
-		#{reviewId},
-		#{category},
-		#{itemName},
-		#{subRating},
-		#{subComment},
-		#{locationBrand},
-		#{isCertified},
-		#{tags}
-		)
-	</insert>
+        <result property="moodTags"
+                column="MOOD_TAGS"/>
 
-	<insert id="saveDailyReviewImage"
-		parameterType="DailyReviewImage">
-		INSERT INTO DAILY_REVIEW_IMAGE
-		VALUES (
-		#{reviewId},
-		#{fileName}
-		)
-	</insert>
+        <result property="overallComment"
+                column="OVERALL_COMMENT"/>
 
-	<select id="findDailyReviewImageByReviewId"
-		resultType="DailyReviewImage" parameterType="String">
-		SELECT *
-		FROM
-		DAILY_REVIEW_IMAGE
-		WHERE REVIEW_ID = #{reviewId}
-	</select>
+        <result property="mainImageUrl"
+                column="MAIN_IMAGE_URL"/>
+
+
+        <!-- 1:N 서브 리뷰 리스트 컬렉션 매핑 -->
+        <collection property="subReviews"
+                    ofType="SubReviewDTO"
+                    javaType="java.util.ArrayList">
+
+            <id property="subReviewId"
+                column="SUB_REVIEW_ID"/>
+
+            <result property="reviewId"
+                    column="SUB_REVIEW_FK"/>
+
+            <result property="category"
+                    column="CATEGORY"/>
+
+            <result property="itemName"
+                    column="ITEM_NAME"/>
+
+            <result property="subRating"
+                    column="SUB_RATING"/>
+
+            <result property="subComment"
+                    column="SUB_COMMENT"/>
+
+            <result property="locationBrand"
+                    column="LOCATION_BRAND"/>
+
+            <result property="isCertified"
+                    column="IS_CERTIFIED"/>
+
+            <result property="tags"
+                    column="TAGS"/>
+
+        </collection>
+
+    </resultMap>
+
+
+    <!-- =========================================
+         리뷰 상세 조회
+    ========================================== -->
+    <select id="findReviewDetailByReviewId"
+            parameterType="long"
+            resultMap="dailyReviewDetailMap">
+
+        SELECT
+            d.REVIEW_ID,
+            d.USER_ID,
+            TO_CHAR(
+                d.REVIEW_DATE,
+                'YYYY-MM-DD'
+            ) AS REVIEW_DATE,
+            d.TOTAL_RATING,
+            d.MOOD_TAGS,
+            d.OVERALL_COMMENT,
+            d.MAIN_IMAGE_URL,
+
+            s.SUB_REVIEW_ID,
+            s.REVIEW_ID AS SUB_REVIEW_FK,
+            s.CATEGORY,
+            s.ITEM_NAME,
+            s.SUB_RATING,
+            s.SUB_COMMENT,
+            s.LOCATION_BRAND,
+            s.IS_CERTIFIED,
+            s.TAGS
+
+        FROM DAILY_REVIEWS d
+
+        LEFT JOIN SUB_REVIEWS s
+          ON d.REVIEW_ID = s.REVIEW_ID
+
+        WHERE d.REVIEW_ID = #{reviewId}
+
+        ORDER BY s.SUB_REVIEW_ID ASC
+
+    </select>
+
+
+    <!-- =========================================
+         데일리 리뷰 저장
+    ========================================== -->
+    <insert id="saveDailyReview"
+            parameterType="DailyReviewFormDTO">
+
+        <selectKey keyProperty="reviewId"
+                   resultType="long"
+                   order="BEFORE">
+
+            SELECT SEQ_DAILY_REVIEW.NEXTVAL
+            FROM DUAL
+
+        </selectKey>
+
+        INSERT INTO DAILY_REVIEWS (
+            REVIEW_ID,
+            USER_ID,
+            REVIEW_DATE,
+            TOTAL_RATING,
+            MOOD_TAGS,
+            OVERALL_COMMENT,
+            MAIN_IMAGE_URL
+        )
+        VALUES (
+            #{reviewId},
+            #{userId},
+            CURRENT_TIMESTAMP,
+            #{totalRating},
+            #{moodTags},
+            #{overallComment},
+            #{mainImageUrl}
+        )
+
+    </insert>
+
+
+    <!-- =========================================
+         서브 리뷰 저장
+    ========================================== -->
+    <insert id="saveSubReview"
+            parameterType="SubReviewDTO">
+
+        INSERT INTO SUB_REVIEWS (
+            SUB_REVIEW_ID,
+            REVIEW_ID,
+            CATEGORY,
+            ITEM_NAME,
+            SUB_RATING,
+            SUB_COMMENT,
+            LOCATION_BRAND,
+            IS_CERTIFIED,
+            TAGS
+        )
+        VALUES (
+            SEQ_SUB_REVIEW.NEXTVAL,
+            #{reviewId},
+            #{category},
+            #{itemName},
+            #{subRating},
+            #{subComment},
+            #{locationBrand},
+            #{isCertified},
+            #{tags}
+        )
+
+    </insert>
+
+
+    <!-- =========================================
+         데일리 리뷰 이미지 저장
+    ========================================== -->
+    <insert id="saveDailyReviewImage"
+            parameterType="DailyReviewImage">
+
+        INSERT INTO DAILY_REVIEW_IMAGE
+        VALUES (
+            #{reviewId},
+            #{fileName}
+        )
+
+    </insert>
+
+
+    <!-- =========================================
+         데일리 리뷰 이미지 조회
+    ========================================== -->
+    <select id="findDailyReviewImageByReviewId"
+            parameterType="long"
+            resultType="DailyReviewImage">
+
+        SELECT *
+        FROM DAILY_REVIEW_IMAGE
+        WHERE REVIEW_ID = #{reviewId}
+
+    </select>
+
+
+    <!-- =========================================
+         MY 페이지 - 내가 작성한 데일리 기록 조회
+    ========================================== -->
+    <select id="findDailyReviewsByUserId"
+            parameterType="String"
+            resultType="DailyReviewFormDTO">
+
+        SELECT
+            REVIEW_ID,
+            USER_ID,
+            REVIEW_DATE,
+            TOTAL_RATING,
+            MOOD_TAGS,
+            OVERALL_COMMENT,
+            MAIN_IMAGE_URL
+
+        FROM DAILY_REVIEWS
+
+        WHERE USER_ID = #{userId}
+
+        ORDER BY REVIEW_DATE DESC
+
+    </select>
+
+
+    <!-- =========================================
+         MY 페이지 - 데일리 기록별 서브 리뷰 조회
+    ========================================== -->
+    <select id="findSubReviewsByReviewId"
+            parameterType="Long"
+            resultType="SubReviewDTO">
+
+        SELECT
+            SUB_REVIEW_ID,
+            REVIEW_ID,
+            CATEGORY,
+            ITEM_NAME,
+            SUB_RATING,
+            SUB_COMMENT,
+            LOCATION_BRAND,
+            IS_CERTIFIED,
+            TAGS
+
+        FROM SUB_REVIEWS
+
+        WHERE REVIEW_ID = #{reviewId}
+
+        ORDER BY SUB_REVIEW_ID ASC
+
+    </select>
 
 </mapper>

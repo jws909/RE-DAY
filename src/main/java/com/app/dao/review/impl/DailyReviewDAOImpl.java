@@ -8,6 +8,8 @@ import com.app.dao.review.DailyReviewDAO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 
+import java.util.List;
+
 @Repository
 public class DailyReviewDAOImpl implements DailyReviewDAO {
 
@@ -52,4 +54,14 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
 		return formDTO;
 	}
 	
+	
+	@Override
+	public List<DailyReviewFormDTO> findDailyReviewsByUserId(
+	        String userId) {
+
+	    return sqlSessionTemplate.selectList(
+	            "review_mapper.findDailyReviewsByUserId",
+	            userId
+	    );
+	}
 }
