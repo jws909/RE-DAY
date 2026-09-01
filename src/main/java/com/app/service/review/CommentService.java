@@ -15,4 +15,6 @@ public interface CommentService {
 	int removeComment(long commentId);
 
 	int modifyComment(CommentDTO comment);
+	
+	List<CommentDTO> findCommentListForDetail(long reviewId);
 }

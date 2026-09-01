@@ -57,5 +57,11 @@ public class CommentServiceImpl implements CommentService {
 		
 		return result;
 	}
+
+	@Override
+	public List<CommentDTO> findCommentListForDetail(long reviewId) {
+		List<CommentDTO> commentList = commentDAO.findCommentListForDetail(reviewId);
+		return commentList;
+	}
 	
 }

@@ -616,42 +616,69 @@
 					<span class="text-xs text-slate-400 font-mono"></span>
 				</div>
 
-				<!-- 댓글 목록 출력 -->
+				<!-- 댓글 목록 출력 (CommentDTO 직접 바인딩) -->
 				<div class="space-y-3" id="commentsContainer">
 					<c:choose>
 						<c:when test="${not empty comments}">
 							<c:forEach items="${comments}" var="comment">
 								<div
-									class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1">
+									class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
 									<div class="flex items-center justify-between">
-										<div class="flex items-center gap-1.5">
-											<div
-												class="w-5 h-5 rounded-full bg-slate-800 text-white font-mono text-[10px] flex items-center justify-center font-bold uppercase">
-												<%-- <c:choose>
-                                                    <c:when test="${not empty comment.authorAvatar}">
-                                                        ${comment.authorAvatar}
-                                                    </c:when>
-                                                    <c:when test="${not empty comment.nickname}">
-                                                        ${fn:substring(comment.nickname, 0, 1)}
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${fn:substring(comment.userId, 0, 1)}
-                                                    </c:otherwise>
-                                                </c:choose> --%>
-												${fn:substring(comment.userId, 0, 1)}
-											</div>
-											<%-- <span class="font-bold text-slate-800"> ${empty comment.nickname ? comment.userId : comment.nickname}
-											</span> --%>
-										</div>
-										<div class="flex items-center gap-2">
-											<span class="text-[10px] text-slate-400 font-mono"> <%-- <c:choose>
-													<c:when test="${not empty comment.timeAgo}">
-                                                        ${comment.timeAgo}
-                                                    </c:when>
+										<div class="flex items-center gap-2 flex-wrap">
+											<!-- 댓글 작성자 프로필 이미지 또는 이니셜 원형 -->
+											<c:choose>
+												<c:when test="${not empty comment.profileImg}">
+													<img src="${comment.profileImg}" alt="프로필"
+														class="w-6 h-6 rounded-full object-cover border border-slate-300 shadow-2xs" />
+												</c:when>
+												<c:otherwise>
+													<div
+														class="w-6 h-6 rounded-full bg-slate-800 text-white font-mono text-[10px] flex items-center justify-center font-bold uppercase shadow-2xs">
+														<c:choose>
+															<c:when test="${not empty comment.nickname}">
+																${fn:substring(comment.nickname, 0, 1)}
+															</c:when>
+															<c:when test="${not empty comment.userId}">
+																${fn:substring(comment.userId, 0, 1)}
+															</c:when>
+															<c:otherwise>U</c:otherwise>
+														</c:choose>
+													</div>
+												</c:otherwise>
+											</c:choose>
+
+											<!-- 댓글 작성자 닉네임 -->
+											<span class="font-bold text-slate-800">
+												<c:choose>
+													<c:when test="${not empty comment.nickname}">
+														<c:out value="${comment.nickname}" />
+													</c:when>
 													<c:otherwise>
-                                                        ${comment.createdAt}
-                                                    </c:otherwise>
-												</c:choose> --%>
+														<c:out value="${comment.userId}" />
+													</c:otherwise>
+												</c:choose>
+											</span>
+
+											<!-- 댓글 작성자 레벨 (LV1~LV5) 뱃지 -->
+											<c:if test="${not empty comment.userLevel}">
+												<span class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
+													<c:out value="${comment.userLevel}" />
+												</span>
+											</c:if>
+
+											<!-- 댓글 작성자 스트릭(연속 기록) 뱃지 -->
+											<c:if test="${not empty comment.streakCount and comment.streakCount > 0}">
+												<span class="text-[10px] text-orange-600 bg-orange-50 px-1.5 py-0.2 rounded border border-orange-200 font-mono font-medium inline-flex items-center gap-0.5">
+													<i class="fa-solid fa-fire text-orange-500 text-[9px]"></i>
+													<span>${comment.streakCount}일</span>
+												</span>
+											</c:if>
+										</div>
+
+										<div class="flex items-center gap-2">
+											<!-- 작성 시간 -->
+											<span class="text-[10px] text-slate-400 font-mono">
+												<c:out value="${comment.createdAt}" />
 											</span>
 
 											<!-- 작성자 본인 댓글 삭제 폼 -->
@@ -673,7 +700,9 @@
 											</c:if>
 										</div>
 									</div>
-									<p class="text-slate-600 pl-6.5 leading-relaxed">
+
+									<!-- 댓글 본문 내용 -->
+									<p class="text-slate-600 pl-8 leading-relaxed">
 										<c:out value="${comment.content}" />
 									</p>
 								</div>

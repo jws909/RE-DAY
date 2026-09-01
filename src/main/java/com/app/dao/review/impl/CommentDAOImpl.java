@@ -66,5 +66,11 @@ public class CommentDAOImpl implements CommentDAO {
 		return result;
 	}
 
+	@Override
+	public List<CommentDTO> findCommentListForDetail(long reviewId) {
+		List<CommentDTO> commentList = sqlSessionTemplate.selectList("comment_mapper.findCommentListForDetail", reviewId);
+		return commentList;
+	}
+
 
 }

@@ -50,4 +50,22 @@
 		updated_at = CURRENT_TIMESTAMP
 		WHERE COMMENT_ID = #{commentId}
 	</update>
+	
+	<select id="findCommentListForDetail" resultType="CommentDTO" parameterType="long">
+		SELECT                                                                                             
+            c.COMMENT_ID,                                                                                  
+            c.REVIEW_ID,                                                                                   
+            c.USER_ID,                                                                                     
+            c.CONTENT,                                                                                     
+            TO_CHAR(c.CREATED_AT, 'YYYY-MM-DD HH24:MI') AS CREATED_AT,                                     
+            c.UPDATED_AT,                                                                                  
+            m.NICKNAME,                                                                                    
+            m.PROFILE_IMG,                                                                                 
+            m.USER_LEVEL,                                                                                  
+            m.STREAK_COUNT                                                                                 
+        FROM COMMENTS c                                                                                    
+        LEFT JOIN USERS m ON c.USER_ID = m.USER_ID                                                       
+        WHERE c.REVIEW_ID = #{reviewId}                                                                    
+        ORDER BY c.CREATED_AT ASC 
+	</select>
 </mapper>
