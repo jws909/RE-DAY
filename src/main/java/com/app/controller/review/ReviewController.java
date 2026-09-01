@@ -64,10 +64,12 @@ public class ReviewController {
 		
 		DailyReviewFormDTO review = reviewService.findReviewDetailByReviewId(reviewId);
 		
-		model.addAttribute("comments", commentService.findCommentListForDetail(reviewId));
-		model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
-		model.addAttribute("review", review);
-		model.addAttribute("subReviews", review.getSubReviews());
+		if(review != null) {
+			model.addAttribute("comments", commentService.findCommentListForDetail(reviewId));
+			model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
+			model.addAttribute("review", review);
+			model.addAttribute("subReviews", review.getSubReviews());
+		}
 		
 		return "detail/reviewDetail";
 	}

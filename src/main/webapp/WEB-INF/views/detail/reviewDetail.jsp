@@ -47,7 +47,7 @@
 					<p class="text-sm text-slate-500">요청하신 데일리 리뷰가 삭제되었거나 존재하지 않는
 						ID입니다.</p>
 					<div class="pt-2">
-						<a href="${pageContext.request.contextPath}/"
+						<a href="${pageContext.request.contextPath}/RE:DAY/mainpage"
 							class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-colors">
 							<i class="fa-solid fa-arrow-left text-xs"></i> <span>피드로
 								돌아가기</span>
