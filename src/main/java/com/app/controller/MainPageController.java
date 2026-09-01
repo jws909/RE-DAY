@@ -21,9 +21,4 @@ public class MainPageController {
 	public String my() {
 		return "mainpage/my";
 	}
-	
-	@GetMapping("/detailReview")
-	public String detailReview() {
-		return "mainpage/detailReview";
-	}
 }

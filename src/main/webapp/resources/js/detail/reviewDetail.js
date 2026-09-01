@@ -140,6 +140,17 @@ function fallbackCopyText(text) {
     document.body.removeChild(textArea);
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    var shareButton = document.querySelector('#shareButton');
+	console.log("찾아낸 공유 버튼:", shareButton);
+	console.log("찾아낸 공유 버튼:", shareButton);
+    if (shareButton) {
+        shareButton.addEventListener('click', function() {
+            copyCurrentUrl();
+        });
+    }
+});
+
 /**
  * 하단 플로팅 토스트 메시지 출력
  */

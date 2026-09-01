@@ -21,7 +21,7 @@
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 
 <!-- 리뷰 상세 전용 스타일시트 분리 -->
-<link href="<%=request.getContextPath()%>/css/reviewDetail.css"
+<link href="<%=request.getContextPath()%>/css/detail/reviewDetail.css"
 	rel="stylesheet">
 </head>
 <body
@@ -88,7 +88,7 @@
 					</form>
 
 					<!-- 공유하기 버튼 (클립보드 URL 복사) -->
-					<button type="button" id="shareButton" onclick="copyCurrentUrl()"
+					<button type="button" id="shareButton"
 						title="공유하기"
 						class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer text-xs flex items-center justify-center">
 						<i class="fa-solid fa-share-nodes text-xs"></i>
@@ -745,6 +745,6 @@
 	</div>
 
 	<!-- 리뷰 상세 전용 스크립트 분리 -->
-	<script src="<%=request.getContextPath()%>/js/reviewDetail.js"></script>
+	<script src="<%=request.getContextPath()%>/js/detail/reviewDetail.js"></script>
 </body>
 </html>
