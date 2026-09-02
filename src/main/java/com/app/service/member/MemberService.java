@@ -57,5 +57,7 @@ public interface MemberService {
     public MyPageStatsDTO getMyPageStats(
             String userId
     );
+    
+    public MemberDTO findUserInfoByUserId(String userId);
 
 }

@@ -100,4 +100,12 @@ public class MemberDAOImpl implements MemberDAO {
         );
     }
 
+
+	@Override
+	public MemberDTO findUserInfoByUserId(String userId) {
+
+		MemberDTO user = sqlSessionTemplate.selectOne("member_mapper.findUserInfoByUserId", userId);
+		return user;
+	}
+
 }

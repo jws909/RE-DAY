@@ -251,5 +251,10 @@
 
     </select>
 
+	<select id="findUserInfoByUserId" resultType="MemberDTO" parameterType="String">
+		SELECT *
+		FROM USERS
+		WHERE USER_ID = #{userId}
+	</select>
 
 </mapper>

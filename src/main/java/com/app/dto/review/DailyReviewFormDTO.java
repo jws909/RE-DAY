@@ -26,4 +26,5 @@ public class DailyReviewFormDTO {
     // 1:N 서브 리뷰 목록 바인딩
     private List<SubReviewDTO> subReviews;  // subReviews[0], subReviews[1]...
     private String subReviewsJson;          // subReviewsJson (JSON 보조 필드)
+    
 }

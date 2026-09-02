@@ -187,4 +187,12 @@ public class MemberServiceImpl implements MemberService {
                 );
     }
 
+
+	@Override
+	public MemberDTO findUserInfoByUserId(String userId) {
+
+		MemberDTO user = memberDAO.findUserInfoByUserId(userId);
+		return user;
+	}
+
 }

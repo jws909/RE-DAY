@@ -66,6 +66,9 @@ public class ReviewController {
 		DailyReviewFormDTO review = reviewService.findReviewDetailByReviewId(reviewId);
 		
 		if(review != null) {
+			MemberDTO user = memberService.findUserInfoByUserId(review.getUserId());
+			
+			model.addAttribute("user", user);
 			model.addAttribute("comments", commentService.findCommentListForDetail(reviewId));
 			model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
 			model.addAttribute("review", review);

@@ -53,5 +53,7 @@ public interface MemberDAO {
     public MyPageStatsDTO findMyPageStats(
             String userId
     );
+    
+    public MemberDTO findUserInfoByUserId(String userId);
 
 }
