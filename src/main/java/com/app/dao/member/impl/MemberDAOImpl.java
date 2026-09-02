@@ -12,63 +12,48 @@ import com.app.dto.member.MyPageStatsDTO;
 public class MemberDAOImpl implements MemberDAO {
 
     @Autowired
-    SqlSessionTemplate sqlSession;
-
+    SqlSessionTemplate sqlSessionTemplate;
 
     // 로그인
     @Override
-    public MemberDTO findMemberByEmailAndPassword(
-            MemberDTO memberDTO) {
-
-        return sqlSession.selectOne(
+    public MemberDTO findMemberByEmailAndPassword(MemberDTO memberDTO) {
+        return sqlSessionTemplate.selectOne(
                 "member_mapper.findMemberByEmailAndPassword",
                 memberDTO
         );
     }
 
-
     // 이메일 중복 확인
     @Override
-    public MemberDTO findMemberByEmail(
-            String email) {
-
-        return sqlSession.selectOne(
+    public MemberDTO findMemberByEmail(String email) {
+        return sqlSessionTemplate.selectOne(
                 "member_mapper.findMemberByEmail",
                 email
         );
     }
 
-
     // 회원가입
     @Override
-    public int insertMember(
-            MemberDTO memberDTO) {
-
-        return sqlSession.insert(
+    public int insertMember(MemberDTO memberDTO) {
+        return sqlSessionTemplate.insert(
                 "member_mapper.insertMember",
                 memberDTO
         );
     }
 
-
     // 프로필 이미지 변경
     @Override
-    public int updateProfileImg(
-            MemberDTO memberDTO) {
-
-        return sqlSession.update(
+    public int updateProfileImg(MemberDTO memberDTO) {
+        return sqlSessionTemplate.update(
                 "member_mapper.updateProfileImg",
                 memberDTO
         );
     }
 
-
     // MY 페이지 통계
     @Override
-    public MyPageStatsDTO findMyPageStats(
-            String userId) {
-
-        return sqlSession.selectOne(
+    public MyPageStatsDTO findMyPageStats(String userId) {
+        return sqlSessionTemplate.selectOne(
                 "member_mapper.findMyPageStats",
                 userId
         );
