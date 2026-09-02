@@ -115,7 +115,7 @@
 								<i class="fa-solid fa-pen text-xs mr-1 text-slate-500"></i>수정
 							</a>
 							<!-- 삭제 폼 -->
-							<form action="${pageContext.request.contextPath}/review/delete"
+							<form action="${pageContext.request.contextPath}/RE:DAY/review/delete/${review.reviewId}"
 								method="post" class="inline m-0"
 								onsubmit="return confirm('정말 이 하루 리뷰를 삭제하시겠습니까?\n종속된 모든 서브 리뷰도 함께 삭제됩니다.');">
 								<input type="hidden" name="reviewId" value="${review.reviewId}" />
@@ -738,11 +738,9 @@
 							<div class="flex gap-2">
 								<input type="text" name="content" id="commentInput" required
 									maxlength="500" placeholder="이 날의 하루에 응원의 한마디나 질문을 남겨보세요..."
-									class="flex-1 px-3 py-2 text-xs border border-dashed border-slate-300 rounded-lg   
-  bg-slate-50 focus:outline-none focus:border-slate-700 transition-colors font-sans" />
+									class="flex-1 px-3 py-2 text-xs border border-dashed border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:border-slate-700 transition-colors font-sans" />
 								<button type="submit" id="commentSubmitBtn"
-									class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs     
-  font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
+									class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
 									<i class="fa-solid fa-paper-plane text-[10px]"></i> <span>등록</span>
 								</button>
 							</div>
@@ -778,8 +776,7 @@
 				</div>
 				<a href="${pageContext.request.contextPath}/RE:DAY/review/write"
 					class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1.5 shrink-0 transition-colors">
-					<i class="fa-solid fa-circle-plus text-xs"></i> <span>오늘 리뷰
-						작성하기</span>
+					<i class="fa-solid fa-circle-plus text-xs"></i> <span>오늘 리뷰작성하기</span>
 				</a>
 			</div>
 
