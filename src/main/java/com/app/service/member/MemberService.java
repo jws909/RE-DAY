@@ -5,7 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.dto.member.MemberDTO;
 import com.app.dto.member.MyPageStatsDTO;
 
+
 public interface MemberService {
+
 
     // ========================================
     // 로그인
@@ -37,6 +39,15 @@ public interface MemberService {
     public String updateProfileImage(
             MemberDTO loginUser,
             MultipartFile profileImageFile
+    );
+
+
+    // ========================================
+    // 프로필 정보 수정
+    // 현재 단계에서는 닉네임 수정
+    // ========================================
+    public int updateProfile(
+            MemberDTO memberDTO
     );
 
 

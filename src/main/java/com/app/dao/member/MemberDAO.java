@@ -3,7 +3,9 @@ package com.app.dao.member;
 import com.app.dto.member.MemberDTO;
 import com.app.dto.member.MyPageStatsDTO;
 
+
 public interface MemberDAO {
+
 
     // ========================================
     // 로그인
@@ -33,6 +35,14 @@ public interface MemberDAO {
     // 프로필 이미지 변경
     // ========================================
     public int updateProfileImg(
+            MemberDTO memberDTO
+    );
+
+
+    // ========================================
+    // 프로필 정보 변경
+    // ========================================
+    public int updateProfile(
             MemberDTO memberDTO
     );
 

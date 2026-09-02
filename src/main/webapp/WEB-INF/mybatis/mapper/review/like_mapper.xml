@@ -1,89 +1,148 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE mapper PUBLIC
-		   "-//mybatis.org//DTD Mapper 3.0//EN" 
-		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="like_mapper">
 
-	<select id="checkExists" parameterType="LikeRequestDTO"
-		resultType="int">
-		SELECT COUNT(*) FROM LIKES
-		WHERE USER_ID = #{userId} AND
-		REVIEW_ID = #{reviewId}
-	</select>
 
-	<insert id="insert" parameterType="LikeRequestDTO">
-		<!-- order="BEFORE"로 시퀀스 값을 먼저 채번하여 DTO의 likeId에 세팅 -->
-		<selectKey keyProperty="likeId" resultType="long"
-			order="BEFORE">
-			SELECT SEQ_LIKES.NEXTVAL FROM DUAL
-		</selectKey>
+    <!-- =========================================
+         좋아요 존재 여부 확인
+    ========================================== -->
+    <select
+        id="checkExists"
+        parameterType="LikeRequestDTO"
+        resultType="int">
 
-		INSERT INTO LIKES (
-		LIKE_ID,
-		USER_ID,
-		REVIEW_ID,
-		CREATED_AT
-		)
-		VALUES (
-		#{likeId},
-		#{userId},
-		#{reviewId},
-		CURRENT_TIMESTAMP
-		)
-	</insert>
+        SELECT COUNT(*)
+        FROM LIKES
+        WHERE USER_ID = #{userId}
+          AND REVIEW_ID = #{reviewId}
 
-	<delete id="delete" parameterType="LikeRequestDTO">
+    </select>
 
-		DELETE FROM LIKES WHERE
-		USER_ID = #{userId}
-		AND REVIEW_ID = #{reviewId}
-	</delete>
 
-	<select id="countLikesByUserId" parameterType="String"
-		resultType="int">
+    <!-- =========================================
+         좋아요 등록
+    ========================================== -->
+    <insert
+        id="insert"
+        parameterType="LikeRequestDTO">
 
-		SELECT COUNT(*)
-		FROM LIKES
-		WHERE USER_ID = #{userId}
+        <!--
+            order="BEFORE"로 시퀀스 값을 먼저 채번하여
+            DTO의 likeId에 세팅
+        -->
+        <selectKey
+            keyProperty="likeId"
+            resultType="long"
+            order="BEFORE">
 
-	</select>
+            SELECT SEQ_LIKES.NEXTVAL
+            FROM DUAL
 
-	<!-- =========================================
-     MY 페이지 - 내가 좋아요한 리뷰 목록
-========================================= -->
-<select id="findLikedReviewsByUserId"
+        </selectKey>
+
+        INSERT INTO LIKES
+        (
+            LIKE_ID,
+            USER_ID,
+            REVIEW_ID,
+            CREATED_AT
+        )
+        VALUES
+        (
+            #{likeId},
+            #{userId},
+            #{reviewId},
+            CURRENT_TIMESTAMP
+        )
+
+    </insert>
+
+
+    <!-- =========================================
+         좋아요 취소
+    ========================================== -->
+    <delete
+        id="delete"
+        parameterType="LikeRequestDTO">
+
+        DELETE FROM LIKES
+        WHERE USER_ID = #{userId}
+          AND REVIEW_ID = #{reviewId}
+
+    </delete>
+
+
+    <!-- =========================================
+         MY 페이지 - 내가 좋아요한 리뷰 개수
+    ========================================== -->
+    <select
+        id="countLikesByUserId"
+        parameterType="String"
+        resultType="int">
+
+        SELECT COUNT(*)
+        FROM LIKES
+        WHERE USER_ID = #{userId}
+
+    </select>
+
+
+    <!-- =========================================
+         MY 페이지 - 내가 좋아요한 리뷰 목록
+    ========================================== -->
+    <select
+        id="findLikedReviewsByUserId"
         parameterType="String"
         resultType="DailyReviewFormDTO">
 
-    SELECT
-        d.REVIEW_ID,
-        d.USER_ID,
+        SELECT
+            d.REVIEW_ID,
+            d.USER_ID,
 
-        /* 좋아요한 리뷰 작성자 닉네임 */
-        m.NICKNAME AS AUTHOR_NICKNAME,
+            /* 좋아요한 리뷰 작성자 닉네임 */
+            m.NICKNAME AS AUTHOR_NICKNAME,
 
-        /* 좋아요한 리뷰 작성자 프로필 이미지 */
-        m.PROFILE_IMG AS AUTHOR_PROFILE_IMG,
+            /* 좋아요한 리뷰 작성자 프로필 이미지 */
+            m.PROFILE_IMG AS AUTHOR_PROFILE_IMG,
 
-        d.REVIEW_DATE,
-        d.TOTAL_RATING,
-        d.MOOD_TAGS,
-        d.OVERALL_COMMENT,
-        d.MAIN_IMAGE_URL
+            d.REVIEW_DATE,
+            d.TOTAL_RATING,
+            d.MOOD_TAGS,
+            d.OVERALL_COMMENT,
+            d.MAIN_IMAGE_URL
 
-    FROM LIKES l
+        FROM LIKES l
 
-    JOIN DAILY_REVIEWS d
-        ON l.REVIEW_ID = d.REVIEW_ID
+        JOIN DAILY_REVIEWS d
+            ON l.REVIEW_ID = d.REVIEW_ID
 
-    /* 좋아요한 리뷰 작성자 회원 정보 연결 */
-    JOIN USERS m
-        ON d.USER_ID = m.USER_ID
+        /* 좋아요한 리뷰 작성자 회원 정보 연결 */
+        JOIN USERS m
+            ON d.USER_ID = m.USER_ID
 
-    WHERE l.USER_ID = #{userId}
+        WHERE l.USER_ID = #{userId}
 
-    ORDER BY d.REVIEW_DATE DESC
+        ORDER BY d.REVIEW_DATE DESC
 
-</select>
+    </select>
+
+
+    <!-- =========================================
+         MY 페이지 - 데일리 리뷰 삭제용
+         해당 리뷰에 달린 좋아요 전체 삭제
+    ========================================== -->
+    <delete
+        id="deleteLikesByReviewId"
+        parameterType="long">
+
+        DELETE FROM LIKES
+        WHERE REVIEW_ID = #{reviewId}
+
+    </delete>
+
+
 </mapper>

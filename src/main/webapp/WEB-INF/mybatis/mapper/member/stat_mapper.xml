@@ -1,37 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE mapper PUBLIC
-		   "-//mybatis.org//DTD Mapper 3.0//EN" 
-		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="stat_mapper">
 
-	<select id="dailyCount" parameterType="MyProfileStatsDTO"
-		resultType="long">
-		SELECT COUNT(*) FROM DAILY_REVIEWS
-		WHERE USER_ID = #{userId}
-	</select>
+    <!-- =========================================================
+         MY 페이지 통계
+         - 조회 조건으로 회원 USER_ID를 전달받음
+         ========================================================= -->
 
-	<select id="avgTotalRating" parameterType="MyProfileStatsDTO"
-		resultType="Double">
-		SELECT AVG(TOTAL_RATING) FROM DAILY_REVIEWS
-		WHERE USER_ID = #{userId}
-	</select>
+    <!-- 데일리 리뷰 작성 개수 -->
+    <select id="dailyCount"
+            parameterType="String"
+            resultType="long">
+        SELECT COUNT(*)
+        FROM DAILY_REVIEWS
+        WHERE USER_ID = #{userId}
+    </select>
 
-	<select id="subCount" parameterType="MyProfileStatsDTO"
-		resultType="long">
-		SELECT COUNT(*)
-		FROM DAILY_REVIEWS D JOIN SUB_REVIEWS S
-		ON D.REVIEW_ID = S.REVIEW_ID
-		WHERE D.USER_ID = #{userId}
-	</select>
+    <!-- 데일리 리뷰 평균 평점 -->
+    <select id="avgTotalRating"
+            parameterType="String"
+            resultType="Double">
+        SELECT AVG(TOTAL_RATING)
+        FROM DAILY_REVIEWS
+        WHERE USER_ID = #{userId}
+    </select>
 
-	<select id="certifiedRate" parameterType="MyProfileStatsDTO"
-		resultType="double">
-		SELECT
-		ROUND((SUM(CASE WHEN S.is_certified = 'Y' THEN 1 ELSE 0 END) * 100.0) / NULLIF(COUNT(*), 0),2)
-		FROM DAILY_REVIEWS D
-		JOIN SUB_REVIEWS S 
-		ON D.review_id = S.review_id
-		WHERE D.user_id = #{userId}
-	</select>
+    <!-- 작성한 서브 리뷰 개수 -->
+    <select id="subCount"
+            parameterType="String"
+            resultType="long">
+        SELECT COUNT(*)
+        FROM DAILY_REVIEWS D
+        JOIN SUB_REVIEWS S
+          ON D.REVIEW_ID = S.REVIEW_ID
+        WHERE D.USER_ID = #{userId}
+    </select>
+
+    <!-- 서브 리뷰 인증률 -->
+    <select id="certifiedRate"
+            parameterType="String"
+            resultType="double">
+        SELECT
+            ROUND(
+                (SUM(CASE
+                    WHEN S.IS_CERTIFIED = 'Y' THEN 1
+                    ELSE 0
+                END) * 100.0)
+                / NULLIF(COUNT(*), 0),
+                2
+            )
+        FROM DAILY_REVIEWS D
+        JOIN SUB_REVIEWS S
+          ON D.REVIEW_ID = S.REVIEW_ID
+        WHERE D.USER_ID = #{userId}
+    </select>
+
 </mapper>
