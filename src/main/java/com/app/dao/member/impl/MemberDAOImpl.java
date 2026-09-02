@@ -14,8 +14,13 @@ public class MemberDAOImpl implements MemberDAO {
     @Autowired
     SqlSessionTemplate sqlSessionTemplate;
 
+
+    // ========================================
+    // 로그인 회원 조회
+    // ========================================
     @Override
-    public MemberDTO findMemberByEmailAndPassword(MemberDTO memberDTO) {
+    public MemberDTO findMemberByEmailAndPassword(
+            MemberDTO memberDTO) {
 
         return sqlSessionTemplate.selectOne(
                 "member_mapper.findMemberByEmailAndPassword",
@@ -23,8 +28,13 @@ public class MemberDAOImpl implements MemberDAO {
         );
     }
 
+
+    // ========================================
+    // 프로필 이미지 변경
+    // ========================================
     @Override
-    public int updateProfileImg(MemberDTO memberDTO) {
+    public int updateProfileImg(
+            MemberDTO memberDTO) {
 
         return sqlSessionTemplate.update(
                 "member_mapper.updateProfileImg",
@@ -32,8 +42,27 @@ public class MemberDAOImpl implements MemberDAO {
         );
     }
 
+
+    // ========================================
+    // 프로필 정보 변경
+    // ========================================
     @Override
-    public MyPageStatsDTO findMyPageStats(String userId) {
+    public int updateProfile(
+            MemberDTO memberDTO) {
+
+        return sqlSessionTemplate.update(
+                "member_mapper.updateProfile",
+                memberDTO
+        );
+    }
+
+
+    // ========================================
+    // MY 페이지 통계 조회
+    // ========================================
+    @Override
+    public MyPageStatsDTO findMyPageStats(
+            String userId) {
 
         return sqlSessionTemplate.selectOne(
                 "member_mapper.findMyPageStats",

@@ -12,26 +12,19 @@
                type="DailyReviewFormDTO">
 
         <!-- 메인 데일리 리뷰 컬럼 매핑 -->
-        <id property="reviewId"
-            column="REVIEW_ID"/>
+        <id property="reviewId" column="REVIEW_ID" />
 
-        <result property="userId"
-                column="USER_ID"/>
+        <result property="userId" column="USER_ID" />
 
-        <result property="reviewDate"
-                column="REVIEW_DATE"/>
+        <result property="reviewDate" column="REVIEW_DATE" />
 
-        <result property="totalRating"
-                column="TOTAL_RATING"/>
+        <result property="totalRating" column="TOTAL_RATING" />
 
-        <result property="moodTags"
-                column="MOOD_TAGS"/>
+        <result property="moodTags" column="MOOD_TAGS" />
 
-        <result property="overallComment"
-                column="OVERALL_COMMENT"/>
+        <result property="overallComment" column="OVERALL_COMMENT" />
 
-        <result property="mainImageUrl"
-                column="MAIN_IMAGE_URL"/>
+        <result property="mainImageUrl" column="MAIN_IMAGE_URL" />
 
 
         <!-- 1:N 서브 리뷰 리스트 컬렉션 매핑 -->
@@ -39,32 +32,23 @@
                     ofType="SubReviewDTO"
                     javaType="java.util.ArrayList">
 
-            <id property="subReviewId"
-                column="SUB_REVIEW_ID"/>
+            <id property="subReviewId" column="SUB_REVIEW_ID" />
 
-            <result property="reviewId"
-                    column="SUB_REVIEW_FK"/>
+            <result property="reviewId" column="SUB_REVIEW_FK" />
 
-            <result property="category"
-                    column="CATEGORY"/>
+            <result property="category" column="CATEGORY" />
 
-            <result property="itemName"
-                    column="ITEM_NAME"/>
+            <result property="itemName" column="ITEM_NAME" />
 
-            <result property="subRating"
-                    column="SUB_RATING"/>
+            <result property="subRating" column="SUB_RATING" />
 
-            <result property="subComment"
-                    column="SUB_COMMENT"/>
+            <result property="subComment" column="SUB_COMMENT" />
 
-            <result property="locationBrand"
-                    column="LOCATION_BRAND"/>
+            <result property="locationBrand" column="LOCATION_BRAND" />
 
-            <result property="isCertified"
-                    column="IS_CERTIFIED"/>
+            <result property="isCertified" column="IS_CERTIFIED" />
 
-            <result property="tags"
-                    column="TAGS"/>
+            <result property="tags" column="TAGS" />
 
         </collection>
 
@@ -103,7 +87,7 @@
         FROM DAILY_REVIEWS d
 
         LEFT JOIN SUB_REVIEWS s
-          ON d.REVIEW_ID = s.REVIEW_ID
+            ON d.REVIEW_ID = s.REVIEW_ID
 
         WHERE d.REVIEW_ID = #{reviewId}
 
@@ -260,10 +244,11 @@
         ORDER BY SUB_REVIEW_ID ASC
 
     </select>
-    
-     <!-- =========================================
+
+
+    <!-- =========================================
          MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
-    ========================================= -->
+    ========================================== -->
     <select id="findSubReviewsByUserId"
             parameterType="String"
             resultType="SubReviewDTO">
@@ -271,6 +256,10 @@
         SELECT
             SR.SUB_REVIEW_ID,
             SR.REVIEW_ID,
+
+            /* 부모 데일리 리뷰 작성 날짜 */
+            DR.REVIEW_DATE AS REVIEW_DATE,
+
             SR.CATEGORY,
             SR.ITEM_NAME,
             SR.SUB_RATING,
@@ -291,5 +280,42 @@
             SR.SUB_REVIEW_ID ASC
 
     </select>
+
+
+    <!-- =========================================
+         MY 페이지 - 데일리 리뷰 삭제용
+         해당 리뷰의 서브 리뷰 전체 삭제
+    ========================================== -->
+    <delete id="deleteSubReviewsByReviewId"
+            parameterType="long">
+
+        DELETE FROM SUB_REVIEWS
+        WHERE REVIEW_ID = #{reviewId}
+
+    </delete>
+    
+    <!-- =========================================
+     MY 페이지 - 데일리 리뷰 삭제용
+     해당 리뷰의 이미지 정보 삭제
+========================================== -->
+<delete id="deleteDailyReviewImageByReviewId"
+        parameterType="long">
+
+    DELETE FROM DAILY_REVIEW_IMAGE
+    WHERE REVIEW_ID = #{reviewId}
+
+</delete>
+
+
+    <!-- =========================================
+         MY 페이지 - 데일리 리뷰 삭제
+    ========================================== -->
+    <delete id="deleteDailyReviewByReviewId"
+            parameterType="long">
+
+        DELETE FROM DAILY_REVIEWS
+        WHERE REVIEW_ID = #{reviewId}
+
+    </delete>
 
 </mapper>

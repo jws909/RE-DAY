@@ -5,12 +5,32 @@ import com.app.dto.member.MyPageStatsDTO;
 
 public interface MemberDAO {
 
-    public MemberDTO findMemberByEmailAndPassword(MemberDTO memberDTO);
+    public MemberDTO findMemberByEmailAndPassword(
+            MemberDTO memberDTO
+    );
 
+
+    // ========================================
     // 프로필 이미지 변경
-    public int updateProfileImg(MemberDTO memberDTO);
+    // ========================================
+    public int updateProfileImg(
+            MemberDTO memberDTO
+    );
 
+
+    // ========================================
+    // 프로필 정보 변경
+    // ========================================
+    public int updateProfile(
+            MemberDTO memberDTO
+    );
+
+
+    // ========================================
     // MY 페이지 통계 조회
-    public MyPageStatsDTO findMyPageStats(String userId);
+    // ========================================
+    public MyPageStatsDTO findMyPageStats(
+            String userId
+    );
 
 }

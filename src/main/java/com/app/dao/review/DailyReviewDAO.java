@@ -28,4 +28,15 @@ public interface DailyReviewDAO {
             String userId
     );
 
+    // MY 페이지 - 데일리 리뷰 삭제
+    public int deleteDailyReviewByReviewId(
+            long reviewId
+    );
+    /* =========================================
+    MY 페이지 - 데일리 리뷰 삭제용
+    해당 리뷰의 이미지 정보 삭제
+ ========================================= */
+    public int deleteDailyReviewImageByReviewId(
+         long reviewId
+    );
 }

@@ -7,125 +7,174 @@
 <mapper namespace="member_mapper">
 
 
-	<!-- 로그인 -->
-	<select id="findMemberByEmailAndPassword"
-		parameterType="MemberDTO" resultType="MemberDTO">
+    <!-- =========================================
+         로그인
+    ========================================== -->
+    <select id="findMemberByEmailAndPassword"
+            parameterType="MemberDTO"
+            resultType="MemberDTO">
 
-		SELECT
-		USER_ID,
-		EMAIL,
-		PASSWORD,
-		NICKNAME,
-		PROFILE_IMG,
-		PROVIDER,
-		CHEER_COUNT,
-		USER_LEVEL,
-		INTERESTS,
-		IS_PUBLIC,
-		STREAK_COUNT
-		FROM USERS
-		WHERE EMAIL = #{email}
-		AND PASSWORD = #{password}
+        SELECT
+            USER_ID,
+            EMAIL,
+            PASSWORD,
+            NICKNAME,
+            PROFILE_IMG,
+            PROVIDER,
+            CHEER_COUNT,
+            USER_LEVEL,
+            INTERESTS,
+            IS_PUBLIC,
+            STREAK_COUNT
+        FROM USERS
+        WHERE EMAIL = #{email}
+          AND PASSWORD = #{password}
 
-	</select>
+    </select>
 
 
-	<!-- 프로필 이미지 변경 -->
-	<update id="updateProfileImg" parameterType="MemberDTO">
+    <!-- =========================================
+         프로필 이미지 변경
+    ========================================== -->
+    <update id="updateProfileImg"
+            parameterType="MemberDTO">
 
-		UPDATE USERS
+        UPDATE USERS
+        SET PROFILE_IMG = #{profileImg}
+        WHERE USER_ID = #{userId}
 
-		SET PROFILE_IMG = #{profileImg}
+    </update>
 
-		WHERE USER_ID = #{userId}
 
-	</update>
+    <!-- =========================================
+         프로필 정보 변경
+         현재 단계에서는 닉네임 수정
+    ========================================== -->
+    <update id="updateProfile"
+            parameterType="MemberDTO">
 
-	<!-- MY 페이지 통계 조회 -->
-	<select id="findMyPageStats" parameterType="String"
-		resultType="MyPageStatsDTO">
+        UPDATE USERS
+        SET NICKNAME = #{nickname}
+        WHERE USER_ID = #{userId}
 
-		SELECT
-        (
-            SELECT COUNT(*)
-            FROM DAILY_REVIEWS
-            WHERE USER_ID = #{userId}
-        ) AS DAILY_REVIEW_COUNT,
+    </update>
 
-        (
-            SELECT NVL(ROUND(AVG(TOTAL_RATING), 1), 0)
-            FROM DAILY_REVIEWS
-            WHERE USER_ID = #{userId}
-        ) AS AVERAGE_RATING,
 
-        (
-            SELECT COUNT(*)
-            FROM SUB_REVIEWS SR
-            JOIN DAILY_REVIEWS DR
-              ON SR.REVIEW_ID = DR.REVIEW_ID
-            WHERE DR.USER_ID = #{userId}
-        ) AS SUB_REVIEW_COUNT,
+    <!-- =========================================
+         MY 페이지 통계 조회
+    ========================================== -->
+    <select id="findMyPageStats"
+            parameterType="String"
+            resultType="MyPageStatsDTO">
 
-        (
-            SELECT
-                NVL(
+        SELECT
+
+            /* 총 데일리 기록 수 */
+            (
+                SELECT COUNT(*)
+                FROM DAILY_REVIEWS
+                WHERE USER_ID = #{userId}
+            ) AS DAILY_REVIEW_COUNT,
+
+
+            /* 평균 하루 평점 */
+            (
+                SELECT NVL(
                     ROUND(
-                        SUM(
-                            CASE
-                                WHEN SR.IS_CERTIFIED = 'Y'
-                                THEN 1
-                                ELSE 0
-                            END
-                        )
-                        / NULLIF(COUNT(*), 0)
-                        * 100
-                    , 1)
-                , 0)
-            FROM SUB_REVIEWS SR
-            JOIN DAILY_REVIEWS DR
-              ON SR.REVIEW_ID = DR.REVIEW_ID
-            WHERE DR.USER_ID = #{userId}
-        ) AS CERTIFICATION_RATE,
+                        AVG(TOTAL_RATING),
+                        1
+                    ),
+                    0
+                )
+                FROM DAILY_REVIEWS
+                WHERE USER_ID = #{userId}
+            ) AS AVERAGE_RATING,
 
 
-        (
-            SELECT COUNT(*)
-            FROM SUB_REVIEWS SR
-            JOIN DAILY_REVIEWS DR
-              ON SR.REVIEW_ID = DR.REVIEW_ID
-            WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = 'place'
-        ) AS PLACE_COUNT,
+            /* 총 서브 리뷰 수 */
+            (
+                SELECT COUNT(*)
+                FROM SUB_REVIEWS SR
+                JOIN DAILY_REVIEWS DR
+                  ON SR.REVIEW_ID = DR.REVIEW_ID
+                WHERE DR.USER_ID = #{userId}
+            ) AS SUB_REVIEW_COUNT,
 
-        (
-            SELECT COUNT(*)
-            FROM SUB_REVIEWS SR
-            JOIN DAILY_REVIEWS DR
-              ON SR.REVIEW_ID = DR.REVIEW_ID
-            WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = 'item'
-        ) AS ITEM_COUNT,
 
-        (
-            SELECT COUNT(*)
-            FROM SUB_REVIEWS SR
-            JOIN DAILY_REVIEWS DR
-              ON SR.REVIEW_ID = DR.REVIEW_ID
-            WHERE DR.USER_ID = #{userId}
-             AND SR.CATEGORY = 'transport'
-        ) AS TRANSPORT_COUNT,
+            /* 내돈내산 인증률 */
+            (
+                SELECT
+                    NVL(
+                        ROUND(
+                            SUM(
+                                CASE
+                                    WHEN SR.IS_CERTIFIED = 'Y'
+                                    THEN 1
+                                    ELSE 0
+                                END
+                            )
+                            / NULLIF(
+                                COUNT(*),
+                                0
+                            )
+                            * 100,
+                            1
+                        ),
+                        0
+                    )
+                FROM SUB_REVIEWS SR
+                JOIN DAILY_REVIEWS DR
+                  ON SR.REVIEW_ID = DR.REVIEW_ID
+                WHERE DR.USER_ID = #{userId}
+            ) AS CERTIFICATION_RATE,
 
-        (
-            SELECT COUNT(*)
-            FROM SUB_REVIEWS SR
-            JOIN DAILY_REVIEWS DR
-              ON SR.REVIEW_ID = DR.REVIEW_ID
-            WHERE DR.USER_ID = #{userId}
-              AND SR.CATEGORY = 'content'
-        ) AS CONTENT_COUNT
 
-    FROM DUAL
+            /* 장소 카테고리 수 */
+            (
+                SELECT COUNT(*)
+                FROM SUB_REVIEWS SR
+                JOIN DAILY_REVIEWS DR
+                  ON SR.REVIEW_ID = DR.REVIEW_ID
+                WHERE DR.USER_ID = #{userId}
+                  AND SR.CATEGORY = 'place'
+            ) AS PLACE_COUNT,
 
-</select>
+
+            /* 아이템 카테고리 수 */
+            (
+                SELECT COUNT(*)
+                FROM SUB_REVIEWS SR
+                JOIN DAILY_REVIEWS DR
+                  ON SR.REVIEW_ID = DR.REVIEW_ID
+                WHERE DR.USER_ID = #{userId}
+                  AND SR.CATEGORY = 'item'
+            ) AS ITEM_COUNT,
+
+
+            /* 이동수단 카테고리 수 */
+            (
+                SELECT COUNT(*)
+                FROM SUB_REVIEWS SR
+                JOIN DAILY_REVIEWS DR
+                  ON SR.REVIEW_ID = DR.REVIEW_ID
+                WHERE DR.USER_ID = #{userId}
+                  AND SR.CATEGORY = 'transport'
+            ) AS TRANSPORT_COUNT,
+
+
+            /* 콘텐츠 카테고리 수 */
+            (
+                SELECT COUNT(*)
+                FROM SUB_REVIEWS SR
+                JOIN DAILY_REVIEWS DR
+                  ON SR.REVIEW_ID = DR.REVIEW_ID
+                WHERE DR.USER_ID = #{userId}
+                  AND SR.CATEGORY = 'content'
+            ) AS CONTENT_COUNT
+
+        FROM DUAL
+
+    </select>
+
 
 </mapper>

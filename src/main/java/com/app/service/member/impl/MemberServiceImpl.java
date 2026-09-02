@@ -10,9 +10,9 @@ import com.app.dao.file.FileDAO;
 import com.app.dao.member.MemberDAO;
 import com.app.dto.file.FileInfo;
 import com.app.dto.member.MemberDTO;
+import com.app.dto.member.MyPageStatsDTO;
 import com.app.service.member.MemberService;
 import com.app.util.FileManager;
-import com.app.dto.member.MyPageStatsDTO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -25,13 +25,22 @@ public class MemberServiceImpl implements MemberService {
     FileDAO fileDAO;
 
 
+    // ========================================
+    // 로그인
+    // ========================================
     @Override
-    public MemberDTO login(MemberDTO memberDTO) {
+    public MemberDTO login(
+            MemberDTO memberDTO) {
 
-        return memberDAO.findMemberByEmailAndPassword(memberDTO);
+        return memberDAO.findMemberByEmailAndPassword(
+                memberDTO
+        );
     }
 
 
+    // ========================================
+    // 프로필 이미지 저장
+    // ========================================
     @Override
     public String updateProfileImage(
             MemberDTO loginUser,
@@ -49,7 +58,9 @@ public class MemberServiceImpl implements MemberService {
 
             // 2. FILE_INFO 테이블에 파일 정보 저장
             int fileResult =
-                    fileDAO.saveFileInfo(fileInfo);
+                    fileDAO.saveFileInfo(
+                            fileInfo
+                    );
 
 
             if (fileResult == 0) {
@@ -71,12 +82,16 @@ public class MemberServiceImpl implements MemberService {
 
 
             // 4. MemberDTO에 새 이미지 URL 입력
-            loginUser.setProfileImg(profileImg);
+            loginUser.setProfileImg(
+                    profileImg
+            );
 
 
             // 5. USERS 테이블 PROFILE_IMG 변경
             int memberResult =
-                    memberDAO.updateProfileImg(loginUser);
+                    memberDAO.updateProfileImg(
+                            loginUser
+                    );
 
 
             if (memberResult == 0) {
@@ -91,7 +106,9 @@ public class MemberServiceImpl implements MemberService {
             return profileImg;
 
 
-        } catch (IllegalStateException | IOException e) {
+        } catch (
+                IllegalStateException
+                | IOException e) {
 
             e.printStackTrace();
 
@@ -102,12 +119,35 @@ public class MemberServiceImpl implements MemberService {
         }
 
     }
+
+
+    // ========================================
+    // 프로필 정보 수정
+    // 현재 단계에서는 닉네임 수정
+    // ========================================
     @Override
-    public MyPageStatsDTO getMyPageStats(String userId) {
+    public int updateProfile(
+            MemberDTO memberDTO) {
+
+        return memberDAO.updateProfile(
+                memberDTO
+        );
+    }
+
+
+    // ========================================
+    // MY 페이지 통계 조회
+    // ========================================
+    @Override
+    public MyPageStatsDTO getMyPageStats(
+            String userId) {
 
         MyPageStatsDTO stats =
-                memberDAO.findMyPageStats(userId);
+                memberDAO.findMyPageStats(
+                        userId
+                );
 
         return stats;
     }
+
 }
