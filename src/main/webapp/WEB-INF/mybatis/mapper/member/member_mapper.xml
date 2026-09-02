@@ -7,329 +7,488 @@
 <mapper namespace="member_mapper">
 
 
-    <!-- ========================================
-         이메일 중복 확인
-    ========================================= -->
-    <select
-        id="findMemberByEmail"
-        parameterType="String"
-        resultType="MemberDTO">
+	<!-- ======================================== 이메일 중복 확인 ========================================= -->
+	<select id="findMemberByEmail" parameterType="String"
+		resultType="MemberDTO">
 
-        SELECT
-            USER_ID,
-            EMAIL,
-            PASSWORD,
-            NICKNAME,
-            PROFILE_IMG,
-            PROVIDER,
-            CHEER_COUNT,
-            USER_LEVEL,
-            INTERESTS,
-            IS_PUBLIC,
-            STREAK_COUNT
-        FROM USERS
-        WHERE EMAIL = #{value}
+		SELECT
+		USER_ID,
+		EMAIL,
+		PASSWORD,
+		NICKNAME,
+		PROFILE_IMG,
+		PROVIDER,
+		CHEER_COUNT,
+		USER_LEVEL,
+		INTERESTS,
+		IS_PUBLIC,
+		STREAK_COUNT
+		FROM
+		USERS
+		WHERE EMAIL = #{value}
 
-    </select>
+	</select>
 
 
-    <!-- ========================================
-         회원가입
-    ========================================= -->
-    <insert
-        id="insertMember"
-        parameterType="MemberDTO">
+	<!-- ======================================== 회원가입 ========================================= -->
+	<insert id="insertMember" parameterType="MemberDTO">
 
-        INSERT INTO USERS
-        (
-            USER_ID,
-            EMAIL,
-            PASSWORD,
-            NICKNAME,
-            INTERESTS
-        )
-        VALUES
-        (
-            RAWTOHEX(SYS_GUID()),
-            #{email},
-            #{password},
-            #{nickname},
-            #{interests}
-        )
+		INSERT INTO USERS
+		(
+		USER_ID,
+		EMAIL,
+		PASSWORD,
+		NICKNAME,
+		INTERESTS
+		)
+		VALUES
+		(
+		RAWTOHEX(SYS_GUID()),
+		#{email},
+		#{password},
+		#{nickname},
+		#{interests}
+		)
 
-    </insert>
+	</insert>
 
 
-    <!-- ========================================
-         로그인
-    ========================================= -->
-    <select
-        id="findMemberByEmailAndPassword"
-        parameterType="MemberDTO"
-        resultType="MemberDTO">
+	<!-- ======================================== 로그인 ========================================= -->
+	<select id="findMemberByEmailAndPassword"
+		parameterType="MemberDTO" resultType="MemberDTO">
 
-        SELECT
-            USER_ID,
-            EMAIL,
-            PASSWORD,
-            NICKNAME,
-            PROFILE_IMG,
-            PROVIDER,
-            CHEER_COUNT,
-            USER_LEVEL,
-            INTERESTS,
-            IS_PUBLIC,
-            STREAK_COUNT
-        FROM USERS
-        WHERE EMAIL = #{email}
-          AND PASSWORD = #{password}
+		SELECT
+		USER_ID,
+		EMAIL,
+		PASSWORD,
+		NICKNAME,
+		PROFILE_IMG,
+		PROVIDER,
+		CHEER_COUNT,
+		USER_LEVEL,
+		INTERESTS,
+		IS_PUBLIC,
+		STREAK_COUNT
+		FROM USERS
+		WHERE EMAIL = #{email}
+		AND PASSWORD =
+		#{password}
 
-    </select>
+	</select>
 
 
-    <!-- ========================================
-         프로필 이미지 변경
-    ========================================= -->
-    <update
-        id="updateProfileImg"
-        parameterType="MemberDTO">
+	<!-- ======================================== 프로필 이미지 변경 ========================================= -->
+	<update id="updateProfileImg" parameterType="MemberDTO">
 
-        UPDATE USERS
-        SET PROFILE_IMG = #{profileImg}
-        WHERE USER_ID = #{userId}
+		UPDATE USERS
+		SET
+		PROFILE_IMG = #{profileImg}
+		WHERE USER_ID = #{userId}
 
-    </update>
+	</update>
 
 
-    <!-- ========================================
-         프로필 정보 변경
-         현재 단계에서는 닉네임 수정
-    ========================================= -->
-    <update
-        id="updateProfile"
-        parameterType="MemberDTO">
+	<!-- ======================================== 프로필 정보 변경 현재 단계에서는 닉네임 수정 
+		========================================= -->
+	<update id="updateProfile" parameterType="MemberDTO">
 
-        UPDATE USERS
-        SET NICKNAME = #{nickname}
-        WHERE USER_ID = #{userId}
+		UPDATE USERS
+		SET
+		NICKNAME = #{nickname}
+		WHERE USER_ID = #{userId}
 
-    </update>
+	</update>
 
 
-    <!-- ========================================
-         MY 페이지 통계 조회
-    ========================================= -->
-    <select
-        id="findMyPageStats"
-        parameterType="String"
-        resultType="MyPageStatsDTO">
+	<!-- ======================================== MY 페이지 통계 조회 ========================================= -->
+	<select id="findMyPageStats" parameterType="String"
+		resultType="MyPageStatsDTO">
 
-        SELECT
+		SELECT
 
-            /* ========================================
-               총 데일리 기록 수
-            ========================================= */
-            (
-                SELECT COUNT(*)
-                FROM DAILY_REVIEWS
-                WHERE USER_ID = #{userId}
-            ) AS DAILY_REVIEW_COUNT,
+		/* ========================================
+		총 데일리 기록 수
+		========================================= */
+		(
+		SELECT COUNT(*)
+		FROM
+		DAILY_REVIEWS
+		WHERE USER_ID = #{userId}
+		) AS DAILY_REVIEW_COUNT,
 
 
-            /* ========================================
-               평균 하루 평점
-            ========================================= */
-            (
-                SELECT
-                    NVL(
-                        ROUND(
-                            AVG(TOTAL_RATING),
-                            1
-                        ),
-                        0
-                    )
-                FROM DAILY_REVIEWS
-                WHERE USER_ID = #{userId}
-            ) AS AVERAGE_RATING,
+		/*
+		========================================
+		평균 하루 평점
+		========================================= */
+		(
+		SELECT
+		NVL(
+		ROUND(
+		AVG(TOTAL_RATING),
+		1
+		),
+		0
+		)
+		FROM DAILY_REVIEWS
+		WHERE USER_ID = #{userId}
+		) AS
+		AVERAGE_RATING,
 
 
-            /* ========================================
-               총 서브 리뷰 수
-            ========================================= */
-            (
-                SELECT COUNT(*)
-                FROM SUB_REVIEWS SR
-                JOIN DAILY_REVIEWS DR
-                    ON SR.REVIEW_ID = DR.REVIEW_ID
-                WHERE DR.USER_ID = #{userId}
-            ) AS SUB_REVIEW_COUNT,
+		/* ========================================
+		총 서브 리뷰 수
+		========================================= */
+		(
+		SELECT COUNT(*)
+		FROM
+		SUB_REVIEWS SR
+		JOIN DAILY_REVIEWS DR
+		ON SR.REVIEW_ID = DR.REVIEW_ID
+		WHERE DR.USER_ID = #{userId}
+		) AS SUB_REVIEW_COUNT,
 
 
-            /* ========================================
-               내돈내산 인증률
-            ========================================= */
-            (
-                SELECT
-                    NVL(
-                        ROUND(
-                            SUM(
-                                CASE
-                                    WHEN SR.IS_CERTIFIED = 'Y'
-                                        THEN 1
-                                    ELSE 0
-                                END
-                            )
-                            /
-                            NULLIF(
-                                COUNT(*),
-                                0
-                            )
-                            * 100,
-                            1
-                        ),
-                        0
-                    )
-                FROM SUB_REVIEWS SR
-                JOIN DAILY_REVIEWS DR
-                    ON SR.REVIEW_ID = DR.REVIEW_ID
-                WHERE DR.USER_ID = #{userId}
-            ) AS CERTIFICATION_RATE,
+		/*
+		========================================
+		내돈내산 인증률
+		========================================= */
+		(
+		SELECT
+		NVL(
+		ROUND(
+		SUM(
+		CASE
+		WHEN SR.IS_CERTIFIED = 'Y'
+		THEN 1
+		ELSE 0
+		END
+		)
+		/
+		NULLIF(
+		COUNT(*),
+		0
+		)
+		* 100,
+		1
+		),
+		0
+		)
+		FROM SUB_REVIEWS SR
+		JOIN DAILY_REVIEWS DR
+		ON SR.REVIEW_ID =
+		DR.REVIEW_ID
+		WHERE DR.USER_ID = #{userId}
+		) AS CERTIFICATION_RATE,
 
 
-            /* ========================================
-               장소 카테고리 수
-            ========================================= */
-            (
-                SELECT COUNT(*)
-                FROM SUB_REVIEWS SR
-                JOIN DAILY_REVIEWS DR
-                    ON SR.REVIEW_ID = DR.REVIEW_ID
-                WHERE DR.USER_ID = #{userId}
-                  AND SR.CATEGORY = 'place'
-            ) AS PLACE_COUNT,
+		/*
+		========================================
+		장소 카테고리 수
+		========================================= */
+		(
+		SELECT COUNT(*)
+		FROM
+		SUB_REVIEWS SR
+		JOIN DAILY_REVIEWS DR
+		ON SR.REVIEW_ID = DR.REVIEW_ID
+		WHERE DR.USER_ID = #{userId}
+		AND SR.CATEGORY = 'place'
+		) AS PLACE_COUNT,
 
 
-            /* ========================================
-               아이템 카테고리 수
-            ========================================= */
-            (
-                SELECT COUNT(*)
-                FROM SUB_REVIEWS SR
-                JOIN DAILY_REVIEWS DR
-                    ON SR.REVIEW_ID = DR.REVIEW_ID
-                WHERE DR.USER_ID = #{userId}
-                  AND SR.CATEGORY = 'item'
-            ) AS ITEM_COUNT,
+		/* ========================================
+		아이템 카테고리 수
+		========================================= */
+		(
+		SELECT COUNT(*)
+		FROM
+		SUB_REVIEWS SR
+		JOIN DAILY_REVIEWS DR
+		ON SR.REVIEW_ID = DR.REVIEW_ID
+		WHERE DR.USER_ID = #{userId}
+		AND SR.CATEGORY = 'item'
+		) AS ITEM_COUNT,
 
 
-            /* ========================================
-               이동수단 카테고리 수
-            ========================================= */
-            (
-                SELECT COUNT(*)
-                FROM SUB_REVIEWS SR
-                JOIN DAILY_REVIEWS DR
-                    ON SR.REVIEW_ID = DR.REVIEW_ID
-                WHERE DR.USER_ID = #{userId}
-                  AND SR.CATEGORY = 'transport'
-            ) AS TRANSPORT_COUNT,
+		/* ========================================
+		이동수단 카테고리 수
+		========================================= */
+		(
+		SELECT COUNT(*)
+		FROM
+		SUB_REVIEWS SR
+		JOIN DAILY_REVIEWS DR
+		ON SR.REVIEW_ID = DR.REVIEW_ID
+		WHERE DR.USER_ID = #{userId}
+		AND SR.CATEGORY = 'transport'
+		) AS
+		TRANSPORT_COUNT,
 
 
-            /* ========================================
-               콘텐츠 카테고리 수
-            ========================================= */
-            (
-                SELECT COUNT(*)
-                FROM SUB_REVIEWS SR
-                JOIN DAILY_REVIEWS DR
-                    ON SR.REVIEW_ID = DR.REVIEW_ID
-                WHERE DR.USER_ID = #{userId}
-                  AND SR.CATEGORY = 'content'
-            ) AS CONTENT_COUNT
+		/* ========================================
+		콘텐츠 카테고리 수
+		========================================= */
+		(
+		SELECT COUNT(*)
+		FROM
+		SUB_REVIEWS SR
+		JOIN DAILY_REVIEWS DR
+		ON SR.REVIEW_ID = DR.REVIEW_ID
+		WHERE DR.USER_ID = #{userId}
+		AND SR.CATEGORY = 'content'
+		) AS
+		CONTENT_COUNT
 
-        FROM DUAL
+		FROM DUAL
 
-    </select>
+	</select>
 
-	<select id="findUserInfoByUserId" resultType="MemberDTO" parameterType="String">
+	<select id="findUserInfoByUserId" resultType="MemberDTO"
+		parameterType="String">
 		SELECT *
 		FROM USERS
 		WHERE USER_ID = #{userId}
 	</select>
+
+	<!-- ========================================= 탐색 페이지 - 주간 유저 랭킹 Top 5 조회 
+		- 이번 주 월요일 00:00부터 다음 주 월요일 전까지 조회 - 작성률: 일주일 7일 기준 작성한 날짜 수 / 7 * 100 - 
+		평균 평점: 이번 주 데일리 리뷰 평균 - 작성률 우선, 동률이면 평균 평점 순 ========================================== -->
+	<select id="findWeeklyUserRanking"
+		resultType="com.app.dto.member.WeeklyUserRankingDTO">
+
+		SELECT
+		RANKING,
+		USER_ID,
+		NICKNAME,
+		PROFILE_IMG,
+		WEEKLY_REVIEW_COUNT,
+		WRITING_RATE,
+		AVERAGE_RATING
+		FROM (
+		SELECT
+		ROW_NUMBER() OVER (
+		ORDER BY
+		WRITING_RATE DESC,
+		AVERAGE_RATING DESC
+		) AS RANKING,
+		USER_ID,
+		NICKNAME,
+		PROFILE_IMG,
+		WEEKLY_REVIEW_COUNT,
+		WRITING_RATE,
+		AVERAGE_RATING
+		FROM (
+		SELECT
+		U.USER_ID,
+		U.NICKNAME,
+		U.PROFILE_IMG,
+
+		/* 이번 주 데일리 리뷰 작성 일수 */
+		COUNT(
+		DISTINCT TRUNC(DR.REVIEW_DATE)
+		) AS WEEKLY_REVIEW_COUNT,
+
+		/* 이번 주
+		작성률 */
+		ROUND(
+		COUNT(
+		DISTINCT TRUNC(DR.REVIEW_DATE)
+		) / 7 * 100,
+		1
+		) AS
+		WRITING_RATE,
+
+		/* 이번 주 평균 하루 평점 */
+		ROUND(
+		AVG(DR.TOTAL_RATING),
+		1
+		) AS
+		AVERAGE_RATING
+
+		FROM USERS U
+
+		JOIN DAILY_REVIEWS DR
+		ON U.USER_ID =
+		DR.USER_ID
+
+		WHERE DR.REVIEW_DATE >= TRUNC(SYSDATE, 'IW')
+		AND
+		DR.REVIEW_DATE <![CDATA[ < ]]>
+		TRUNC(SYSDATE, 'IW') + 7
+
+		GROUP BY
+		U.USER_ID,
+		U.NICKNAME,
+		U.PROFILE_IMG
+		)
+		)
+		WHERE RANKING <![CDATA[ <= ]]>
+		5
+
+		ORDER BY RANKING
+
+	</select>
+	<!-- ========================================= 탐색 페이지 - 연속 기록 스트릭 Top 5 
+		조회 - USERS.STREAK_COUNT 기준 내림차순 - 동률이면 전체 리뷰 수가 많은 순 - 전체 데일리 리뷰 수 조회 - 전체 
+		서브 리뷰 수 조회 - 이번 주 작성 일수 조회 - 응원 수 조회 ========================================== -->
+	<select id="findTopStreakUsers"
+		resultType="com.app.dto.member.StreakUserDTO">
+
+		SELECT
+		U.USER_ID,
+		U.NICKNAME,
+		U.PROFILE_IMG,
+		U.USER_LEVEL,
+		U.STREAK_COUNT,
+		U.CHEER_COUNT,
+
+		/* 유저의 가장 최근 리뷰 태그 */
+		(
+		SELECT
+		CASE
+		WHEN
+		INSTR(RECENT_DR.MOOD_TAGS, ',') > 0
+		THEN SUBSTR(
+		RECENT_DR.MOOD_TAGS,
+		1,
+		INSTR(RECENT_DR.MOOD_TAGS, ',') - 1
+		)
+		ELSE RECENT_DR.MOOD_TAGS
+		END
+		FROM
+		DAILY_REVIEWS RECENT_DR
+		WHERE RECENT_DR.USER_ID = U.USER_ID
+		AND
+		RECENT_DR.MOOD_TAGS IS NOT NULL
+		ORDER BY RECENT_DR.REVIEW_DATE DESC,
+		RECENT_DR.REVIEW_ID DESC
+		FETCH FIRST 1 ROW ONLY
+		) AS RECENT_TAGS,
+
+		/* 전체
+		데일리 리뷰 수
+		SUB_REVIEWS JOIN으로 중복될 수 있으므로 DISTINCT
+		사용
+		*/
+		COUNT(
+		DISTINCT
+		DR.REVIEW_ID
+		) AS TOTAL_REVIEW_COUNT,
+
+		/* 전체 서브 리뷰 수
+		*/
+		COUNT(
+		SR.REVIEW_ID
+		) AS SUB_REVIEW_COUNT,
+
+		/* 이번 주 데일리 리뷰 작성 일수 */
+		COUNT(
+		DISTINCT CASE
+		WHEN
+		DR.REVIEW_DATE >= TRUNC(SYSDATE, 'IW')
+		AND
+		DR.REVIEW_DATE <![CDATA[ < ]]>
+		TRUNC(SYSDATE, 'IW') + 7
+		THEN TRUNC(DR.REVIEW_DATE)
+		END
+		) AS
+		WEEKLY_REVIEW_COUNT
+
+		FROM USERS U
+
+		LEFT JOIN DAILY_REVIEWS DR
+		ON U.USER_ID
+		= DR.USER_ID
+
+		LEFT JOIN SUB_REVIEWS SR
+		ON DR.REVIEW_ID = SR.REVIEW_ID
+
+		<!-- 연속 기록이 있는 유저만 노출 -->
+		WHERE U.STREAK_COUNT > 0
+
+		GROUP BY
+		U.USER_ID,
+		U.NICKNAME,
+		U.PROFILE_IMG,
+		U.USER_LEVEL,
+		U.STREAK_COUNT,
+		U.CHEER_COUNT
+
+		ORDER BY
+		U.STREAK_COUNT DESC,
+		TOTAL_REVIEW_COUNT DESC
+
+		FETCH
+		FIRST 5 ROWS ONLY
+
+	</select>
+
+	<!-- 탐색 페이지 - 응원 기능 -->
+	<!-- 응원 여부 확인 -->
+	<select id="countCheer" parameterType="map" resultType="int">
+
+		SELECT COUNT(*)
+		FROM CHEER
+		WHERE REQUEST_USER_ID = #{requestUserId}
+		AND RESPONSE_USER_ID = #{responseUserId}
+	</select>
+
+	<!-- 응원 등록 -->
+	<insert id="insertCheer" parameterType="map">
+
+		INSERT INTO CHEER
+		(
+		CHEER_ID,
+		REQUEST_USER_ID,
+		RESPONSE_USER_ID,
+		CREATED_AT
+		)
+		VALUES
+		(
+		SEQ_CHEER.NEXTVAL,
+		#{requestUserId},
+		#{responseUserId},
+		SYSDATE
+		)
+
+	</insert>
+
+	<!-- 응원 취소 -->
+	<delete id="deleteCheer" parameterType="map">
+
+		DELETE FROM CHEER
+		WHERE REQUEST_USER_ID = #{requestUserId}
+		AND RESPONSE_USER_ID = #{responseUserId}
+
+	</delete>
 	
-	    <!-- =========================================
-         탐색 페이지 - 주간 유저 랭킹 Top 5 조회
-         - 이번 주 월요일 00:00부터 다음 주 월요일 전까지 조회
-         - 작성률: 일주일 7일 기준 작성한 날짜 수 / 7 * 100
-         - 평균 평점: 이번 주 데일리 리뷰 평균
-         - 작성률 우선, 동률이면 평균 평점 순
-    ========================================== -->
-    <select id="findWeeklyUserRanking"
-        resultType="com.app.dto.member.WeeklyUserRankingDTO">
+	<!-- =========================================
+     탐색 페이지 - 응원 수 증가
+     - 응원 등록 시 대상 유저의 CHEER_COUNT + 1
+     ========================================= -->
+<update id="increaseCheerCount"
+        parameterType="string">
 
-        SELECT
-            RANKING,
-            USER_ID,
-            NICKNAME,
-            PROFILE_IMG,
-            WEEKLY_REVIEW_COUNT,
-            WRITING_RATE,
-            AVERAGE_RATING
-        FROM (
-            SELECT
-                ROW_NUMBER() OVER (
-                    ORDER BY
-                        WRITING_RATE DESC,
-                        AVERAGE_RATING DESC
-                ) AS RANKING,
-                USER_ID,
-                NICKNAME,
-                PROFILE_IMG,
-                WEEKLY_REVIEW_COUNT,
-                WRITING_RATE,
-                AVERAGE_RATING
-            FROM (
-                SELECT
-                    U.USER_ID,
-                    U.NICKNAME,
-                    U.PROFILE_IMG,
+    UPDATE USERS
+    SET CHEER_COUNT = CHEER_COUNT + 1
+    WHERE USER_ID = #{value}
 
-                    /* 이번 주 데일리 리뷰 작성 일수 */
-                    COUNT(
-                        DISTINCT TRUNC(DR.REVIEW_DATE)
-                    ) AS WEEKLY_REVIEW_COUNT,
+</update>
 
-                    /* 이번 주 작성률 */
-                    ROUND(
-                        COUNT(
-                            DISTINCT TRUNC(DR.REVIEW_DATE)
-                        ) / 7 * 100,
-                        1
-                    ) AS WRITING_RATE,
 
-                    /* 이번 주 평균 하루 평점 */
-                    ROUND(
-                        AVG(DR.TOTAL_RATING),
-                        1
-                    ) AS AVERAGE_RATING
+<!-- =========================================
+     탐색 페이지 - 응원 수 감소
+     - 응원 취소 시 대상 유저의 CHEER_COUNT - 1
+     - 응원 수가 0보다 작아지는 것 방지
+     ========================================= -->
+<update id="decreaseCheerCount"
+        parameterType="string">
 
-                FROM USERS U
+    UPDATE USERS
+    SET CHEER_COUNT = CHEER_COUNT - 1
+    WHERE USER_ID = #{value}
+      AND CHEER_COUNT > 0
 
-                JOIN DAILY_REVIEWS DR
-                    ON U.USER_ID = DR.USER_ID
-
-                WHERE DR.REVIEW_DATE >= TRUNC(SYSDATE, 'IW')
-                  AND DR.REVIEW_DATE <![CDATA[ < ]]> TRUNC(SYSDATE, 'IW') + 7
-
-                GROUP BY
-                    U.USER_ID,
-                    U.NICKNAME,
-                    U.PROFILE_IMG
-            )
-        )
-        WHERE RANKING <![CDATA[ <= ]]> 5
-
-        ORDER BY RANKING
-
-    </select>
+</update>
 </mapper>

@@ -1,1246 +1,1204 @@
 @charset "UTF-8";
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .ex_container {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 16px;
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 16px;
 }
 
 /* 상단바 */
 .ex_top_column {
-  width: 100%;
-  max-width: 1100px;
-  min-height: 200px;
-  margin: 0 auto;
-  padding: 30px;
-  background-color: #151e31;
-  border: 3px dashed #cbd5e1;
-  border-radius: 32px;
-  overflow: hidden;
+	width: 100%;
+	max-width: 1100px;
+	min-height: 200px;
+	margin: 0 auto;
+	padding: 30px;
+	background-color: #151e31;
+	border: 3px dashed #cbd5e1;
+	border-radius: 32px;
+	overflow: hidden;
 }
 
 .ex_t_top {
-  display: inline-block;
-  width: 250px;
-  font-size: 13px;
-  text-align: center;
-  color: #a5b4fc;
-  background-color: #222754;
-  border: 1px solid #3e4587;
-  border-radius: 10px;
+	display: inline-block;
+	width: 250px;
+	font-size: 13px;
+	text-align: center;
+	color: #a5b4fc;
+	background-color: #222754;
+	border: 1px solid #3e4587;
+	border-radius: 10px;
 }
 
 .ex_t_middle h1 {
-  margin: 0 0 10px 0;
-  color: #ffffff;
+	margin: 0 0 10px 0;
+	color: #ffffff;
 }
 
 .ex_t_bottom {
-  width: 100%;
-  color: #cbd5e1;
+	width: 100%;
+	color: #cbd5e1;
 }
 
 /* 하단 레이아웃 */
 .ex_bottom_column {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 30px;
-  gap: 30px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 30px;
+	gap: 30px;
 }
 
 .ex_b_bottom_column {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  gap: 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	width: 100%;
+	gap: 30px;
 }
 
 .ex_bottom_left {
-  display: flex;
-  flex-direction: column;
-  width: 44%;
-  gap: 14px;
+	display: flex;
+	flex-direction: column;
+	width: 44%;
+	gap: 14px;
 }
 
 .ex_bottom_right {
-  display: flex;
-  flex-direction: column;
-  width: 56%;
-  gap: 14px;
+	display: flex;
+	flex-direction: column;
+	width: 56%;
+	gap: 14px;
 }
 
 /* 공통 헤더 및 뱃지 */
 .ex_section_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 8px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 8px;
 }
 
 .ex_section_title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
 }
 
 .ex_section_title h2 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 700;
-  color: #0f172a;
+	margin: 0;
+	font-size: 17px;
+	font-weight: 700;
+	color: #0f172a;
 }
 
 .ex_section_desc {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: #64748b;
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #64748b;
 }
 
 .ex_section_desc strong {
-  color: #334155;
+	color: #334155;
 }
 
 .ex_badge_orange {
-  padding: 3px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #c2410c;
-  background-color: #fff7ed;
-  border: 1px solid #ffedd5;
-  border-radius: 6px;
+	padding: 3px 8px;
+	font-size: 11px;
+	font-weight: 700;
+	color: #c2410c;
+	background-color: #fff7ed;
+	border: 1px solid #ffedd5;
+	border-radius: 6px;
 }
 
 .ex_badge_blue {
-  padding: 3px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #1d4ed8;
-  background-color: #eff6ff;
-  border: 1px solid #dbeafe;
-  border-radius: 6px;
+	padding: 3px 8px;
+	font-size: 11px;
+	font-weight: 700;
+	color: #1d4ed8;
+	background-color: #eff6ff;
+	border: 1px solid #dbeafe;
+	border-radius: 6px;
 }
 
 .icon_flame {
-  color: #ea580c;
-  font-variation-settings: 'FILL' 1;
+	color: #ea580c;
+	font-variation-settings: 'FILL' 1;
 }
 
 .icon_blue {
-  color: #2563eb;
+	color: #2563eb;
 }
 
 .icon_compass {
-  font-size: 18px;
-  color: #2563eb;
+	font-size: 18px;
+	color: #2563eb;
 }
 
 /* 테마 필터 */
 .ex_theme_filter_section {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 20px 24px;
-  background-color: #ffffff;
-  border: 3px dashed #cbd5e1;
-  border-radius: 20px;
-  gap: 16px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 20px 24px;
+	background-color: #ffffff;
+	border: 3px dashed #cbd5e1;
+	border-radius: 20px;
+	gap: 16px;
 }
 
 .ex_theme_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .ex_theme_title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f172a;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #0f172a;
 }
 
 .ex_theme_sub {
-  font-size: 12px;
-  color: #94a3b8;
+	font-size: 12px;
+	color: #94a3b8;
 }
 
 .ex_theme_list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
 }
 
 .ex_theme_btn {
-  display: flex;
-  align-items: center;
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #334155;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  cursor: pointer;
-  gap: 8px;
-  transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	padding: 7px 14px;
+	font-size: 13px;
+	font-weight: 500;
+	color: #334155;
+	background-color: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	cursor: pointer;
+	gap: 8px;
+	transition: all 0.2s ease;
 }
 
 .ex_theme_btn.active {
-  font-weight: 700;
-  color: #ffffff;
-  background-color: #0f172a;
-  border-color: #0f172a;
+	font-weight: 700;
+	color: #ffffff;
+	background-color: #0f172a;
+	border-color: #0f172a;
 }
 
 .theme_count {
-  padding: 2px 6px;
-  font-size: 11px;
-  color: #475569;
-  background-color: #e2e8f0;
-  border-radius: 6px;
+	padding: 2px 6px;
+	font-size: 11px;
+	color: #475569;
+	background-color: #e2e8f0;
+	border-radius: 6px;
 }
 
 .ex_theme_btn.active .theme_count {
-  color: #94a3b8;
-  background-color: #1e293b;
+	color: #94a3b8;
+	background-color: #1e293b;
 }
 
 /* 챌린저 카드 */
 .ex_challenger_list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .ex_challenger_card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
-  background-color: #ffffff;
-  border: 2px dashed #cbd5e1;
-  border-radius: 14px;
-  transition: all 0.2s ease;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 14px 16px;
+	background-color: #ffffff;
+	border: 2px dashed #cbd5e1;
+	border-radius: 14px;
+	transition: all 0.2s ease;
 }
 
 .ex_challenger_card:hover {
-  border-color: #94a3b8;
+	border-color: #94a3b8;
 }
 
 .ex_challenger_info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
 }
 
 .ex_streak_box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 44px;
-  height: 48px;
-  background-color: #fff7ed;
-  border: 1px solid #ffedd5;
-  border-radius: 10px;
-  gap: 1px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 44px;
+	height: 48px;
+	background-color: #fff7ed;
+	border: 1px solid #ffedd5;
+	border-radius: 10px;
+	gap: 1px;
 }
 
 .ex_streak_box .icon_flame {
-  font-size: 16px;
+	font-size: 16px;
 }
 
 .streak_day {
-  font-size: 11px;
-  font-weight: 800;
-  color: #ea580c;
+	font-size: 11px;
+	font-weight: 800;
+	color: #ea580c;
 }
 
 .ex_challenger_meta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 .meta_row_top {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .ex_challenger_name {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f172a;
+	margin: 0;
+	font-size: 14px;
+	font-weight: 700;
+	color: #0f172a;
 }
 
 .streak_badge {
-  padding: 2px 6px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #92400e;
-  background-color: #fef3c7;
-  border: 1px solid #fde68a;
-  border-radius: 6px;
+	padding: 2px 6px;
+	font-size: 11px;
+	font-weight: 700;
+	color: #92400e;
+	background-color: #fef3c7;
+	border: 1px solid #fde68a;
+	border-radius: 6px;
 }
 
 .meta_row_bottom {
-  display: flex;
-  align-items: center;
-  font-size: 11px;
-  color: #64748b;
-  gap: 6px;
+	display: flex;
+	align-items: center;
+	font-size: 11px;
+	color: #64748b;
+	gap: 6px;
 }
 
 .meta_row_bottom .dot {
-  color: #cbd5e1;
+	color: #cbd5e1;
 }
 
 .ex_cheer_btn {
-  display: flex;
-  align-items: center;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #475569;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  cursor: pointer;
-  gap: 5px;
-  transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	padding: 6px 12px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #475569;
+	background-color: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	cursor: pointer;
+	gap: 5px;
+	transition: all 0.2s ease;
 }
 
 .ex_cheer_btn .icon_heart {
-  font-size: 15px;
-  color: #94a3b8;
+	font-size: 15px;
+	color: #94a3b8;
 }
 
 .ex_cheer_btn:hover {
-  color: #e11d48;
-  background-color: #fff1f2;
-  border-color: #fecdd3;
+	color: #e11d48;
+	background-color: #fff1f2;
+	border-color: #fecdd3;
 }
 
 .ex_cheer_btn:hover .icon_heart {
-  color: #e11d48;
-  font-variation-settings: 'FILL' 1;
+	color: #e11d48;
+	font-variation-settings: 'FILL' 1;
 }
 
 .ex_cheer_btn.active {
-  color: #e11d48;
-  background-color: #ffe4e6;
-  border-color: #fda4af;
+	color: #e11d48;
+	background-color: #ffe4e6;
+	border-color: #fda4af;
 }
 
 .ex_cheer_btn.active .icon_heart {
-  color: #e11d48;
-  font-variation-settings: 'FILL' 1;
+	color: #e11d48;
+	font-variation-settings: 'FILL' 1;
+}
+/* =========================================
+   탐색 페이지 - 연속 기록 스트릭 Top 5 보강
+   - DB 데이터 5개 출력 대응
+   - 긴 닉네임 / 기록 정보 줄바꿈 대응
+   ========================================= */
+.ex_challenger_list {
+	width: 100%;
+}
+
+/* 스트릭 카드 */
+.ex_challenger_card {
+	width: 100%;
+	min-height: 72px;
+	gap: 12px;
+}
+
+/* 왼쪽 정보 영역 */
+.ex_challenger_info {
+	flex: 1;
+	min-width: 0;
+}
+
+/* 중앙 유저 정보 영역 */
+.ex_challenger_meta {
+	flex: 1;
+	min-width: 0;
+}
+
+/* 닉네임 + 연속 기록 뱃지 */
+.meta_row_top {
+	flex-wrap: wrap;
+}
+
+/* 하단 기록 정보 */
+.meta_row_bottom {
+	flex-wrap: wrap;
+	line-height: 1.5;
+}
+
+/* 기록 통계 */
+.review_stats {
+	word-break: keep-all;
+}
+
+/* 최근 태그 */
+.recent_tag_row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-top: 3px;
+}
+
+.recent_tag_label {
+	padding: 2px 6px;
+	font-size: 10px;
+	font-weight: 700;
+	color: #64748b;
+	background-color: #f1f5f9;
+	border-radius: 5px;
+}
+
+.recent_tag_value {
+	font-size: 10px;
+	color: #64748b;
+	word-break: keep-all;
+}
+
+/* 응원 버튼은 찌그러지지 않도록 */
+.ex_cheer_btn {
+	flex-shrink: 0;
+	white-space: nowrap;
 }
 
 .ex_streak_banner {
-  display: flex;
-  flex-direction: column;
-  padding: 14px;
-  background-color: #fff7ed;
-  border: 2px dashed #fdba74;
-  border-radius: 12px;
-  gap: 6px;
+	display: flex;
+	flex-direction: column;
+	padding: 14px;
+	background-color: #fff7ed;
+	border: 2px dashed #fdba74;
+	border-radius: 12px;
+	gap: 6px;
 }
 
 .ex_streak_banner .banner_title {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 800;
-  color: #9a3412;
-  gap: 6px;
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+	font-weight: 800;
+	color: #9a3412;
+	gap: 6px;
 }
 
 .ex_streak_banner .banner_desc {
-  margin: 0;
-  font-size: 11px;
-  line-height: 1.5;
-  color: #c2410c;
+	margin: 0;
+	font-size: 11px;
+	line-height: 1.5;
+	color: #c2410c;
 }
 
 /* 큐레이션 영역 */
 .ex_curation_tab_bar {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 4px;
-  background-color: #f1f5f9;
-  border-radius: 12px;
-  gap: 4px;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 4px;
+	background-color: #f1f5f9;
+	border-radius: 12px;
+	gap: 4px;
 }
 
 .ex_curation_tab {
-  padding: 7px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #64748b;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+	padding: 7px 14px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #64748b;
+	background: transparent;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 .ex_curation_tab.active {
-  font-weight: 800;
-  color: #0f172a;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+	font-weight: 800;
+	color: #0f172a;
+	background-color: #ffffff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .ex_curation_grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
 }
 
 .ex_curation_card {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  background-color: #ffffff;
-  border: 2px dashed #cbd5e1;
-  border-radius: 14px;
-  gap: 6px;
-  transition: all 0.2s ease;
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+	background-color: #ffffff;
+	border: 2px dashed #cbd5e1;
+	border-radius: 14px;
+	gap: 6px;
+	transition: all 0.2s ease;
 }
 
 .ex_curation_card .card_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 11px;
 }
 
 .ex_curation_card .category_label {
-  font-weight: 700;
-  color: #2563eb;
+	font-weight: 700;
+	color: #2563eb;
 }
 
 .ex_curation_card .mention_cnt {
-  color: #94a3b8;
+	color: #94a3b8;
 }
 
 .curation_title {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: #0f172a;
+	margin: 0;
+	font-size: 13px;
+	font-weight: 700;
+	color: #0f172a;
 }
 
 .curation_desc {
-  margin: 0;
-  font-size: 11px;
-  line-height: 1.4;
-  color: #64748b;
+	margin: 0;
+	font-size: 11px;
+	line-height: 1.4;
+	color: #64748b;
 }
 
-@media (max-width: 767px) {
+@media ( max-width : 767px) {
+	.ex_container {
+		width: 100%;
+		max-width: 100%;
+		padding: 0 12px;
+	}
+	.ex_b_bottom_column {
+		flex-direction: column;
+		width: 100%;
+		gap: 24px;
+	}
+	.ex_bottom_left {
+		width: 100%;
+	}
+	.ex_bottom_right {
+		width: 100%;
+	}
+	.ex_top_column {
+		width: 100%;
+		min-height: auto;
+		padding: 20px 16px;
+		border-radius: 20px;
+	}
+	.ex_t_top {
+		width: auto;
+		max-width: 100%;
+		padding: 4px 10px;
+		font-size: 11px;
+	}
+	.ex_t_middle h1 {
+		font-size: 22px;
+		line-height: 1.35;
+		word-break: keep-all;
+	}
+	.ex_t_bottom {
+		font-size: 12px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+	.ex_theme_filter_section {
+		padding: 16px;
+		border-radius: 16px;
+		gap: 14px;
+	}
+	.ex_theme_header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+	.ex_theme_title {
+		width: 100%;
+		font-size: 13px;
+	}
+	.ex_theme_sub {
+		font-size: 11px;
+	}
+	.ex_theme_list {
+		width: 100%;
+		gap: 8px;
+	}
+	.ex_theme_btn {
+		max-width: 100%;
+		padding: 7px 10px;
+		font-size: 12px;
+		gap: 6px;
+	}
+	.theme_label {
+		white-space: normal;
+		word-break: keep-all;
+	}
+	.theme_count {
+		flex-shrink: 0;
+	}
 
-  .ex_container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0 12px;
-  }
-
-.ex_b_bottom_column {
-    flex-direction: column;
-    width: 100%;
-    gap: 24px;
-  }
-
-  .ex_bottom_left {
-    width: 100%;
-  }
-
-  .ex_bottom_right {
-    width: 100%;
-  }
-  
-  .ex_top_column {
-  width: 100%;
-  min-height: auto;
-  padding: 20px 16px;
-  border-radius: 20px;
-}
-
-.ex_t_top {
-  width: auto;
-  max-width: 100%;
-  padding: 4px 10px;
-  font-size: 11px;
-}
-
-.ex_t_middle h1 {
-  font-size: 22px;
-  line-height: 1.35;
-  word-break: keep-all;
-}
-
-.ex_t_bottom {
-  font-size: 12px;
-  line-height: 1.6;
-  word-break: keep-all;
-}
-
-.ex_theme_filter_section {
-  padding: 16px;
-  border-radius: 16px;
-  gap: 14px;
-}
-
-.ex_theme_header {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-}
-
-.ex_theme_title {
-  width: 100%;
-  font-size: 13px;
-}
-
-.ex_theme_sub {
-  font-size: 11px;
-}
-
-.ex_theme_list {
-  width: 100%;
-  gap: 8px;
-}
-
-.ex_theme_btn {
-  max-width: 100%;
-  padding: 7px 10px;
-  font-size: 12px;
-  gap: 6px;
-}
-
-.theme_label {
-  white-space: normal;
-  word-break: keep-all;
-}
-
-.theme_count {
-  flex-shrink: 0;
-}
-
-/* =========================================
+	/* =========================================
    모바일 - 스트릭 챌린저 영역
    ========================================= */
+	.ex_section_header {
+		align-items: flex-start;
+		gap: 8px;
+	}
+	.ex_section_title {
+		min-width: 0;
+	}
+	.ex_section_title h2 {
+		font-size: 15px;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+	.ex_badge_orange, .ex_badge_blue {
+		flex-shrink: 0;
+		font-size: 10px;
+		padding: 3px 6px;
+	}
 
-.ex_section_header {
-  align-items: flex-start;
-  gap: 8px;
-}
+	/* 챌린저 카드 */
+	.ex_challenger_card {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+		padding: 14px;
+	}
 
-.ex_section_title {
-  min-width: 0;
-}
+	/* 유저 정보 */
+	.ex_challenger_info {
+		width: 100%;
+		align-items: flex-start;
+		min-width: 0;
+	}
+	.ex_streak_box {
+		flex-shrink: 0;
+	}
 
-.ex_section_title h2 {
-  font-size: 15px;
-  line-height: 1.4;
-  word-break: keep-all;
-}
+	/* 이름 / 레벨 영역 */
+	.ex_challenger_meta {
+		flex: 1;
+		min-width: 0;
+	}
+	.meta_row_top {
+		flex-wrap: wrap;
+		gap: 5px;
+	}
+	.ex_challenger_name {
+		flex-shrink: 0;
+	}
+	.streak_badge {
+		max-width: 100%;
+	}
 
-.ex_badge_orange,
-.ex_badge_blue {
-  flex-shrink: 0;
-  font-size: 10px;
-  padding: 3px 6px;
-}
+	/* 아래쪽 유저 설명 */
+	.meta_row_bottom {
+		flex-wrap: wrap;
+		line-height: 1.5;
+		gap: 4px;
+	}
 
-
-/* 챌린저 카드 */
-.ex_challenger_card {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
-  padding: 14px;
-}
-
-
-/* 유저 정보 */
-.ex_challenger_info {
-  width: 100%;
-  align-items: flex-start;
-  min-width: 0;
-}
-
-.ex_streak_box {
-  flex-shrink: 0;
-}
-
-
-/* 이름 / 레벨 영역 */
-.ex_challenger_meta {
-  flex: 1;
-  min-width: 0;
-}
-
-.meta_row_top {
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.ex_challenger_name {
-  flex-shrink: 0;
-}
-
-.streak_badge {
-  max-width: 100%;
-}
-
-
-/* 아래쪽 유저 설명 */
-.meta_row_bottom {
-  flex-wrap: wrap;
-  line-height: 1.5;
-  gap: 4px;
-}
-
-
-/* 응원 버튼 */
-.ex_cheer_btn {
-  width: 100%;
-  justify-content: center;
-  padding: 8px 12px;
-}
-/* =========================================
+	/* 응원 버튼 */
+	.ex_cheer_btn {
+		width: 100%;
+		justify-content: center;
+		padding: 8px 12px;
+	}
+	/* =========================================
    모바일 - 트렌드 / 큐레이션 영역
    ========================================= */
+	.ex_curation_tab_bar {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		padding: 4px;
+	}
+	.ex_curation_tab {
+		flex: 1 1 calc(50% - 6px);
+		min-width: 0;
+		padding: 8px 6px;
+		font-size: 11px;
+		text-align: center;
+		word-break: keep-all;
+	}
+	.ex_curation_grid {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+	.ex_curation_card {
+		width: 100%;
+		padding: 14px;
+	}
+	.ex_curation_card .card_header {
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.ex_curation_card .category_label {
+		min-width: 0;
+	}
+	.ex_curation_card .mention_cnt {
+		flex-shrink: 0;
+	}
+	.curation_title {
+		font-size: 13px;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+	.curation_desc {
+		font-size: 11px;
+		line-height: 1.5;
+		word-break: keep-all;
+	}
 
-.ex_curation_tab_bar {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 4px;
-}
-
-.ex_curation_tab {
-  flex: 1 1 calc(50% - 6px);
-  min-width: 0;
-  padding: 8px 6px;
-  font-size: 11px;
-  text-align: center;
-  word-break: keep-all;
-}
-
-.ex_curation_grid {
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-
-.ex_curation_card {
-  width: 100%;
-  padding: 14px;
-}
-
-.ex_curation_card .card_header {
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.ex_curation_card .category_label {
-  min-width: 0;
-}
-
-.ex_curation_card .mention_cnt {
-  flex-shrink: 0;
-}
-
-.curation_title {
-  font-size: 13px;
-  line-height: 1.4;
-  word-break: keep-all;
-}
-
-.curation_desc {
-  font-size: 11px;
-  line-height: 1.5;
-  word-break: keep-all;
-}
-
-/* =========================================
+	/* =========================================
    모바일 - Explore 전체 마무리 정리
    ========================================= */
-
-.ex_bottom_column {
-  margin-top: 20px;
-  gap: 20px;
-}
-
-.ex_b_bottom_column {
-  gap: 28px;
-}
-
-.ex_section_header {
-  flex-wrap: wrap;
-}
-
-.ex_section_desc {
-  font-size: 11px;
-  line-height: 1.6;
-  word-break: keep-all;
-}
-
-.ex_streak_banner {
-  padding: 12px;
-}
-
-.ex_streak_banner .banner_title {
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.ex_streak_banner .banner_desc {
-  font-size: 10px;
-  line-height: 1.6;
-  word-break: keep-all;
-}
-
-.ex_theme_filter_section,
-.ex_challenger_card,
-.ex_curation_card,
-.ex_streak_banner {
-  max-width: 100%;
-}
-
-body {
-  overflow-x: hidden;
-}
-
+	.ex_bottom_column {
+		margin-top: 20px;
+		gap: 20px;
+	}
+	.ex_b_bottom_column {
+		gap: 28px;
+	}
+	.ex_section_header {
+		flex-wrap: wrap;
+	}
+	.ex_section_desc {
+		font-size: 11px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+	.ex_streak_banner {
+		padding: 12px;
+	}
+	.ex_streak_banner .banner_title {
+		font-size: 11px;
+		line-height: 1.4;
+	}
+	.ex_streak_banner .banner_desc {
+		font-size: 10px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+	.ex_theme_filter_section, .ex_challenger_card, .ex_curation_card,
+		.ex_streak_banner {
+		max-width: 100%;
+	}
+	body {
+		overflow-x: hidden;
+	}
 }
 
 /* =========================================
    EXPLORE MOBILE FINAL
    ========================================= */
-
 @media screen and (max-width: 767px) {
+	/* 전체 컨테이너 */
+	.ex_container {
+		width: 100% !important;
+		max-width: 100% !important;
+		padding: 0 12px !important;
+		margin: 0 auto !important;
+	}
 
-  /* 전체 컨테이너 */
-  .ex_container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 12px !important;
-    margin: 0 auto !important;
-  }
+	/* 상단 배너 */
+	.ex_top_column {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-height: auto !important;
+		padding: 20px 16px !important;
+		border-radius: 20px !important;
+	}
+	.ex_t_top {
+		width: auto !important;
+		max-width: 100%;
+		padding: 4px 10px;
+		font-size: 11px;
+	}
+	.ex_t_middle h1 {
+		font-size: 20px !important;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+	.ex_t_bottom {
+		font-size: 11px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
 
-  /* 상단 배너 */
-  .ex_top_column {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: auto !important;
-    padding: 20px 16px !important;
-    border-radius: 20px !important;
-  }
+	/* 테마 필터 */
+	.ex_theme_filter_section {
+		width: 100% !important;
+		padding: 16px !important;
+	}
+	.ex_theme_header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+	.ex_theme_list {
+		width: 100%;
+	}
 
-  .ex_t_top {
-    width: auto !important;
-    max-width: 100%;
-    padding: 4px 10px;
-    font-size: 11px;
-  }
+	/* ★ 핵심: PC 2열 → 모바일 1열 */
+	.ex_b_bottom_column {
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: stretch !important;
+		width: 100% !important;
+		gap: 28px !important;
+	}
+	.ex_bottom_left {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+	.ex_bottom_right {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
 
-  .ex_t_middle h1 {
-    font-size: 20px !important;
-    line-height: 1.4;
-    word-break: keep-all;
-  }
+	/* 섹션 제목 */
+	.ex_section_header {
+		width: 100%;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
 
-  .ex_t_bottom {
-    font-size: 11px;
-    line-height: 1.6;
-    word-break: keep-all;
-  }
+	/* 스트릭 카드 */
+	.ex_challenger_card {
+		width: 100% !important;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+	}
+	.ex_challenger_info {
+		width: 100%;
+		min-width: 0;
+	}
+	.ex_challenger_meta {
+		flex: 1;
+		min-width: 0;
+	}
+	.meta_row_top, .meta_row_bottom {
+		flex-wrap: wrap;
+	}
+	.ex_cheer_btn {
+		width: 100%;
+		justify-content: center;
+	}
 
+	/* 트렌드 탭 */
+	.ex_curation_tab_bar {
+		width: 100%;
+		flex-wrap: wrap;
+	}
+	.ex_curation_tab {
+		flex: 1 1 calc(50% - 6px);
+		min-width: 0;
+		padding: 8px 5px;
+		font-size: 11px;
+	}
 
-  /* 테마 필터 */
-  .ex_theme_filter_section {
-    width: 100% !important;
-    padding: 16px !important;
-  }
+	/* 트렌드 카드 2열 → 1열 */
+	.ex_curation_grid {
+		width: 100%;
+		grid-template-columns: 1fr !important;
+	}
+	.ex_curation_card {
+		width: 100%;
+		max-width: 100%;
+	}
 
-  .ex_theme_header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
+	/* 가로 스크롤 방지 */
+	body {
+		overflow-x: hidden;
+	}
 
-  .ex_theme_list {
-    width: 100%;
-  }
+	/* 모바일 테마 버튼 2열 정리 */
+	.ex_theme_btn {
+		flex: 1 1 calc(50% - 4px);
+		min-width: 0;
+		justify-content: space-between;
+	}
+	.ex_theme_btn:first-child {
+		flex-basis: 100%;
+	}
+	.theme_label {
+		min-width: 0;
+		font-size: 11px;
+		white-space: nowrap;
+	}
+	.theme_count {
+		flex-shrink: 0;
+		font-size: 10px;
+	}
 
+	/* 모바일 스트릭 카드 내부 정리 */
+	.ex_challenger_info {
+		align-items: flex-start;
+		gap: 10px;
+	}
+	.ex_challenger_meta {
+		overflow: hidden;
+	}
+	.meta_row_top {
+		align-items: center;
+	}
+	.ex_challenger_name {
+		font-size: 13px;
+		white-space: nowrap;
+	}
+	.streak_badge {
+		font-size: 10px;
+		white-space: nowrap;
+	}
+	.meta_row_bottom {
+		font-size: 10px;
+		line-height: 1.6;
+	}
+	.user_level, .review_stats {
+		word-break: keep-all;
+	}
 
-  /* ★ 핵심: PC 2열 → 모바일 1열 */
-  .ex_b_bottom_column {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-    gap: 28px !important;
-  }
-
-  .ex_bottom_left {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .ex_bottom_right {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-
-  /* 섹션 제목 */
-  .ex_section_header {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-
-  /* 스트릭 카드 */
-  .ex_challenger_card {
-    width: 100% !important;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .ex_challenger_info {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .ex_challenger_meta {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .meta_row_top,
-  .meta_row_bottom {
-    flex-wrap: wrap;
-  }
-
-  .ex_cheer_btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-
-  /* 트렌드 탭 */
-  .ex_curation_tab_bar {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .ex_curation_tab {
-    flex: 1 1 calc(50% - 6px);
-    min-width: 0;
-    padding: 8px 5px;
-    font-size: 11px;
-  }
-
-
-  /* 트렌드 카드 2열 → 1열 */
-  .ex_curation_grid {
-    width: 100%;
-    grid-template-columns: 1fr !important;
-  }
-
-  .ex_curation_card {
-    width: 100%;
-    max-width: 100%;
-  }
-
-
-  /* 가로 스크롤 방지 */
-  body {
-    overflow-x: hidden;
-  }
-  
-  /* 모바일 테마 버튼 2열 정리 */
-.ex_theme_btn {
-  flex: 1 1 calc(50% - 4px);
-  min-width: 0;
-  justify-content: space-between;
-}
-
-.ex_theme_btn:first-child {
-  flex-basis: 100%;
-}
-
-.theme_label {
-  min-width: 0;
-  font-size: 11px;
-  white-space: nowrap;
-}
-
-.theme_count {
-  flex-shrink: 0;
-  font-size: 10px;
-}
-
-/* 모바일 스트릭 카드 내부 정리 */
-.ex_challenger_info {
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.ex_challenger_meta {
-  overflow: hidden;
-}
-
-.meta_row_top {
-  align-items: center;
-}
-
-.ex_challenger_name {
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-.streak_badge {
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-.meta_row_bottom {
-  font-size: 10px;
-  line-height: 1.6;
-}
-
-.user_level,
-.review_stats {
-  word-break: keep-all;
-}
-
-/* 모바일 - 트렌드 섹션 헤더 정리 */
-.ex_bottom_right .ex_section_header {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.ex_bottom_right .ex_badge_blue {
-  align-self: flex-start;
-}
-
-.ex_curation_card .card_header {
-  width: 100%;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.ex_curation_card .mention_cnt {
-  white-space: nowrap;
-}
-
+	/* 모바일 - 트렌드 섹션 헤더 정리 */
+	.ex_bottom_right .ex_section_header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+	}
+	.ex_bottom_right .ex_badge_blue {
+		align-self: flex-start;
+	}
+	.ex_curation_card .card_header {
+		width: 100%;
+		justify-content: space-between;
+		gap: 8px;
+	}
+	.ex_curation_card .mention_cnt {
+		white-space: nowrap;
+	}
 }
 
 /* =========================================
    탐색 페이지 - 주간 유저 랭킹 Top 5
    ========================================= */
-
 .ex_weekly_ranking_section {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 22px 24px;
-  background-color: #ffffff;
-  border: 3px dashed #cbd5e1;
-  border-radius: 20px;
-  gap: 18px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 22px 24px;
+	background-color: #ffffff;
+	border: 3px dashed #cbd5e1;
+	border-radius: 20px;
+	gap: 18px;
 }
-
 
 /* 랭킹 영역 상단 */
 .ex_ranking_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
 }
 
 .ex_ranking_title_wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .icon_ranking {
-  font-size: 28px;
-  color: #f59e0b;
+	font-size: 28px;
+	color: #f59e0b;
 }
 
 .ex_ranking_title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
+	margin: 0;
+	font-size: 18px;
+	font-weight: 800;
+	color: #0f172a;
 }
 
 .ex_ranking_desc {
-  margin: 4px 0 0 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: #64748b;
+	margin: 4px 0 0 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #64748b;
 }
 
 .ex_ranking_badge {
-  flex-shrink: 0;
-  padding: 4px 9px;
-  font-size: 11px;
-  font-weight: 800;
-  color: #92400e;
-  background-color: #fef3c7;
-  border: 1px solid #fde68a;
-  border-radius: 7px;
+	flex-shrink: 0;
+	padding: 4px 9px;
+	font-size: 11px;
+	font-weight: 800;
+	color: #92400e;
+	background-color: #fef3c7;
+	border: 1px solid #fde68a;
+	border-radius: 7px;
 }
-
 
 /* =========================================
    랭킹 목록
    ========================================= */
-
 .ex_ranking_list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .ex_ranking_card {
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) 120px 120px;
-  align-items: center;
-  width: 100%;
-  padding: 13px 16px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  gap: 14px;
-  transition: all 0.2s ease;
+	display: grid;
+	grid-template-columns: 52px minmax(0, 1fr) 120px 120px;
+	align-items: center;
+	width: 100%;
+	padding: 13px 16px;
+	background-color: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 14px;
+	gap: 14px;
+	transition: all 0.2s ease;
 }
 
 .ex_ranking_card:hover {
-  background-color: #ffffff;
-  border-color: #cbd5e1;
+	background-color: #ffffff;
+	border-color: #cbd5e1;
 }
-
 
 /* 순위 */
 .ex_rank_number {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 38px;
-  height: 38px;
-  font-size: 14px;
-  font-weight: 900;
-  color: #475569;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 38px;
+	height: 38px;
+	font-size: 14px;
+	font-weight: 900;
+	color: #475569;
+	background-color: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
 }
-
 
 /* 1위 */
 .ex_ranking_card:first-child .ex_rank_number {
-  color: #92400e;
-  background-color: #fef3c7;
-  border-color: #fde68a;
+	color: #92400e;
+	background-color: #fef3c7;
+	border-color: #fde68a;
 }
-
 
 /* 2위 */
 .ex_ranking_card:nth-child(2) .ex_rank_number {
-  color: #475569;
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
+	color: #475569;
+	background-color: #f1f5f9;
+	border-color: #cbd5e1;
 }
-
 
 /* 3위 */
 .ex_ranking_card:nth-child(3) .ex_rank_number {
-  color: #9a3412;
-  background-color: #fff7ed;
-  border-color: #fed7aa;
+	color: #9a3412;
+	background-color: #fff7ed;
+	border-color: #fed7aa;
 }
-
 
 /* =========================================
    유저 정보
    ========================================= */
-
 .ex_rank_user {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  gap: 10px;
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	gap: 10px;
 }
 
 .ex_rank_profile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  overflow: hidden;
-  color: #94a3b8;
-  background-color: #e2e8f0;
-  border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	width: 42px;
+	height: 42px;
+	overflow: hidden;
+	color: #94a3b8;
+	background-color: #e2e8f0;
+	border-radius: 50%;
 }
 
 .ex_rank_profile img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .ex_rank_profile .material-symbols-outlined {
-  font-size: 24px;
+	font-size: 24px;
 }
 
 .ex_rank_user_info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  gap: 3px;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	gap: 3px;
 }
 
 .ex_rank_nickname {
-  overflow: hidden;
-  font-size: 14px;
-  font-weight: 800;
-  color: #0f172a;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: 800;
+	color: #0f172a;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .ex_rank_review_count {
-  font-size: 11px;
-  color: #64748b;
+	font-size: 11px;
+	color: #64748b;
 }
-
 
 /* =========================================
    작성률 / 평균 평점
    ========================================= */
-
 .ex_rank_stat {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 3px;
 }
 
 .ex_rank_stat_label {
-  font-size: 10px;
-  color: #94a3b8;
+	font-size: 10px;
+	color: #94a3b8;
 }
 
 .ex_rank_stat_value {
-  font-size: 13px;
-  font-weight: 800;
-  color: #334155;
+	font-size: 13px;
+	font-weight: 800;
+	color: #334155;
 }
-
 
 /* =========================================
    모바일 - 주간 유저 랭킹
    ========================================= */
+@media ( max-width : 767px) {
+	.ex_weekly_ranking_section {
+		padding: 16px;
+		border-radius: 16px;
+		gap: 16px;
+	}
 
-@media (max-width: 767px) {
+	/* 랭킹 헤더 */
+	.ex_ranking_header {
+		align-items: flex-start;
+	}
+	.ex_ranking_title_wrap {
+		align-items: flex-start;
+		min-width: 0;
+	}
+	.icon_ranking {
+		flex-shrink: 0;
+		font-size: 24px;
+	}
+	.ex_ranking_title {
+		font-size: 16px;
+	}
+	.ex_ranking_desc {
+		font-size: 11px;
+		word-break: keep-all;
+	}
+	.ex_ranking_badge {
+		font-size: 9px;
+		padding: 3px 6px;
+	}
 
-  .ex_weekly_ranking_section {
-    padding: 16px;
-    border-radius: 16px;
-    gap: 16px;
-  }
+	/* 랭킹 카드 */
+	.ex_ranking_card {
+		grid-template-columns: 42px minmax(0, 1fr);
+		padding: 12px;
+		gap: 10px;
+	}
 
+	/* 유저 프로필 */
+	.ex_rank_profile {
+		width: 38px;
+		height: 38px;
+	}
 
-  /* 랭킹 헤더 */
-  .ex_ranking_header {
-    align-items: flex-start;
-  }
-
-  .ex_ranking_title_wrap {
-    align-items: flex-start;
-    min-width: 0;
-  }
-
-  .icon_ranking {
-    flex-shrink: 0;
-    font-size: 24px;
-  }
-
-  .ex_ranking_title {
-    font-size: 16px;
-  }
-
-  .ex_ranking_desc {
-    font-size: 11px;
-    word-break: keep-all;
-  }
-
-  .ex_ranking_badge {
-    font-size: 9px;
-    padding: 3px 6px;
-  }
-
-
-  /* 랭킹 카드 */
-  .ex_ranking_card {
-    grid-template-columns: 42px minmax(0, 1fr);
-    padding: 12px;
-    gap: 10px;
-  }
-
-
-  /* 유저 프로필 */
-  .ex_rank_profile {
-    width: 38px;
-    height: 38px;
-  }
-
-
-  /* 작성률 / 평균 평점은 두 번째 줄로 이동 */
-  .ex_rank_stat {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    grid-column: 2;
-    width: 100%;
-    padding-top: 4px;
-    border-top: 1px dashed #e2e8f0;
-  }
-
-  .ex_rank_stat_label {
-    font-size: 10px;
-  }
-
-  .ex_rank_stat_value {
-    font-size: 12px;
-  }
-
+	/* 작성률 / 평균 평점은 두 번째 줄로 이동 */
+	.ex_rank_stat {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		grid-column: 2;
+		width: 100%;
+		padding-top: 4px;
+		border-top: 1px dashed #e2e8f0;
+	}
+	.ex_rank_stat_label {
+		font-size: 10px;
+	}
+	.ex_rank_stat_value {
+		font-size: 12px;
+	}
 }

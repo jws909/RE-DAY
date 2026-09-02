@@ -30,30 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //  상단 라이프스타일 테마 버튼 클릭 시 활성화 토글
     const themeButtons = document.querySelectorAll('.ex_theme_btn');
     themeButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function() {
             themeButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-        });
+        }
+        );
     });
-
-    // 스트릭 챌린저 응원 버튼 클릭 시 카운트 증가 효과
-    const cheerButtons = document.querySelectorAll('.ex_cheer_btn');
-    cheerButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const countSpan = this.querySelector('span:not(.material-symbols-outlined)');
-            if (!countSpan) return;
-			
-
-            const isLiked = this.classList.toggle('active');
-            let currentText = countSpan.textContent.trim();
-            let currentNum = parseInt(currentText.replace(/[^0-9]/g, ''), 10) || 0;
-
-            if (isLiked) {
-                countSpan.textContent = `응원 ${currentNum + 1}`;
-				countSpan.col
-            } else {
-                countSpan.textContent = `응원 ${Math.max(0, currentNum - 1)}`;
-            }
-        });
-    });
-});
+}
+);

@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import com.app.dto.member.WeeklyUserRankingDTO;
+import com.app.dto.member.StreakUserDTO;
 
 import java.time.LocalDate;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.app.dto.member.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.app.dto.member.MyPageStatsDTO;
 import com.app.service.member.MemberService;
 
@@ -32,20 +34,71 @@ public class MainPageController {
 	public String mainpage() {
 		return "mainpage/main";
 	}
-	// 탐색- 랭킹
+	
+	// ========================================
+	// 탐색 페이지
+	// - 주간 유저 랭킹 Top 5 조회
+	// - 연속 기록 스트릭 Top 5 조회
+	// - 현재 로그인 유저의 응원 여부 확인
+	// ========================================
 	@GetMapping("/explore")
-    public String explore(Model model) {
+	public String explore(
+	        Model model,
+	        HttpSession session) {
 
-        List<WeeklyUserRankingDTO> weeklyRanking =
-                memberService.getWeeklyUserRanking();
+	    // 주간 작성률 / 평점 Top 5
 
-        model.addAttribute(
-                "weeklyRanking",
-                weeklyRanking
-        );
+	    List<WeeklyUserRankingDTO> weeklyRanking =
+	            memberService.getWeeklyUserRanking();
 
-        return "mainpage/explore";
-    }
+	    model.addAttribute(
+	            "weeklyRanking",
+	            weeklyRanking
+	    );
+
+	    // 연속 기록 스트릭 Top 5
+
+	    List<StreakUserDTO> streakUsers =
+	            memberService.getTopStreakUsers();
+
+	    // 현재 로그인 유저 확인
+
+	    MemberDTO loginUser =
+	            (MemberDTO) session.getAttribute(
+	                    "loginUser"
+	            );
+
+	    // 로그인 상태인 경우
+	    // 각 스트릭 유저를 내가 응원했는지 확인
+	  
+	    if (loginUser != null) {
+
+	        String requestUserId =
+	                loginUser.getUserId();
+
+	        for (StreakUserDTO user : streakUsers) {
+	        	boolean cheered =
+	        	        memberService.isCheeredByUser(
+	        	                requestUserId,
+	        	                user.getUserId()
+	        	        );
+
+	        	user.setCheeredByMe(
+	        	        cheered
+	        	);
+	        }
+	    }
+
+	    // JSP로 스트릭 유저 목록 전달
+	
+	    model.addAttribute(
+	            "streakUsers",
+	            streakUsers
+	    );
+
+
+	    return "mainpage/explore";
+	}
 	
 	@GetMapping("/my")
 	public String my(
@@ -139,5 +192,44 @@ public class MainPageController {
 
 	    return "mainpage/my";
 
+	}
+	
+	// ========================================
+	// 탐색 페이지 - 응원 등록 / 취소
+	// - 실제 응원 처리는 Service에서 트랜잭션으로 처리
+	// ========================================
+	@PostMapping("/explore/cheer")
+	public String toggleCheer(
+	        @RequestParam("responseUserId") String responseUserId,
+	        HttpSession session) {
+
+	    // 현재 로그인 유저 확인
+
+	    MemberDTO loginUser =
+	            (MemberDTO) session.getAttribute("loginUser");
+
+	    // 로그인하지 않은 경우
+	    if (loginUser == null) {
+	        return "redirect:/member/signin";
+	    }
+
+	    String requestUserId =
+	            loginUser.getUserId();
+
+	    // 자기 자신에게 응원 방지
+
+	    if (requestUserId.equals(responseUserId)) {
+	        return "redirect:/RE:DAY/explore";
+	    }
+
+	    // 응원 등록 / 취소
+	    // - Service에서 트랜잭션 처리
+	    memberService.toggleCheer(
+	            requestUserId,
+	            responseUserId
+	    );
+
+
+	    return "redirect:/RE:DAY/explore";
 	}
 }

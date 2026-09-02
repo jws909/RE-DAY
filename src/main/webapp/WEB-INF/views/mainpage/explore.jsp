@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -81,34 +81,86 @@
 						평점이 아닌 <strong>매일 하루를 빼놓지 않고 기록</strong>하며 삶을 성실히 채워가는 유저들입니다.
 					</p>
 
-					<!-- 스트릭 챌린저 목록 -->
+
+					<%-- =========================================
+     탐색 페이지 - 연속 기록 스트릭 Top 5
+     - DB 조회 결과 반복 출력
+     ========================================= --%>
+
 					<div class="ex_challenger_list">
-						<div class="ex_challenger_card">
-							<div class="ex_challenger_info">
-								<!-- 좌측 스트릭 박스 -->
-								<div class="ex_streak_box">
-									<span class="material-symbols-outlined icon_flame">local_fire_department</span>
-									<span class="streak_day font-mono">28일</span>
-								</div>
-								<!-- 중앙 유저 메타 정보 -->
-								<div class="ex_challenger_meta">
-									<div class="meta_row_top">
-										<h3 class="ex_challenger_name">승북이</h3>
-										<span class="streak_badge">👑 28일 연속 기록</span>
+
+						<c:forEach var="user" items="${streakUsers}">
+
+							<div class="ex_challenger_card">
+
+								<div class="ex_challenger_info">
+
+									<%-- 좌측 스트릭 박스 --%>
+									<div class="ex_streak_box">
+
+										<span class="material-symbols-outlined icon_flame">
+											local_fire_department </span> <span class="streak_day font-mono">
+											${user.streakCount}일 </span>
+
 									</div>
-									<div class="meta_row_bottom">
-										<span class="user_level font-mono">Lv.10 2006년생 막내 팀장</span> <span
-											class="dot">•</span> <span class="review_stats">기록 28편
-											(서브 84개)</span>
+
+									<%-- 중앙 유저 메타 정보 --%>
+									<div class="ex_challenger_meta">
+
+										<div class="meta_row_top">
+
+											<h3 class="ex_challenger_name">${user.nickname}</h3>
+
+											<span class="streak_badge"> 👑 ${user.streakCount}일 연속
+												기록 </span>
+
+										</div>
+
+										<div class="meta_row_bottom">
+
+											<span class="user_level font-mono"> ${user.userLevel}
+											</span> <span class="dot"> • </span> <span class="review_stats">
+												기록 ${user.totalReviewCount}편 (서브 ${user.subReviewCount}개) ·
+												이번 주 ${user.weeklyReviewCount}일 </span>
+
+										</div>
+
+										<%-- 최근 태그 --%>
+										<c:if test="${not empty user.recentTags}">
+											<div class="recent_tag_row">
+
+												<span class="recent_tag_label"> 최근 태그
+													${user.recentTags} </span>
+
+											</div>
+										</c:if>
+
 									</div>
+
 								</div>
+
+								<%-- 우측 응원 버튼 --%>
+
+								<form
+									action="${pageContext.request.contextPath}/RE:DAY/explore/cheer"
+									method="post">
+
+									<input type="hidden" name="responseUserId"
+										value="${user.userId}">
+
+									<button type="submit"
+										class="ex_cheer_btn ${user.cheeredByMe ? 'active' : ''}">
+
+										<span class="material-symbols-outlined icon_heart">
+											favorite </span> <span> 응원 ${user.cheerCount} </span>
+
+									</button>
+								</form>
+
 							</div>
-							<!-- 우측 응원 버튼 -->
-							<button type="button" class="ex_cheer_btn">
-								<span class="material-symbols-outlined icon_heart">favorite</span>
-								<span>응원 128</span>
-							</button>
-						</div>
+
+						</c:forEach>
+
 					</div>
 
 					<!-- 스트릭 유도 배너 -->
@@ -169,123 +221,99 @@
 					</div>
 				</div>
 			</div>
-			    <%-- =========================================
+			<%-- =========================================
                  탐색 페이지 - 주간 유저 랭킹 Top 5
                  - 이번 주 작성률 / 평균 평점 기준
                  ========================================= --%>
-            <div class="ex_weekly_ranking_section">
+			<div class="ex_weekly_ranking_section">
 
-                <!-- 랭킹 영역 상단 -->
-                <div class="ex_ranking_header">
+				<!-- 랭킹 영역 상단 -->
+				<div class="ex_ranking_header">
 
-                    <div class="ex_ranking_title_wrap">
-                        <span class="material-symbols-outlined icon_ranking">
-                            social_leaderboard
-                        </span>
+					<div class="ex_ranking_title_wrap">
+						<span class="material-symbols-outlined icon_ranking">
+							social_leaderboard </span>
 
-                        <div>
-                            <h2 class="ex_ranking_title">
-                                주간 유저 랭킹 Top 5
-                            </h2>
+						<div>
+							<h2 class="ex_ranking_title">주간 유저 랭킹 Top 5</h2>
 
-                            <p class="ex_ranking_desc">
-                                이번 주 꾸준히 하루를 기록한 유저들의 작성률과 평균 평점입니다.
-                            </p>
-                        </div>
-                    </div>
+							<p class="ex_ranking_desc">이번 주 꾸준히 하루를 기록한 유저들의 작성률과 평균
+								평점입니다.</p>
+						</div>
+					</div>
 
-                    <span class="ex_ranking_badge font-mono">
-                        WEEKLY TOP 5
-                    </span>
+					<span class="ex_ranking_badge font-mono"> WEEKLY TOP 5 </span>
 
-                </div>
+				</div>
 
 
-                <!-- 주간 랭킹 목록 -->
-                <div class="ex_ranking_list">
+				<!-- 주간 랭킹 목록 -->
+				<div class="ex_ranking_list">
 
-                    <c:forEach var="user" items="${weeklyRanking}">
+					<c:forEach var="user" items="${weeklyRanking}">
 
-                        <div class="ex_ranking_card">
+						<div class="ex_ranking_card">
 
-                            <!-- 순위 -->
-                            <div class="ex_rank_number">
-                                ${user.ranking}
-                            </div>
+							<!-- 순위 -->
+							<div class="ex_rank_number">${user.ranking}</div>
 
 
-                            <!-- 유저 프로필 -->
-                            <div class="ex_rank_user">
+							<!-- 유저 프로필 -->
+							<div class="ex_rank_user">
 
-                                <div class="ex_rank_profile">
+								<div class="ex_rank_profile">
 
-                                    <c:choose>
+									<c:choose>
 
-                                        <c:when test="${not empty user.profileImg}">
-                                            <img src="${user.profileImg}"
-                                                 alt="${user.nickname} 프로필 이미지">
-                                        </c:when>
+										<c:when test="${not empty user.profileImg}">
+											<img src="${user.profileImg}" alt="${user.nickname} 프로필 이미지">
+										</c:when>
 
-                                        <c:otherwise>
-                                            <span class="material-symbols-outlined">
-                                                person
-                                            </span>
-                                        </c:otherwise>
+										<c:otherwise>
+											<span class="material-symbols-outlined"> person </span>
+										</c:otherwise>
 
-                                    </c:choose>
+									</c:choose>
 
-                                </div>
+								</div>
 
-                                <div class="ex_rank_user_info">
+								<div class="ex_rank_user_info">
 
-                                    <strong class="ex_rank_nickname">
-                                        ${user.nickname}
-                                    </strong>
+									<strong class="ex_rank_nickname"> ${user.nickname} </strong> <span
+										class="ex_rank_review_count font-mono"> 이번 주
+										${user.weeklyReviewCount}일 기록 </span>
 
-                                    <span class="ex_rank_review_count font-mono">
-                                        이번 주 ${user.weeklyReviewCount}일 기록
-                                    </span>
+								</div>
 
-                                </div>
-
-                            </div>
+							</div>
 
 
-                            <!-- 작성률 -->
-                            <div class="ex_rank_stat">
+							<!-- 작성률 -->
+							<div class="ex_rank_stat">
 
-                                <span class="ex_rank_stat_label">
-                                    작성률
-                                </span>
+								<span class="ex_rank_stat_label"> 작성률 </span> <strong
+									class="ex_rank_stat_value"> ${user.writingRate}% </strong>
 
-                                <strong class="ex_rank_stat_value">
-                                    ${user.writingRate}%
-                                </strong>
-
-                            </div>
+							</div>
 
 
-                            <!-- 평균 평점 -->
-                            <div class="ex_rank_stat">
+							<!-- 평균 평점 -->
+							<div class="ex_rank_stat">
 
-                                <span class="ex_rank_stat_label">
-                                    평균 평점
-                                </span>
+								<span class="ex_rank_stat_label"> 평균 평점 </span> <strong
+									class="ex_rank_stat_value"> ⭐ ${user.averageRating} </strong>
 
-                                <strong class="ex_rank_stat_value">
-                                    ⭐ ${user.averageRating}
-                                </strong>
+							</div>
 
-                            </div>
+						</div>
 
-                        </div>
+					</c:forEach>
 
-                    </c:forEach>
+				</div>
 
-                </div>
-
-            </div>
+			</div>
 		</div>
 	</div>
 </body>
+
 </html>
