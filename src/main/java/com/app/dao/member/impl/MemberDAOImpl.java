@@ -8,6 +8,9 @@ import com.app.dao.member.MemberDAO;
 import com.app.dto.member.MemberDTO;
 import com.app.dto.member.MyPageStatsDTO;
 
+import java.util.List;
+import com.app.dto.member.WeeklyUserRankingDTO;
+
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -108,4 +111,14 @@ public class MemberDAOImpl implements MemberDAO {
 		return user;
 	}
 
+    // ========================================
+    // 탐색 페이지 - 주간 유저 랭킹 Top 5 조회
+    // ========================================
+    @Override
+    public List<WeeklyUserRankingDTO> findWeeklyUserRanking() {
+
+        return sqlSessionTemplate.selectList(
+                "member_mapper.findWeeklyUserRanking"
+        );
+    }
 }

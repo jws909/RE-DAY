@@ -2,6 +2,10 @@ package com.app.service.member.impl;
 
 import java.io.IOException;
 
+import java.util.List;
+
+import com.app.dto.member.WeeklyUserRankingDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -194,5 +198,13 @@ public class MemberServiceImpl implements MemberService {
 		MemberDTO user = memberDAO.findUserInfoByUserId(userId);
 		return user;
 	}
+	 // ========================================
+    // 탐색 페이지 - 주간 유저 랭킹 Top 5 조회
+    // ========================================
+    @Override
+    public List<WeeklyUserRankingDTO> getWeeklyUserRanking() {
 
+        return memberDAO
+                .findWeeklyUserRanking();
+    }
 }

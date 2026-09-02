@@ -956,3 +956,291 @@ body {
 }
 
 }
+
+/* =========================================
+   탐색 페이지 - 주간 유저 랭킹 Top 5
+   ========================================= */
+
+.ex_weekly_ranking_section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 22px 24px;
+  background-color: #ffffff;
+  border: 3px dashed #cbd5e1;
+  border-radius: 20px;
+  gap: 18px;
+}
+
+
+/* 랭킹 영역 상단 */
+.ex_ranking_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.ex_ranking_title_wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon_ranking {
+  font-size: 28px;
+  color: #f59e0b;
+}
+
+.ex_ranking_title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.ex_ranking_desc {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.ex_ranking_badge {
+  flex-shrink: 0;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #92400e;
+  background-color: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 7px;
+}
+
+
+/* =========================================
+   랭킹 목록
+   ========================================= */
+
+.ex_ranking_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ex_ranking_card {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 120px 120px;
+  align-items: center;
+  width: 100%;
+  padding: 13px 16px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.ex_ranking_card:hover {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+}
+
+
+/* 순위 */
+.ex_rank_number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #475569;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+
+/* 1위 */
+.ex_ranking_card:first-child .ex_rank_number {
+  color: #92400e;
+  background-color: #fef3c7;
+  border-color: #fde68a;
+}
+
+
+/* 2위 */
+.ex_ranking_card:nth-child(2) .ex_rank_number {
+  color: #475569;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+
+/* 3위 */
+.ex_ranking_card:nth-child(3) .ex_rank_number {
+  color: #9a3412;
+  background-color: #fff7ed;
+  border-color: #fed7aa;
+}
+
+
+/* =========================================
+   유저 정보
+   ========================================= */
+
+.ex_rank_user {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.ex_rank_profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  color: #94a3b8;
+  background-color: #e2e8f0;
+  border-radius: 50%;
+}
+
+.ex_rank_profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ex_rank_profile .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.ex_rank_user_info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+
+.ex_rank_nickname {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ex_rank_review_count {
+  font-size: 11px;
+  color: #64748b;
+}
+
+
+/* =========================================
+   작성률 / 평균 평점
+   ========================================= */
+
+.ex_rank_stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.ex_rank_stat_label {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.ex_rank_stat_value {
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+
+/* =========================================
+   모바일 - 주간 유저 랭킹
+   ========================================= */
+
+@media (max-width: 767px) {
+
+  .ex_weekly_ranking_section {
+    padding: 16px;
+    border-radius: 16px;
+    gap: 16px;
+  }
+
+
+  /* 랭킹 헤더 */
+  .ex_ranking_header {
+    align-items: flex-start;
+  }
+
+  .ex_ranking_title_wrap {
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .icon_ranking {
+    flex-shrink: 0;
+    font-size: 24px;
+  }
+
+  .ex_ranking_title {
+    font-size: 16px;
+  }
+
+  .ex_ranking_desc {
+    font-size: 11px;
+    word-break: keep-all;
+  }
+
+  .ex_ranking_badge {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+
+  /* 랭킹 카드 */
+  .ex_ranking_card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    padding: 12px;
+    gap: 10px;
+  }
+
+
+  /* 유저 프로필 */
+  .ex_rank_profile {
+    width: 38px;
+    height: 38px;
+  }
+
+
+  /* 작성률 / 평균 평점은 두 번째 줄로 이동 */
+  .ex_rank_stat {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 2;
+    width: 100%;
+    padding-top: 4px;
+    border-top: 1px dashed #e2e8f0;
+  }
+
+  .ex_rank_stat_label {
+    font-size: 10px;
+  }
+
+  .ex_rank_stat_value {
+    font-size: 12px;
+  }
+
+}

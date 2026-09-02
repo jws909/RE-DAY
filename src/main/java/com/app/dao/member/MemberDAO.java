@@ -1,8 +1,10 @@
 package com.app.dao.member;
 
+import java.util.List;
+
 import com.app.dto.member.MemberDTO;
 import com.app.dto.member.MyPageStatsDTO;
-
+import com.app.dto.member.WeeklyUserRankingDTO;
 
 public interface MemberDAO {
 
@@ -54,6 +56,17 @@ public interface MemberDAO {
             String userId
     );
     
-    public MemberDTO findUserInfoByUserId(String userId);
 
+    // ========================================
+    // 회원 정보 조회
+    // ========================================
+    public MemberDTO findUserInfoByUserId(
+            String userId
+    );
+
+
+    // ========================================
+    // 탐색 페이지 - 주간 유저 랭킹 Top 5 조회
+    // ========================================
+    public List<WeeklyUserRankingDTO> findWeeklyUserRanking();
 }
