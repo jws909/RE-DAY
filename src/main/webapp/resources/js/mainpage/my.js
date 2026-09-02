@@ -6,7 +6,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     /* =========================
-       MY 페이지 탭 전환
+    MY 페이지 탭 전환
     ========================= */
 
     const tabs = document.querySelectorAll(".my_curation_tab");
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     /* =========================
-       오늘 하루 쓰기
+    오늘 하루 쓰기
     ========================= */
 
     const reviewWriteButton =
@@ -88,3 +88,45 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+    document.querySelector('.my_review_write').addEventListener('click', () => {
+        location.href = "/RE:DAY/review/write";
+    })
+
+
+
+/*통계표*/
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('/RE:DAY/member/my')
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                const stats = result.data;
+                
+                setStat('dailyCount', stats.dailyCount);
+                setStat('avgTotalRating', stats.avgTotalRating);
+                setStat('subCount', stats.subCount);
+                setStat('certifiedRate', stats.certifiedRate);
+            } else {
+                alert(result.message);
+                if (result.message.includes("로그인")) {
+                    location.href = "/login";
+                }
+            }
+        })
+        .catch(error => {
+            console.error("통신 실패:", error);
+        });
+});
+
+const setStat = (key, value) => {
+    const el = document.querySelector(`[data-stat="${key}"]`);
+    if (!el) return;
+
+    let displayValue = (value !== null && value !== undefined) ? value : 0;
+
+    if ((key === 'avgTotalRating' || key === 'certifiedRate') && typeof displayValue === 'number') {
+        displayValue = displayValue.toFixed(1);
+    }
+
+    el.textContent = displayValue;
+};

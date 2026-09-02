@@ -6,7 +6,7 @@
 <mapper namespace="like_mapper">
 
 	<select id="checkExists" parameterType="LikeRequestDTO"
-		resultType="_int">
+		resultType="int">
 		SELECT COUNT(*) FROM LIKES
 		WHERE USER_ID = #{userId} AND
 		REVIEW_ID = #{reviewId}
