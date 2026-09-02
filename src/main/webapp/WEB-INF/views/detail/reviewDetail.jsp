@@ -76,20 +76,29 @@
 				<!-- 우측 액션 버튼들 (좋아요, 공유, 수정/삭제) -->
 				<div class="flex items-center gap-2">
 					<!-- 좋아요 버튼 (비동기 AJAX / 폼 제출 지원) -->
-					<form action="${pageContext.request.contextPath}/review/like"
-						method="post" class="inline m-0" id="likeForm">
-						<input type="hidden" name="reviewId" value="${review.reviewId}" />
+					<!-- 좋아요 버튼 (LikeController 연동) -->
+					<form action="${pageContext.request.contextPath}/RE:DAY/like"
+						method="post" class="inline m-0" id="likeForm"
+						data-logged-in="${not empty sessionScope.loginUser}"
+						data-is-liked="${isLiked ? 'true' : 'false'}">
+
+						<!-- 백엔드 DTO(LikeRequestDTO) 매핑용 hidden inputs -->
+						<input type="hidden" name="reviewId" id="likeReviewId"
+							value="${review.reviewId}" /> <input type="hidden" name="userId"
+							id="likeUserId" value="${sessionScope.loginUser.userId}" />
+
 						<button type="submit" id="likeButton"
-							class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${isLiked ? 'bg-rose-50 border-rose-300 text-rose-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">
+							class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer 
+							${isLiked ? 'bg-rose-50 border-rose-300 text-rose-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">
 							<i
 								class="fa-solid fa-heart text-xs ${isLiked ? 'text-rose-500' : 'text-slate-400'}"></i>
-							<span>좋아요</span> <span id="likeCountSpan" class="font-mono">${empty likeCount ? 0 : likeCount}</span>
+							<span>좋아요</span> <span id="likeCountSpan" class="font-mono">
+							${empty review.likeCount ? (empty likeCount ? 0 : likeCount) : review.likeCount}</span>
 						</button>
 					</form>
 
 					<!-- 공유하기 버튼 (클립보드 URL 복사) -->
-					<button type="button" id="shareButton"
-						title="공유하기"
+					<button type="button" id="shareButton" title="공유하기"
 						class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer text-xs flex items-center justify-center">
 						<i class="fa-solid fa-share-nodes text-xs"></i>
 					</button>
@@ -381,8 +390,7 @@
 						<h3 class="text-lg font-bold text-slate-900">이 날의 세부 서브 리뷰
 							(${empty subReviews ? 0 : subReviews.size()}개)</h3>
 					</div>
-					<span class="text-xs text-slate-500 font-mono"> 1:N 세부 리뷰 카드
-						목록 </span>
+					<span class="text-xs text-slate-500 font-mono"> 목록 </span>
 				</div>
 
 				<!-- 서브 리뷰 카드 리스트 (SubReviewCard 컴포넌트 완벽 일치) -->
@@ -648,8 +656,7 @@
 											</c:choose>
 
 											<!-- 댓글 작성자 닉네임 -->
-											<span class="font-bold text-slate-800">
-												<c:choose>
+											<span class="font-bold text-slate-800"> <c:choose>
 													<c:when test="${not empty comment.nickname}">
 														<c:out value="${comment.nickname}" />
 													</c:when>
@@ -661,14 +668,17 @@
 
 											<!-- 댓글 작성자 레벨 (LV1~LV5) 뱃지 -->
 											<c:if test="${not empty comment.userLevel}">
-												<span class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
+												<span
+													class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
 													<c:out value="${comment.userLevel}" />
 												</span>
 											</c:if>
 
 											<!-- 댓글 작성자 스트릭(연속 기록) 뱃지 -->
-											<c:if test="${not empty comment.streakCount and comment.streakCount > 0}">
-												<span class="text-[10px] text-orange-600 bg-orange-50 px-1.5 py-0.2 rounded border border-orange-200 font-mono font-medium inline-flex items-center gap-0.5">
+											<c:if
+												test="${not empty comment.streakCount and comment.streakCount > 0}">
+												<span
+													class="text-[10px] text-orange-600 bg-orange-50 px-1.5 py-0.2 rounded border border-orange-200 font-mono font-medium inline-flex items-center gap-0.5">
 													<i class="fa-solid fa-fire text-orange-500 text-[9px]"></i>
 													<span>${comment.streakCount}일</span>
 												</span>
@@ -677,8 +687,8 @@
 
 										<div class="flex items-center gap-2">
 											<!-- 작성 시간 -->
-											<span class="text-[10px] text-slate-400 font-mono">
-												<c:out value="${comment.createdAt}" />
+											<span class="text-[10px] text-slate-400 font-mono"> <c:out
+													value="${comment.createdAt}" />
 											</span>
 
 											<!-- 작성자 본인 댓글 삭제 폼 -->

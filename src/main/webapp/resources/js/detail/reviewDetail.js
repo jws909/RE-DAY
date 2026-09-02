@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     initUserLevelBadge();
     initUserStreakBadge();
     initCommentCounter();
@@ -103,9 +103,9 @@ function copyCurrentUrl() {
     var url = window.location.href;
 
     if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(url).then(function () {
+        navigator.clipboard.writeText(url).then(function() {
             showToast('리뷰 링크가 클립보드에 복사되었습니다.');
-        }).catch(function () {
+        }).catch(function() {
             fallbackCopyText(url);
         });
     } else {
@@ -142,8 +142,8 @@ function fallbackCopyText(text) {
 
 document.addEventListener("DOMContentLoaded", function() {
     var shareButton = document.querySelector('#shareButton');
-	console.log("찾아낸 공유 버튼:", shareButton);
-	console.log("찾아낸 공유 버튼:", shareButton);
+    console.log("찾아낸 공유 버튼:", shareButton);
+    console.log("찾아낸 공유 버튼:", shareButton);
     if (shareButton) {
         shareButton.addEventListener('click', function() {
             copyCurrentUrl();
@@ -167,14 +167,14 @@ function showToast(message) {
     document.body.appendChild(toast);
 
     // 표시 애니메이션
-    setTimeout(function () {
+    setTimeout(function() {
         toast.classList.add('show');
     }, 50);
 
     // 2.5초 후 자동 소멸
-    setTimeout(function () {
+    setTimeout(function() {
         toast.classList.remove('show');
-        setTimeout(function () {
+        setTimeout(function() {
             if (toast.parentNode) {
                 toast.parentNode.removeChild(toast);
             }
@@ -192,7 +192,7 @@ function initCommentCounter() {
 
     if (!commentInput || !counterSpan) return;
 
-    commentInput.addEventListener('input', function () {
+    commentInput.addEventListener('input', function() {
         var currentLength = this.value.length;
         counterSpan.textContent = currentLength + ' / 500자';
 
@@ -206,7 +206,7 @@ function initCommentCounter() {
     });
 
     if (commentForm) {
-        commentForm.addEventListener('submit', function (e) {
+        commentForm.addEventListener('submit', function(e) {
             var content = commentInput.value.trim();
             if (!content) {
                 e.preventDefault();
@@ -228,48 +228,71 @@ function initLikeFormAjaxEnhancement() {
 
     if (!likeForm || !likeButton || !likeCountSpan) return;
 
-    likeForm.addEventListener('submit', function (e) {
-        // Fetch API 지원 시 AJAX로 부드럽게 상태 토글 (서버 응답에 따라 UI 업데이트)
-        if (window.fetch) {
-            e.preventDefault();
-            var formData = new FormData(likeForm);
+    likeForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // 기본 폼 제출 방지                                                       
 
-            fetch(likeForm.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(function (response) {
-                if (response.redirected) {
-                    window.location.href = response.url;
-                    return;
+        // 1. 로그인 여부 체크                                                                         
+        var isLoggedIn = likeForm.getAttribute('data-logged-in') === 'true';
+        if (!isLoggedIn) {
+            if (confirm('좋아요 기능은 로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) {
+                window.location.href = '/member/signin'; // 프로젝트 로그인 경로                       
+            }
+            return false;
+        }
+
+        // 2. 백엔드 DTO(LikeRequestDTO)에 맞춘 JSON 바디 생성                                         
+        var reviewId = document.getElementById('likeReviewId').value;
+        var userId = document.getElementById('likeUserId').value;
+
+        var requestData = {
+            reviewId: parseInt(reviewId, 10),
+            userId: userId
+        };
+
+        // 3. 현재 좋아요 상태 및 카운트 확인                                                          
+        var isLiked = likeForm.getAttribute('data-is-liked') === 'true';
+        var currentCount = parseInt(likeCountSpan.textContent, 10) || 0;
+
+        // 4. JSON 비동기 통신                                                                         
+        fetch(likeForm.action, {
+            method: 'POST', // LikeServiceImpl.insert 가 이미 토글(존재시 삭제, 미존재시 삽입)을 수행함
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('서버 응답 오류: ' + response.status);
                 }
                 return response.json();
             })
-            .then(function (data) {
-                if (data && typeof data.isLiked !== 'undefined') {
-                    // UI 상태 업데이트
-                    var heartIcon = likeButton.querySelector('i');
-                    likeCountSpan.textContent = data.likeCount;
+            .then(function(result) {
+                // ResponseResult { success: true, message: "성공", data: null }                           
+                if (result && result.success) {
+                    // UI 상태 반전 (토글)                                                                 
+                    isLiked = !isLiked;
+                    likeForm.setAttribute('data-is-liked', isLiked ? 'true' : 'false');
 
-                    if (data.isLiked) {
-                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-rose-50 border-rose-300 text-rose-600';
+                    var newCount = isLiked ? (currentCount + 1) : Math.max(0, currentCount - 1);
+                    likeCountSpan.textContent = newCount;
+
+                    var heartIcon = likeButton.querySelector('i');
+                    if (isLiked) {
+                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-rose-50 border-rose-300 text-rose-600';        
                         if (heartIcon) heartIcon.className = 'fa-solid fa-heart text-xs text-rose-500';
                     } else {
-                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-white border-slate-200 text-slate-700 hover:bg-slate-50';
+                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-white border-slate-200 text-slate-700 hover:bg-slate-50';                                                                                               
                         if (heartIcon) heartIcon.className = 'fa-solid fa-heart text-xs text-slate-400';
                     }
                 } else {
-                    // 표준 폼으로 재전송
-                    likeForm.submit();
+                    alert('좋아요 처리에 실패했습니다.');
                 }
             })
-            .catch(function () {
-                // 통신 실패 시 일반 Spring Form Submit으로 Fallback
-                likeForm.submit();
+            .catch(function(error) {
+                console.error('좋아요 처리 실패:', error);
+                alert('처리 중 오류가 발생했습니다.');
             });
-        }
     });
-}
+}                                               

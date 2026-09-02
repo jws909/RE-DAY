@@ -1,8 +1,5 @@
 package com.app.controller.review;
 
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.review.DailyReviewFormDTO;
+import com.app.service.member.MemberService;
 import com.app.service.review.CommentService;
 import com.app.service.review.ReviewService;
 import com.app.util.DateUtil;
@@ -25,6 +23,9 @@ public class ReviewController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	@Autowired
+	MemberService memberService;
 
 	@GetMapping("/RE:DAY/review/write")
 	public String writeReview() {
