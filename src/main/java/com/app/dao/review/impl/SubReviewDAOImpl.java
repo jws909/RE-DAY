@@ -15,9 +15,13 @@ public class SubReviewDAOImpl implements SubReviewDAO {
     @Autowired
     SqlSessionTemplate sqlSessionTemplate;
 
-    // 서브 리뷰 저장
+
+    /* =========================================
+       서브 리뷰 저장
+    ========================================= */
     @Override
-    public int saveSubReview(SubReviewDTO saveDTO) {
+    public int saveSubReview(
+            SubReviewDTO saveDTO) {
 
         int result =
                 sqlSessionTemplate.insert(
@@ -28,7 +32,10 @@ public class SubReviewDAOImpl implements SubReviewDAO {
         return result;
     }
 
-    // MY 페이지 - 데일리 기록별 서브 리뷰 조회
+
+    /* =========================================
+       MY 페이지 - 데일리 기록별 서브 리뷰 조회
+    ========================================= */
     @Override
     public List<SubReviewDTO> findSubReviewsByReviewId(
             Long reviewId) {
@@ -39,7 +46,10 @@ public class SubReviewDAOImpl implements SubReviewDAO {
         );
     }
 
-    // MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+
+    /* =========================================
+       MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+    ========================================= */
     @Override
     public List<SubReviewDTO> findSubReviewsByUserId(
             String userId) {
@@ -49,4 +59,20 @@ public class SubReviewDAOImpl implements SubReviewDAO {
                 userId
         );
     }
+
+
+    /* =========================================
+       MY 페이지 - 데일리 리뷰 삭제용
+       해당 리뷰의 서브 리뷰 전체 삭제
+    ========================================= */
+    @Override
+    public int deleteSubReviewsByReviewId(
+            long reviewId) {
+
+        return sqlSessionTemplate.delete(
+                "review_mapper.deleteSubReviewsByReviewId",
+                reviewId
+        );
+    }
+
 }

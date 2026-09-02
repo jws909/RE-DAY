@@ -18,6 +18,7 @@ import com.app.util.FileManager;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+
     @Autowired
     MemberDAO memberDAO;
 
@@ -70,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     // ========================================
-    // 프로필 이미지 변경
+    // 프로필 이미지 저장
     // ========================================
     @Override
     public String updateProfileImage(
@@ -115,7 +116,8 @@ public class MemberServiceImpl implements MemberService {
 
 
             // ========================================
-            // 4. 로그인 사용자 DTO 변경
+            // 4. 로그인 사용자 DTO에
+            //    새 프로필 이미지 URL 저장
             // ========================================
             loginUser.setProfileImg(
                     profileImg
@@ -123,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
 
 
             // ========================================
-            // 5. USERS 테이블 변경
+            // 5. USERS 테이블 PROFILE_IMG 변경
             // ========================================
             int memberResult =
                     memberDAO.updateProfileImg(
@@ -139,6 +141,9 @@ public class MemberServiceImpl implements MemberService {
             }
 
 
+            // ========================================
+            // 변경된 프로필 이미지 URL 반환
+            // ========================================
             return profileImg;
 
 
@@ -156,7 +161,21 @@ public class MemberServiceImpl implements MemberService {
 
 
     // ========================================
-    // MY 페이지 통계
+    // 프로필 정보 수정
+    // 현재 단계에서는 닉네임 수정
+    // ========================================
+    @Override
+    public int updateProfile(
+            MemberDTO memberDTO) {
+
+        return memberDAO.updateProfile(
+                memberDTO
+        );
+    }
+
+
+    // ========================================
+    // MY 페이지 통계 조회
     // ========================================
     @Override
     public MyPageStatsDTO getMyPageStats(
@@ -167,4 +186,5 @@ public class MemberServiceImpl implements MemberService {
                         userId
                 );
     }
+
 }
