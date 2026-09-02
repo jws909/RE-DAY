@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,10 +29,49 @@
 					전자기기/탑승한 차량 등 세부 서브 리뷰를 함께 남겨보세요.</div>
 			</div>
 			<div class="mp_top_right_column">
-				<button type="button" id="mp_review_write">
-					<span class="material-symbols-outlined">add</span>오늘의 하루 리뷰 작성하기
-				</button>
-			</div>
+
+    <c:choose>
+
+        <%-- 로그인하지 않은 상태 --%>
+        <c:when test="${empty sessionScope.loginUser}">
+
+            <button
+                type="button"
+                id="mp_review_write"
+                onclick="location.href='${pageContext.request.contextPath}/member/signin'">
+
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+
+                오늘의 하루 리뷰 작성하기
+
+            </button>
+
+        </c:when>
+
+
+        <%-- 로그인한 상태 --%>
+        <c:otherwise>
+
+            <button
+                type="button"
+                id="mp_review_write"
+                onclick="location.href='${pageContext.request.contextPath}/review/write'">
+
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+
+                오늘의 하루 리뷰 작성하기
+
+            </button>
+
+        </c:otherwise>
+
+    </c:choose>
+
+</div>
 		</div>
 		<div class="mp_bottom_column">
 			<div class="mp_bottom_main">

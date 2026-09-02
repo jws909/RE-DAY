@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="stat_mapper">
+
+	<select id="dailyCount" parameterType="MyProfileStatsDTO"
+		resultType="long">
+		SELECT COUNT(*) FROM DAILY_REVIEWS
+		WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="avgTotalRating" parameterType="MyProfileStatsDTO"
+		resultType="Double">
+		SELECT AVG(TOTAL_RATING) FROM DAILY_REVIEWS
+		WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="subCount" parameterType="MyProfileStatsDTO"
+		resultType="long">
+		SELECT COUNT(*)
+		FROM DAILY_REVIEWS D JOIN SUB_REVIEWS S
+		ON D.REVIEW_ID = S.REVIEW_ID
+		WHERE D.USER_ID = #{userId}
+	</select>
+
+	<select id="certifiedRate" parameterType="MyProfileStatsDTO"
+		resultType="double">
+		SELECT
+		ROUND((SUM(CASE WHEN S.is_certified = 'Y' THEN 1 ELSE 0 END) * 100.0) / NULLIF(COUNT(*), 0),2)
+		FROM DAILY_REVIEWS D
+		JOIN SUB_REVIEWS S 
+		ON D.review_id = S.review_id
+		WHERE D.user_id = #{userId}
+	</select>
+</mapper>

@@ -1,5 +1,8 @@
 package com.app.controller.review;
 
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +17,7 @@ import com.app.service.member.MemberService;
 import com.app.service.review.CommentService;
 import com.app.service.review.ReviewService;
 import com.app.util.DateUtil;
-
+import com.app.dto.member.MemberDTO;
 @Controller
 public class ReviewController {
 	
@@ -28,9 +31,16 @@ public class ReviewController {
 	MemberService memberService;
 
 	@GetMapping("/RE:DAY/review/write")
-	public String writeReview() {
-		
-		return "write/writeReview";
+	public String writeReview(HttpSession session) {
+
+	    MemberDTO loginUser =
+	            (MemberDTO) session.getAttribute("loginUser");
+
+	    if (loginUser == null) {
+	        return "redirect:/member/signin";
+	    }
+
+	    return "write/writeReview";
 	}
 	
 	@PostMapping("/review/write")

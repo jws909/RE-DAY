@@ -7,15 +7,44 @@ import com.app.dto.member.MyPageStatsDTO;
 
 public interface MemberService {
 
-    public MemberDTO login(MemberDTO memberDTO);
+    // ========================================
+    // 로그인
+    // ========================================
+    public MemberDTO login(
+            MemberDTO memberDTO
+    );
 
+
+    // ========================================
+    // 이메일 중복 확인
+    // ========================================
+    public boolean isEmailDuplicated(
+            String email
+    );
+
+
+    // ========================================
+    // 회원가입
+    // ========================================
+    public int signup(
+            MemberDTO memberDTO
+    );
+
+
+    // ========================================
     // 프로필 이미지 저장
+    // ========================================
     public String updateProfileImage(
             MemberDTO loginUser,
             MultipartFile profileImageFile
     );
 
+
+    // ========================================
     // MY 페이지 통계 조회
-    public MyPageStatsDTO getMyPageStats(String userId);
+    // ========================================
+    public MyPageStatsDTO getMyPageStats(
+            String userId
+    );
 
 }
