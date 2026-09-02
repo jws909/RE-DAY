@@ -1,5 +1,7 @@
 package com.app.controller.member;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.member.MemberDTO;
+import com.app.dto.member.WeekRateDTO;
 import com.app.service.member.MemberService;
+import com.app.service.member.WeekRateService;
 
 
 @Controller
@@ -23,6 +28,9 @@ public class MemberController {
 
     @Autowired
     MemberService memberService;
+    
+    @Autowired
+    WeekRateService weekRateService;
 
 
     // ========================================
@@ -685,6 +693,17 @@ public class MemberController {
 
         // 로그인 페이지 이동
         return "redirect:/member/signin";
+    }
+    
+    @GetMapping("/mypage/week-rate")
+    @ResponseBody
+    public List<WeekRateDTO> getWeekRate(HttpSession session) {
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return null; 
+        }
+        
+        return weekRateService.WeekRate(loginUser.getUserId());
     }
 
 }

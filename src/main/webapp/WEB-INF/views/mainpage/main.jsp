@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -30,48 +30,38 @@
 			</div>
 			<div class="mp_top_right_column">
 
-    <c:choose>
+				<c:choose>
 
-        <%-- 로그인하지 않은 상태 --%>
-        <c:when test="${empty sessionScope.loginUser}">
+					<%-- 로그인하지 않은 상태 --%>
+					<c:when test="${empty sessionScope.loginUser}">
 
-            <button
-                type="button"
-                id="mp_review_write"
-                onclick="location.href='${pageContext.request.contextPath}/member/signin'">
+						<button type="button" id="mp_review_write"
+							onclick="location.href='${pageContext.request.contextPath}/member/signin'">
 
-                <span class="material-symbols-outlined">
-                    add
-                </span>
+							<span class="material-symbols-outlined"> add </span> 오늘의 하루 리뷰
+							작성하기
 
-                오늘의 하루 리뷰 작성하기
+						</button>
 
-            </button>
-
-        </c:when>
+					</c:when>
 
 
-        <%-- 로그인한 상태 --%>
-        <c:otherwise>
+					<%-- 로그인한 상태 --%>
+					<c:otherwise>
 
-            <button
-                type="button"
-                id="mp_review_write"
-                onclick="location.href='${pageContext.request.contextPath}/review/write'">
+						<button type="button" id="mp_review_write"
+							onclick="location.href='${pageContext.request.contextPath}/review/write'">
 
-                <span class="material-symbols-outlined">
-                    add
-                </span>
+							<span class="material-symbols-outlined"> add </span> 오늘의 하루 리뷰
+							작성하기
 
-                오늘의 하루 리뷰 작성하기
+						</button>
 
-            </button>
+					</c:otherwise>
 
-        </c:otherwise>
+				</c:choose>
 
-    </c:choose>
-
-</div>
+			</div>
 		</div>
 		<div class="mp_bottom_column">
 			<div class="mp_bottom_main">
@@ -173,25 +163,29 @@
 			<div class="mp_bottom_side">
 				<!-- 하루 평점 통계표 -->
 				<div class="mp_day_rating_static">
-					<div class="day_rating_header">
+					<a class="day_rating_header"
+						href="${pageContext.request.contextPath}/RE:DAY/my">
 						<div class="day_rating_title">
 							<span class="material-symbols-outlined symbol1">license</span>
 							<h4 class="text-sm font-bold">내 하루 평점 통계</h4>
 							<span class="material-symbols-outlined">chevron_right</span>
-						</div>
-						<span class="day_rating_sub_text">최근 7일</span>
-					</div>
+						</div> <span class="day_rating_sub_text">최근 7일</span>
+					</a>
 					<div class="average_daily_score_card">
 						<div class="score_info_left">
 							<span class="score_label">이번 주 평균 하루 점수</span>
 							<div class="score_val_wrapper">
-								<span class="score_main font-mono">n</span> <span
-									class="score_total font-mono">/ n</span>
+								<!-- 평균 점수와 만점(5.0)을 동적으로 넣을 수 있게 클래스 추가 -->
+								<span class="score_main font-mono">0.0</span> <span
+									class="score_total font-mono">/ 5.0</span>
 							</div>
 						</div>
 						<div class="score_info_right">
-							<span class="score_badge">+n점 상승 ↗</span> <span
-								class="sub_review_cnt">서브 리뷰 n개 등록</span>
+							<!-- 상승 점수와 서브 리뷰 개수 영역에 클래스 지정 -->
+							<span class="score_badge stat_diff">+0점 상승 ↗</span> <span
+								class="sub_review_cnt">서브 리뷰 <span
+								class="sub_review_count_val">0</span>개 등록
+							</span>
 						</div>
 					</div>
 					<div class="weekly_chart_wrapper">

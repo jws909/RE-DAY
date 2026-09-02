@@ -161,6 +161,8 @@
 	align-items: center;
 	padding: 8px;
 	border-bottom: 1px solid #CBD5E1;
+	text-decoration: none;
+	color: #000000;
 }
 
 .day_rating_title{
@@ -242,7 +244,8 @@
 
 /* 하단 7일 바 차트 */
 .weekly_chart_wrapper {
-	margin-top: 15px;
+	width: 90%;
+	margin: 15px auto 0 auto;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
@@ -257,11 +260,11 @@
 }
 
 .chart_bars_container {
-	height: 56px;
+	height: 90px;
 	background-color: #F8FAFC;
 	border: 1px solid #E2E8F0;
 	border-radius: 8px;
-	padding: 6px 8px 0 8px;
+	padding: 10px 8px 0 8px;
 	display: flex;
 	align-items: flex-end;
 	justify-content: space-between;

@@ -58,10 +58,15 @@
             type="com.app.dto.member.MyPageStatsDTO"
             alias="MyPageStatsDTO" />
             
-        <typeAlias
-            type="com.app.dto.member.MyProfileStatsDTO"
-            alias="MyProfileStatsDTO" />
+         <typeAlias
+            type="com.app.dto.member.WeekRateDTO"
+            alias="WeekRateDTO" />
 
     </typeAliases>
+    
+    <typeHandlers>
+			<typeHandler
+				handler="org.apache.ibatis.type.LocalDateTypeHandler" />
+		</typeHandlers>
 
 </configuration>

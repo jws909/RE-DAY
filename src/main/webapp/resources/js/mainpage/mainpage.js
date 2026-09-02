@@ -94,3 +94,61 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+/* 최근 7일 평점 통계 및 바 차트 비동기 렌더링 */
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('/member/mypage/week-rate')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            if (!data || data.length === 0) return;
+
+            var totalScoreSum = 0;
+            var validDaysCount = 0;
+            var bars = document.querySelectorAll('.chart_bars_container .bar_item');
+            var weekDaysLabels = document.querySelectorAll('.week_days_label span');
+
+            data.forEach(function(item, index) {
+                if (index < bars.length) {
+                    var rating = item.totalRating || 0.0;
+                    var heightPercent = (rating / 5.0) * 100;
+
+                    // 바 높이 및 점수 데이터 셋팅
+                    bars[index].style.height = heightPercent + "%";
+                    bars[index].setAttribute("data-score", rating.toFixed(1));
+
+                    // 날짜 데이터를 요일로 변환하여 라벨 변경
+                    if (item.reviewDate) {
+                        var dateObj = new Date(item.reviewDate);
+                        var dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                        if (!isNaN(dateObj.getDay())) {
+                            weekDaysLabels[index].textContent = dayNames[dateObj.getDay()];
+                        }
+                    }
+
+                    totalScoreSum += rating;
+                    validDaysCount++;
+                }
+            });
+
+            // 이번 주 평균 점수 계산 후 화면에 반영
+			// 평균 점수 반영
+			var averageScore = validDaysCount > 0 ? (totalScoreSum / validDaysCount).toFixed(1) : "0.0";
+			var scoreMainEl = document.querySelector('.score_main');
+			if (scoreMainEl) {
+			    scoreMainEl.textContent = averageScore;
+			}
+
+			// 만점 고정 또는 동적 처리 (5점 만점이므로 " / 5.0"으로 세팅)
+			var scoreTotalEl = document.querySelector('.score_total');
+			if (scoreTotalEl) {
+			    scoreTotalEl.textContent = " / 5.0";
+			}
+
+			// 서브 리뷰 개수나 증감 수치가 데이터에 있다면 여기서 함께 렌더링 가능
+        })
+        .catch(function(error) {
+            console.error('통계 데이터를 불러오는 중 오류 발생:', error);
+        });
+});
