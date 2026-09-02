@@ -96,7 +96,7 @@
 
 					<!-- 작성자 본인일 경우 수정 / 삭제 버튼 -->
 					<c:if
-						test="${not empty sessionScope.loginUser and (sessionScope.loginUser.userId eq review.userId or sessionScope.loginUser.user_id eq review.userId)}">
+						test="${not empty sessionScope.loginUser and (sessionScope.loginUser.userId eq review.userId or sessionScope.loginUser.userId eq review.userId)}">
 						<div
 							class="flex items-center gap-1.5 pl-2 border-l border-slate-300">
 							<!-- 수정 이동 -->
@@ -683,7 +683,7 @@
 
 											<!-- 작성자 본인 댓글 삭제 폼 -->
 											<c:if
-												test="${not empty sessionScope.loginUser and (sessionScope.loginUser.userId eq comment.userId or sessionScope.loginUser.user_id eq comment.userId)}">
+												test="${not empty sessionScope.loginUser and (sessionScope.loginUser.userId eq comment.userId or sessionScope.loginUser.userId eq comment.userId)}">
 												<form
 													action="${pageContext.request.contextPath}/comment/delete"
 													method="post" class="inline m-0"
