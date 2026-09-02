@@ -27,13 +27,11 @@
 <%-- MY 페이지 JavaScript --%>
 
 <script src="${pageContext.request.contextPath}/js/mainpage/my.js">
-
+	
 </script>
 
 <%-- =========================================
-
          Material Symbols 아이콘 폰트
-
     ========================================= --%>
 
 <link rel="stylesheet"
@@ -41,119 +39,63 @@
 
 </head>
 
-
-
 <body>
-
 	<%-- =========================================
-
          상단 네비게이션 바
-
     ========================================= --%>
 
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
-
-
-
 	<div class="my_container">
 
-
-
 		<%--상단 프로필 & 상태 영역--%>
-
 		<div class="my_top_column">
 
-
-
 			<%-- 프로필 / 액션 버튼 영역 --%>
-
 			<div class="my_profile_wrapper">
 
 
 
 				<%-- 프로필 정보--%>
-
 				<div class="my_challenger_card">
-
 					<div class="my_challenger_info">
+						<%-- =========================================
+     MY 페이지 프로필 이미지
+     - MY 페이지에서는 프로필 이미지만 표시
+     - 이미지 변경은 프로필 수정 페이지에서만 가능
+========================================= --%>
+						<div class="my_avatar_wrapper">
+							<div class="my_avatar_box">
+								<c:choose>
+									<%-- 프로필 이미지가 있는 경우 --%>
+									<c:when test="${not empty loginUser.profileImg}">
+										<%-- 실제 프로필 이미지 --%>
+										<img
+											src="${pageContext.request.contextPath}${loginUser.profileImg}"
+											alt="프로필 이미지"
+											onerror="
+                this.style.display='none';
+                this.nextElementSibling.style.display='flex';
+                    ">
+										<%-- 이미지 로드 실패 시 기본 프로필 --%>
+										<div class="my_avatar_default" style="display: none;">👤</div>
+									</c:when>
 
+									<%-- 프로필 이미지가 없는 경우 --%>
+									<c:otherwise>
 
+										<%-- 기본 프로필 --%>
+										<div class="my_avatar_default">👤</div>
 
-						<%-- ========================프로필 이미지 변경 =================== --%>
+									</c:otherwise>
 
-						<form id="profileImageForm"
-							action="${pageContext.request.contextPath}/member/profile/image"
-							method="post" enctype="multipart/form-data">
-
-							<div class="my_avatar_wrapper">
-
-								<label for="profileImageInput" class="my_avatar_box"> <c:choose>
-
-										<%-- 프로필 이미지 경로가 있는 경우 --%>
-
-										<c:when test="${not empty loginUser.profileImg}">
-
-											<%-- 실제 프로필 이미지 --%>
-
-											<img id="profilePreview"
-												src="${pageContext.request.contextPath}${loginUser.profileImg}"
-												alt="프로필 이미지"
-												onerror="
-
-                                                    this.style.display='none';
-
-                                                    document.getElementById('profileDefault').style.display='flex';
-
-                                                ">
-
-											<%-- 이미지 파일을 불러오지 못한 경우 --%>
-
-											<div id="profileDefault" style="display: none;">👤</div>
-
-										</c:when>
-
-
-
-										<%-- 프로필 이미지 경로가 없는 경우 --%>
-
-										<c:otherwise>
-
-											<%-- 기본 프로필 --%>
-
-											<div id="profileDefault">👤</div>
-
-											<%-- 이미지 선택 후 미리보기용 --%>
-
-											<img id="profilePreview" src="" alt="프로필 이미지"
-												style="display: none;">
-
-										</c:otherwise>
-
-									</c:choose> <%-- 프로필 이미지 변경 카메라 아이콘 --%> <span
-									class="material-symbols-outlined my_avatar_camera">
-
-										photo_camera </span>
-
-								</label>
-
-
-
-								<%-- 실제 파일 선택 input --%>
-
-								<input type="file" id="profileImageInput"
-									name="profileImageFile" accept="image/" hidden>
-
+								</c:choose>
 							</div>
-
-						</form>
-
+						</div>
 
 
 						<%-- =========================================
-
-                             로그인 회원 정보
-
-                        ========================================= --%>
+     로그인 회원 정보
+========================================= --%>
 
 						<div class="my_meta_content">
 
@@ -1479,144 +1421,21 @@
 
 								</c:if>
 
-
-
-
-
 								<%-- =========================================
-
                                      좋아요한 리뷰 - 카드 하단
-
                                 ========================================= --%>
-
 								<div class="my_daily_card_footer">
-
 									<a
 										href="${pageContext.request.contextPath}/RE:DAY/review/detail/${rev.reviewId}"
 										class="my_daily_detail_link"> 상세보기 → </a>
-
 								</div>
-
 							</article>
-
 						</c:forEach>
-
 					</c:otherwise>
-
 				</c:choose>
-
 			</div>
-
 		</div>
-
 	</div>
-
-
-
-
-
-	<%-- =========================================
-
-         프로필 이미지 선택 / 미리보기 / 자동 저장
-
-    ========================================= --%>
-
-	<script>
-
-		document.addEventListener("DOMContentLoaded", function() {
-
-			const profileImageInput = document
-
-					.getElementById("profileImageInput");
-
-			const profileImageForm = document
-
-					.getElementById("profileImageForm");
-
-			/ 프로필 이미지 input이 있을 때만 이벤트 연결 /
-
-			if (profileImageInput && profileImageForm) {
-
-				profileImageInput.addEventListener("change", function() {
-
-					const file = this.files[0];
-
-					/ 파일 선택을 취소한 경우 /
-
-					if (!file) {
-
-						return;
-
-					}
-
-					/ 이미지 파일인지 확인 /
-
-					if (!file.type.startsWith("image/")) {
-
-						alert("이미지 파일만 선택할 수 있습니다.");
-
-						this.value = "";
-
-						return;
-
-					}
-
-					/ 프로필 이미지 최대 10MB 제한 /
-
-					if (file.size > 10  1024  1024) {
-
-						alert("프로필 이미지는 10MB 이하만 가능합니다.");
-
-						this.value = "";
-
-						return;
-
-					}
-
-					const reader = new FileReader();
-
-					/ 이미지 미리보기 후 자동 저장 /
-
-					reader.onload = function(e) {
-
-						const preview = document
-
-								.getElementById("profilePreview");
-
-						const defaultAvatar = document
-
-								.getElementById("profileDefault");
-
-						if (preview) {
-
-							preview.src = e.target.result;
-
-							preview.style.display = "block";
-
-						}
-
-						if (defaultAvatar) {
-
-							defaultAvatar.style.display = "none";
-
-						}
-
-						/ 미리보기 후 프로필 이미지 자동 저장 /
-
-						profileImageForm.submit();
-
-					};
-
-					reader.readAsDataURL(file);
-
-				});
-
-			}
-
-		});
-
-	</script>
-
 </body>
 
 </html>

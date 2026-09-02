@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.member.MemberDTO;
@@ -196,6 +197,8 @@ public class MemberController {
     @PostMapping("/profile/edit")
     public String updateProfile(
             @ModelAttribute MemberDTO memberDTO,
+            @RequestParam(value = "profileImageFile", required = false)
+            MultipartFile profileImageFile,
             HttpSession session) {
 
         // 현재 로그인 회원 정보
@@ -246,8 +249,20 @@ public class MemberController {
         loginUser.setNickname(
                 memberDTO.getNickname()
         );
+        //프로필 이미지 변경 - 새이미지를 선택한 경우에만 변경
+        if (profileImageFile != null
+                && !profileImageFile.isEmpty()) {
 
+            String profileImg =
+                    memberService.updateProfileImage(
+                            loginUser,
+                            profileImageFile);
+            
+         // 변경된 이미지 경로를 세션에도 바로 반영
+            loginUser.setProfileImg(profileImg);
+        }
 
+        //최종 로그인 회원 정보 세션 갱신
         session.setAttribute(
                 "loginUser",
                 loginUser
