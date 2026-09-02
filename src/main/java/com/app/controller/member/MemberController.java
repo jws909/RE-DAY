@@ -577,6 +577,8 @@ public class MemberController {
     @PostMapping("/profile/edit")
     public String updateProfile(
             @ModelAttribute MemberDTO memberDTO,
+            @RequestParam(value = "profileImageFile", required = false)
+            MultipartFile profileImageFile,
             HttpSession session) {
 
 
@@ -638,10 +640,23 @@ public class MemberController {
         loginUser.setNickname(
                 memberDTO.getNickname()
         );
+        //프로필 이미지 변경 - 새이미지를 선택한 경우에만 변경
+        if (profileImageFile != null
+                && !profileImageFile.isEmpty()) {
 
+            String profileImg =
+                    memberService.updateProfileImage(
+                            loginUser,
+                            profileImageFile);
+            
+         // 변경된 이미지 경로를 세션에도 바로 반영
+            loginUser.setProfileImg(profileImg);
+        }
 
         // ========================================
         // 변경된 회원 정보 세션에 다시 저장
+        // - 닉네임
+        // - 프로필 이미지
         // ========================================
         session.setAttribute(
                 "loginUser",

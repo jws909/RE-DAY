@@ -24,19 +24,16 @@
 			<div class="w-9 h-9 flex items-center justify-center">
 				<img
 					src="${pageContext.request.contextPath}/images/logo/RE_DAY_LOGO.png"
-					class="w-full h-full object-contain"
-					alt="RE:DAY 로고" />
+					class="w-full h-full object-contain" alt="RE:DAY 로고" />
 			</div>
 
 			<div>
 
 				<div class="flex items-center gap-1.5">
 
-					<span class="flex items-center">
-						<img
-							src="${pageContext.request.contextPath}/images/logo/RE_DAY_TITLE.png"
-							class="h-5 sm:h-6 w-auto object-contain"
-							alt="RE:DAY" />
+					<span class="flex items-center"> <img
+						src="${pageContext.request.contextPath}/images/logo/RE_DAY_TITLE.png"
+						class="h-5 sm:h-6 w-auto object-contain" alt="RE:DAY" />
 					</span>
 
 					<!-- 모바일에서는 BETA 숨김 -->
@@ -44,15 +41,13 @@
 						class="hidden sm:inline bg-blue-50 text-blue-700 text-[10px]
 							   font-mono font-bold px-1.5 py-0.5 rounded
 							   border border-blue-200">
-						BETA
-					</span>
+						BETA </span>
 
 				</div>
 
 				<!-- 모바일에서는 설명 숨김 -->
-				<p class="text-[10px] text-slate-500 hidden sm:block">
-					하루 & 라이프 리뷰 플랫폼
-				</p>
+				<p class="text-[10px] text-slate-500 hidden sm:block">하루 & 라이프
+					리뷰 플랫폼</p>
 
 			</div>
 
@@ -73,8 +68,7 @@
 					   text-slate-600 hover:text-slate-900
 					   hover:bg-slate-100 border-transparent">
 
-				<i class="fa-regular fa-calendar-days"></i>
-				<span>피드</span>
+				<i class="fa-regular fa-calendar-days"></i> <span>피드</span>
 
 			</a>
 
@@ -87,8 +81,7 @@
 					   text-slate-600 hover:text-slate-900
 					   hover:bg-slate-100 border-transparent">
 
-				<i class="fa-regular fa-compass"></i>
-				<span>탐색 & 트렌드</span>
+				<i class="fa-regular fa-compass"></i> <span>탐색 & 트렌드</span>
 
 			</a>
 
@@ -101,8 +94,7 @@
 					   text-slate-600 hover:text-slate-900
 					   hover:bg-slate-100 border-transparent">
 
-				<i class="fa-regular fa-user"></i>
-				<span>내 기록</span>
+				<i class="fa-regular fa-user"></i> <span>내 기록</span>
 
 			</a>
 
@@ -115,8 +107,7 @@
 					   bg-blue-50 text-blue-700
 					   border-blue-200 hover:bg-blue-100">
 
-				<i class="fa-solid fa-circle-plus"></i>
-				<span>하루 쓰기</span>
+				<i class="fa-solid fa-circle-plus"></i> <span>하루 쓰기</span>
 
 			</a>
 
@@ -130,7 +121,7 @@
 
 				<c:choose>
 
-					 <%-- 로그인 상태 --%>
+					<%-- 로그인 상태 --%>
 					<c:when test="${not empty sessionScope.loginUser}">
 
 						<a href="${pageContext.request.contextPath}/RE:DAY/my"
@@ -140,40 +131,62 @@
 								   rounded-lg border border-slate-200
 								   text-xs transition-colors">
 
-							<div
-								class="w-6 h-6 rounded-md bg-slate-800
-									   text-white font-mono font-bold
-									   flex items-center justify-center
-									   text-[11px]">
+<%-- =========================================
+     로그인 회원 프로필 이미지
+     - 프로필 이미지가 있으면 실제 이미지 표시
+     - 없거나 이미지 로드 실패 시 기본 아이콘 표시
+========================================= --%>
+							<div class="w-6 h-6 rounded-full bg-slate-800
+           						text-white overflow-hidden
+          						flex items-center justify-center
+           						shrink-0">
 
-								${not empty sessionScope.loginUser.profileImg
-								? sessionScope.loginUser.profileImg
-								: 'R'}
+								<c:choose>
+
+									<%-- 프로필 이미지가 있는 경우 --%>
+									<c:when test="${not empty sessionScope.loginUser.profileImg}">
+										<img
+											src="${pageContext.request.contextPath}${sessionScope.loginUser.profileImg}"
+											alt="프로필 이미지" class="w-full h-full object-cover"
+											onerror="
+                    this.style.display='none';
+                    this.nextElementSibling.style.display='flex';
+                ">
+
+										<%-- 이미지 로드 실패 시 기본 아이콘 --%>
+										<span style="display: none;"
+											class="w-full h-full items-center justify-center text-[11px]">
+											<i class="fa-solid fa-user"></i>
+										</span>
+									</c:when>
+
+									<%-- 프로필 이미지가 없는 경우 --%>
+									<c:otherwise>
+										<span
+											class="w-full h-full flex items-center justify-center text-[11px]">
+											<i class="fa-solid fa-user"></i>
+										</span>
+									</c:otherwise>
+
+								</c:choose>
 
 							</div>
 
 
-							<div
-								class="hidden md:flex items-center gap-1 text-[11px]">
+							<div class="hidden md:flex items-center gap-1 text-[11px]">
 
 								<span
 									class="font-bold text-slate-800
 										   truncate max-w-[80px]">
 
-									${sessionScope.loginUser.nickname}
-
-								</span>
-
-								<span
+									${sessionScope.loginUser.nickname} </span> <span
 									class="text-orange-600 font-mono
 										   flex items-center font-bold">
 
 									<i
-										class="fa-solid fa-fire
+									class="fa-solid fa-fire
 											   text-orange-500 text-xs mr-0.5">
-									</i>
-
-									${sessionScope.loginUser.streakCount}일
+								</i> ${sessionScope.loginUser.streakCount}일
 
 								</span>
 
@@ -184,8 +197,7 @@
 
 						<!-- 로그아웃 -->
 						<a href="${pageContext.request.contextPath}/member/logout"
-							title="로그아웃"
-							onclick="return confirm('로그아웃 하시겠습니까?')"
+							title="로그아웃" onclick="return confirm('로그아웃 하시겠습니까?')"
 							class="p-1.5 text-slate-400
 								   hover:text-rose-600 hover:bg-rose-50
 								   rounded-md transition-colors
@@ -207,9 +219,7 @@
 								   border border-blue-200
 								   rounded-md transition-colors">
 
-							로그인
-
-						</a>
+							로그인 </a>
 
 					</c:otherwise>
 
@@ -237,15 +247,13 @@
 		     모바일 햄버거 버튼
 		     768px 미만에서만 표시
 		     ========================================= -->
-		<button type="button"
-			id="mobileMenuBtn"
+		<button type="button" id="mobileMenuBtn"
 			class="md:hidden flex items-center justify-center
 				   w-9 h-9 rounded-md
 				   border border-slate-200
 				   text-slate-600 bg-white
 				   hover:bg-slate-100"
-			onclick="toggleMobileMenu()"
-			aria-label="모바일 메뉴 열기">
+			onclick="toggleMobileMenu()" aria-label="모바일 메뉴 열기">
 
 			<i class="fa-solid fa-bars"></i>
 
@@ -270,8 +278,7 @@
 					   text-sm font-medium text-slate-700
 					   hover:bg-slate-100">
 
-				<i class="fa-regular fa-calendar-days w-5 text-center"></i>
-				<span>피드</span>
+				<i class="fa-regular fa-calendar-days w-5 text-center"></i> <span>피드</span>
 
 			</a>
 
@@ -283,8 +290,8 @@
 					   text-sm font-medium text-slate-700
 					   hover:bg-slate-100">
 
-				<i class="fa-regular fa-compass w-5 text-center"></i>
-				<span>탐색 & 트렌드</span>
+				<i class="fa-regular fa-compass w-5 text-center"></i> <span>탐색
+					& 트렌드</span>
 
 			</a>
 
@@ -296,8 +303,7 @@
 					   text-sm font-medium text-slate-700
 					   hover:bg-slate-100">
 
-				<i class="fa-regular fa-user w-5 text-center"></i>
-				<span>내 기록</span>
+				<i class="fa-regular fa-user w-5 text-center"></i> <span>내 기록</span>
 
 			</a>
 
@@ -310,8 +316,8 @@
 					   text-blue-700 bg-blue-50
 					   border border-blue-200">
 
-				<i class="fa-solid fa-circle-plus w-5 text-center"></i>
-				<span>하루 쓰기</span>
+				<i class="fa-solid fa-circle-plus w-5 text-center"></i> <span>하루
+					쓰기</span>
 
 			</a>
 
@@ -330,14 +336,9 @@
 								   text-sm text-slate-700
 								   hover:bg-slate-100">
 
-							<i
-								class="fa-solid fa-user-circle
+							<i class="fa-solid fa-user-circle
 									   w-5 text-center">
-							</i>
-
-							<span>
-								${sessionScope.loginUser.nickname}
-							</span>
+						</i> <span> ${sessionScope.loginUser.nickname} </span>
 
 						</a>
 
@@ -351,11 +352,9 @@
 								   hover:bg-rose-50">
 
 							<i
-								class="fa-solid fa-arrow-right-from-bracket
+							class="fa-solid fa-arrow-right-from-bracket
 									   w-5 text-center">
-							</i>
-
-							<span>로그아웃</span>
+						</i> <span>로그아웃</span>
 
 						</a>
 
@@ -374,8 +373,7 @@
 							   border border-blue-200
 							   hover:bg-blue-50">
 
-						<i class="fa-solid fa-right-to-bracket"></i>
-						<span>로그인</span>
+						<i class="fa-solid fa-right-to-bracket"></i> <span>로그인</span>
 
 					</a>
 
@@ -392,8 +390,8 @@
 					   text-sm text-slate-500
 					   hover:bg-slate-100">
 
-				<i class="fa-solid fa-circle-question w-5 text-center"></i>
-				<span>이용 가이드</span>
+				<i class="fa-solid fa-circle-question w-5 text-center"></i> <span>이용
+					가이드</span>
 
 			</button>
 
@@ -426,9 +424,8 @@
 
 				<span class="text-lg">📖</span>
 
-				<h3 class="font-bold text-base text-slate-900">
-					RE:DAY 서비스 이용 가이드
-				</h3>
+				<h3 class="font-bold text-base text-slate-900">RE:DAY 서비스 이용
+					가이드</h3>
 
 			</div>
 
@@ -442,9 +439,7 @@
 					   bg-slate-100 hover:bg-slate-200
 					   rounded transition-colors">
 
-				닫기 ✕
-
-			</button>
+				닫기 ✕</button>
 
 		</div>
 
@@ -462,15 +457,11 @@
 					class="font-bold text-slate-800
 						   flex items-center gap-1.5 mb-1">
 
-					<span>⭐</span>
-					1. 메인 데일리 리뷰
+					<span>⭐</span> 1. 메인 데일리 리뷰
 
 				</p>
 
-				<p>
-					일기장처럼 오늘 하루 전체를 기록하고,
-					종합 평점과 기분 태그로 하루의 무드를 남겨보세요.
-				</p>
+				<p>일기장처럼 오늘 하루 전체를 기록하고, 종합 평점과 기분 태그로 하루의 무드를 남겨보세요.</p>
 
 			</div>
 
@@ -485,15 +476,11 @@
 					class="font-bold text-slate-800
 						   flex items-center gap-1.5 mb-1">
 
-					<span>📌</span>
-					2. 1:N 서브 리뷰
+					<span>📌</span> 2. 1:N 서브 리뷰
 
 				</p>
 
-				<p>
-					하루 리뷰 안에 다녀온 맛집/카페,
-					사용한 아이템, 감상한 영화 등
-					세부 리뷰를 자유롭게 추가할 수 있습니다.
+				<p>하루 리뷰 안에 다녀온 맛집/카페, 사용한 아이템, 감상한 영화 등 세부 리뷰를 자유롭게 추가할 수 있습니다.
 				</p>
 
 			</div>
@@ -509,15 +496,12 @@
 					class="font-bold text-blue-900
 						   flex items-center gap-1.5 mb-1">
 
-					<span>🔥</span>
-					3. 연속 기록(Streak) & 트렌드 탐색
+					<span>🔥</span> 3. 연속 기록(Streak) & 트렌드 탐색
 
 				</p>
 
-				<p class="text-blue-800">
-					매일 기록을 이어가며 연속 일수(Streak)를 달성하고,
-					탐색 탭에서 다른 사람들의 트렌디한 하루를 둘러보세요.
-				</p>
+				<p class="text-blue-800">매일 기록을 이어가며 연속 일수(Streak)를 달성하고, 탐색 탭에서
+					다른 사람들의 트렌디한 하루를 둘러보세요.</p>
 
 			</div>
 
@@ -532,9 +516,7 @@
 				   hover:bg-slate-800
 				   transition-colors">
 
-			확인했습니다
-
-		</button>
+			확인했습니다</button>
 
 	</div>
 
@@ -545,18 +527,13 @@
      MOBILE MENU SCRIPT
      ========================================= -->
 <script>
-
 	function toggleMobileMenu() {
 
-		const mobileMenu =
-			document.getElementById("mobileMenu");
+		const mobileMenu = document.getElementById("mobileMenu");
 
-		const menuIcon =
-			document.querySelector("#mobileMenuBtn i");
-
+		const menuIcon = document.querySelector("#mobileMenuBtn i");
 
 		mobileMenu.classList.toggle("hidden");
-
 
 		if (mobileMenu.classList.contains("hidden")) {
 
@@ -571,5 +548,4 @@
 		}
 
 	}
-
 </script>
