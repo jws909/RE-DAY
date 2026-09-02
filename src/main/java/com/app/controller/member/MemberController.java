@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.member.MemberDTO;
 import com.app.service.member.MemberService;
 
+
 @Controller
 @RequestMapping("/member")
 public class MemberController {
+
 
     @Autowired
     MemberService memberService;
@@ -25,7 +28,6 @@ public class MemberController {
     // ========================================
     // 로그인 페이지
     // ========================================
-
     @GetMapping("/signin")
     public String signin() {
 
@@ -36,7 +38,6 @@ public class MemberController {
     // ========================================
     // 로그인 처리
     // ========================================
-
     @PostMapping("/signin")
     public String signinAction(
             @ModelAttribute MemberDTO memberDTO,
@@ -44,23 +45,32 @@ public class MemberController {
             Model model) {
 
 
-        MemberDTO loginUser =
-                memberService.login(memberDTO);
-
+        System.out.println(
+                "========== 로그인 시작 =========="
+        );
 
         System.out.println(
-                "로그인 입력값 : "
-                + memberDTO
+                "email = "
+                + memberDTO.getEmail()
         );
 
 
+        // 로그인 DB 조회
+        MemberDTO loginUser =
+                memberService.login(
+                        memberDTO
+                );
+
+
         System.out.println(
-                "로그인 결과 : "
+                "로그인 결과 = "
                 + loginUser
         );
 
 
+        // ========================================
         // 로그인 실패
+        // ========================================
         if (loginUser == null) {
 
             model.addAttribute(
@@ -72,46 +82,401 @@ public class MemberController {
         }
 
 
+        // ========================================
         // 로그인 성공
+        // ========================================
+
         session.setAttribute(
                 "loginUser",
                 loginUser
         );
 
 
+        System.out.println(
+                "로그인 성공 : "
+                + loginUser.getEmail()
+        );
+
+
+        System.out.println(
+                "==============================="
+        );
+
+
+        // 메인 페이지 이동
         return "redirect:/RE:DAY/mainpage";
+    }
+
+
+    // ========================================
+    // 회원가입 페이지
+    // ========================================
+    @GetMapping("/signup")
+    public String signup() {
+
+        return "member/signup";
+    }
+
+
+    // ========================================
+    // 회원가입 처리
+    // ========================================
+    @PostMapping("/signup")
+    public String signupAction(
+
+            @ModelAttribute MemberDTO memberDTO,
+
+            @RequestParam(
+                    value = "interests",
+                    required = false
+            )
+            String[] interests,
+
+            Model model) {
+
+
+        try {
+
+            System.out.println("");
+            System.out.println(
+                    "======================================"
+            );
+
+            System.out.println(
+                    "1. 회원가입 Controller 진입"
+            );
+
+
+            // ========================================
+            // 입력값 출력
+            // ========================================
+
+            System.out.println(
+                    "email = "
+                    + memberDTO.getEmail()
+            );
+
+            System.out.println(
+                    "password = "
+                    + memberDTO.getPassword()
+            );
+
+            System.out.println(
+                    "nickname = "
+                    + memberDTO.getNickname()
+            );
+
+
+            // ========================================
+            // 1. 닉네임 검사
+            // ========================================
+
+            if (memberDTO.getNickname() == null
+                    || memberDTO
+                            .getNickname()
+                            .trim()
+                            .isEmpty()) {
+
+
+                model.addAttribute(
+                        "errorMessage",
+                        "닉네임을 입력해주세요."
+                );
+
+
+                return "member/signup";
+            }
+
+
+            // ========================================
+            // 2. 이메일 검사
+            // ========================================
+
+            if (memberDTO.getEmail() == null
+                    || memberDTO
+                            .getEmail()
+                            .trim()
+                            .isEmpty()) {
+
+
+                model.addAttribute(
+                        "errorMessage",
+                        "이메일을 입력해주세요."
+                );
+
+
+                return "member/signup";
+            }
+
+
+            // ========================================
+            // 3. 비밀번호 검사
+            // ========================================
+
+            if (memberDTO.getPassword() == null
+                    || memberDTO
+                            .getPassword()
+                            .length() < 8) {
+
+
+                model.addAttribute(
+                        "errorMessage",
+                        "비밀번호는 8자 이상 입력해주세요."
+                );
+
+
+                return "member/signup";
+            }
+
+
+            // ========================================
+            // 관심 키워드 처리
+            // ========================================
+
+            /*
+             * JSP에서 interests를 여러 개 선택할 수 있음
+             *
+             * 예:
+             *
+             * 재택근무
+             * 운동
+             * 테크
+             *
+             * ↓
+             *
+             * 재택근무,운동,테크
+             *
+             * 형태로 DB에 저장
+             */
+
+            if (interests != null
+                    && interests.length > 0) {
+
+
+                String interestString =
+                        String.join(
+                                ",",
+                                interests
+                        );
+
+
+                memberDTO.setInterests(
+                        interestString
+                );
+
+
+            } else {
+
+
+                memberDTO.setInterests(
+                        null
+                );
+            }
+
+
+            System.out.println(
+                    "interests = "
+                    + memberDTO.getInterests()
+            );
+
+
+            // ========================================
+            // 4. 이메일 중복 검사
+            // ========================================
+
+            System.out.println(
+                    "2. 이메일 중복 검사 시작"
+            );
+
+
+            boolean duplicated =
+                    memberService
+                            .isEmailDuplicated(
+                                    memberDTO.getEmail()
+                            );
+
+
+            System.out.println(
+                    "3. 이메일 중복 검사 완료 = "
+                    + duplicated
+            );
+
+
+            // ========================================
+            // 이미 가입된 이메일
+            // ========================================
+
+            if (duplicated) {
+
+
+                model.addAttribute(
+                        "errorMessage",
+                        "이미 가입된 이메일입니다."
+                );
+
+
+                return "member/signup";
+            }
+
+
+            // ========================================
+            // 5. DB INSERT
+            // ========================================
+
+            System.out.println(
+                    "4. 회원 INSERT 시작"
+            );
+
+
+            int result =
+                    memberService.signup(
+                            memberDTO
+                    );
+
+
+            System.out.println(
+                    "5. 회원 INSERT 결과 = "
+                    + result
+            );
+
+
+            // ========================================
+            // 회원가입 성공
+            // ========================================
+
+            if (result > 0) {
+
+
+                System.out.println(
+                        "6. 회원가입 성공"
+                );
+
+
+                System.out.println(
+                        "가입 이메일 = "
+                        + memberDTO.getEmail()
+                );
+
+
+                System.out.println(
+                        "======================================"
+                );
+
+
+                // 회원가입 성공 후 로그인 페이지
+                return "redirect:/member/signin";
+            }
+
+
+            // ========================================
+            // INSERT 결과가 0인 경우
+            // ========================================
+
+            System.out.println(
+                    "회원가입 INSERT 실패"
+            );
+
+
+            model.addAttribute(
+                    "errorMessage",
+                    "회원가입에 실패했습니다."
+            );
+
+
+            return "member/signup";
+
+
+        } catch (Exception e) {
+
+
+            // ========================================
+            // 실제 오류 확인용
+            // ========================================
+
+            System.out.println("");
+            System.out.println(
+                    "========== 회원가입 실제 오류 =========="
+            );
+
+
+            System.out.println(
+                    "오류 클래스 : "
+                    + e.getClass().getName()
+            );
+
+
+            System.out.println(
+                    "오류 메시지 : "
+                    + e.getMessage()
+            );
+
+
+            // Eclipse Console에 전체 오류 출력
+            e.printStackTrace();
+
+
+            System.out.println(
+                    "======================================="
+            );
+
+
+            // 화면에 표시되는 메시지
+            model.addAttribute(
+                    "errorMessage",
+                    "회원가입 처리 중 오류가 발생했습니다."
+            );
+
+
+            return "member/signup";
+        }
     }
 
 
     // ========================================
     // 프로필 이미지 변경
     // ========================================
-
     @PostMapping("/profile/image")
     public String updateProfileImage(
+
             MultipartFile profileImageFile,
+
             HttpSession session) {
 
 
+        // ========================================
+        // 로그인 회원 정보 가져오기
+        // ========================================
+
         MemberDTO loginUser =
                 (MemberDTO)
-                session.getAttribute("loginUser");
+                session.getAttribute(
+                        "loginUser"
+                );
 
 
-        // 로그인 안 된 경우
+        // ========================================
+        // 로그인하지 않은 경우
+        // ========================================
+
         if (loginUser == null) {
+
 
             return "redirect:/member/signin";
         }
 
 
-        // 파일 선택 안 한 경우
+        // ========================================
+        // 파일 선택하지 않은 경우
+        // ========================================
+
         if (profileImageFile == null
                 || profileImageFile.isEmpty()) {
+
 
             System.out.println(
                     "선택된 프로필 사진이 없습니다."
             );
+
 
             return "redirect:/RE:DAY/my";
         }
@@ -119,25 +484,32 @@ public class MemberController {
 
         System.out.println(
                 "선택한 파일명 : "
-                + profileImageFile.getOriginalFilename()
+                + profileImageFile
+                        .getOriginalFilename()
         );
 
 
-        // 실제 파일 저장 + DB UPDATE
+        // ========================================
+        // 파일 저장 + DB UPDATE
+        // ========================================
+
         String profileImg =
-                memberService.updateProfileImage(
-                        loginUser,
-                        profileImageFile
-                );
+                memberService
+                        .updateProfileImage(
+                                loginUser,
+                                profileImageFile
+                        );
 
 
-        /*
-         * 서비스에서 loginUser 객체의
-         * profileImg도 변경했지만,
-         * 명확하게 세션을 다시 넣어준다.
-         */
-        loginUser.setProfileImg(profileImg);
+        // 로그인 회원 객체 변경
+        loginUser.setProfileImg(
+                profileImg
+        );
 
+
+        // ========================================
+        // 변경된 회원 정보 세션에 저장
+        // ========================================
 
         session.setAttribute(
                 "loginUser",
@@ -151,32 +523,25 @@ public class MemberController {
         );
 
 
+        // MY 페이지 이동
         return "redirect:/RE:DAY/my";
     }
 
 
     // ========================================
-    // 회원가입 페이지
+    // 로그아웃
     // ========================================
+    @GetMapping("/logout")
+    public String logout(
+            HttpSession session) {
 
-    @GetMapping("/signup")
-    public String signup() {
 
-        return "member/signup";
+        // 세션 삭제
+        session.invalidate();
+
+
+        // 로그인 페이지 이동
+        return "redirect:/member/signin";
     }
 
- // ========================================
- // 로그아웃 처리
- // ========================================
-
- @GetMapping("/logout")
- public String logout(
-         HttpSession session) {
-
-     // 현재 로그인 세션 전체 삭제
-     session.invalidate();
-
-     // 로그아웃 후 로그인 페이지로 이동
-     return "redirect:/member/signin";
- }
 }

@@ -596,7 +596,7 @@ body {
             <div class="logo-box">
 
                 <img
-                    src="${pageContext.request.contextPath}/resources/images/logo/RE_DAY_LOGO.png"
+                    src="${pageContext.request.contextPath}/images/logo/RE_DAY_LOGO.png"
                     alt="RE:DAY 로고"
                     class="logo-image">
 
@@ -728,14 +728,14 @@ body {
 
 
                     <input
-                        type="password"
-                        id="memberPw"
-                        name="memberPw"
-                        class="form-input"
-                        placeholder="8자 이상 입력해주세요"
-                        minlength="8"
-                        autocomplete="new-password"
-                        required>
+    					type="password"
+    					id="memberPw"
+    					name="password"
+    					class="form-input"
+    					placeholder="8자 이상 입력해주세요"
+    					minlength="8"
+    					autocomplete="new-password"
+    					required>
 
 
                 </div>

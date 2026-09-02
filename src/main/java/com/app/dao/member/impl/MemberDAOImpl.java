@@ -12,33 +12,65 @@ import com.app.dto.member.MyPageStatsDTO;
 public class MemberDAOImpl implements MemberDAO {
 
     @Autowired
-    SqlSessionTemplate sqlSessionTemplate;
+    SqlSessionTemplate sqlSession;
 
+
+    // 로그인
     @Override
-    public MemberDTO findMemberByEmailAndPassword(MemberDTO memberDTO) {
+    public MemberDTO findMemberByEmailAndPassword(
+            MemberDTO memberDTO) {
 
-        return sqlSessionTemplate.selectOne(
+        return sqlSession.selectOne(
                 "member_mapper.findMemberByEmailAndPassword",
                 memberDTO
         );
     }
 
-    @Override
-    public int updateProfileImg(MemberDTO memberDTO) {
 
-        return sqlSessionTemplate.update(
+    // 이메일 중복 확인
+    @Override
+    public MemberDTO findMemberByEmail(
+            String email) {
+
+        return sqlSession.selectOne(
+                "member_mapper.findMemberByEmail",
+                email
+        );
+    }
+
+
+    // 회원가입
+    @Override
+    public int insertMember(
+            MemberDTO memberDTO) {
+
+        return sqlSession.insert(
+                "member_mapper.insertMember",
+                memberDTO
+        );
+    }
+
+
+    // 프로필 이미지 변경
+    @Override
+    public int updateProfileImg(
+            MemberDTO memberDTO) {
+
+        return sqlSession.update(
                 "member_mapper.updateProfileImg",
                 memberDTO
         );
     }
 
-    @Override
-    public MyPageStatsDTO findMyPageStats(String userId) {
 
-        return sqlSessionTemplate.selectOne(
+    // MY 페이지 통계
+    @Override
+    public MyPageStatsDTO findMyPageStats(
+            String userId) {
+
+        return sqlSession.selectOne(
                 "member_mapper.findMyPageStats",
                 userId
         );
     }
-
 }
