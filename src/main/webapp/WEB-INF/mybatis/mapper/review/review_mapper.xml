@@ -260,5 +260,36 @@
         ORDER BY SUB_REVIEW_ID ASC
 
     </select>
+    
+     <!-- =========================================
+         MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+    ========================================= -->
+    <select id="findSubReviewsByUserId"
+            parameterType="String"
+            resultType="SubReviewDTO">
+
+        SELECT
+            SR.SUB_REVIEW_ID,
+            SR.REVIEW_ID,
+            SR.CATEGORY,
+            SR.ITEM_NAME,
+            SR.SUB_RATING,
+            SR.SUB_COMMENT,
+            SR.LOCATION_BRAND,
+            SR.IS_CERTIFIED,
+            SR.TAGS
+
+        FROM SUB_REVIEWS SR
+
+        JOIN DAILY_REVIEWS DR
+            ON SR.REVIEW_ID = DR.REVIEW_ID
+
+        WHERE DR.USER_ID = #{userId}
+
+        ORDER BY
+            DR.REVIEW_DATE DESC,
+            SR.SUB_REVIEW_ID ASC
+
+    </select>
 
 </mapper>

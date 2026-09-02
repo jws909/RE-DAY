@@ -48,4 +48,42 @@
 		WHERE USER_ID = #{userId}
 
 	</select>
+
+	<!-- =========================================
+     MY 페이지 - 내가 좋아요한 리뷰 목록
+========================================= -->
+<select id="findLikedReviewsByUserId"
+        parameterType="String"
+        resultType="DailyReviewFormDTO">
+
+    SELECT
+        d.REVIEW_ID,
+        d.USER_ID,
+
+        /* 좋아요한 리뷰 작성자 닉네임 */
+        m.NICKNAME AS AUTHOR_NICKNAME,
+
+        /* 좋아요한 리뷰 작성자 프로필 이미지 */
+        m.PROFILE_IMG AS AUTHOR_PROFILE_IMG,
+
+        d.REVIEW_DATE,
+        d.TOTAL_RATING,
+        d.MOOD_TAGS,
+        d.OVERALL_COMMENT,
+        d.MAIN_IMAGE_URL
+
+    FROM LIKES l
+
+    JOIN DAILY_REVIEWS d
+        ON l.REVIEW_ID = d.REVIEW_ID
+
+    /* 좋아요한 리뷰 작성자 회원 정보 연결 */
+    JOIN USERS m
+        ON d.USER_ID = m.USER_ID
+
+    WHERE l.USER_ID = #{userId}
+
+    ORDER BY d.REVIEW_DATE DESC
+
+</select>
 </mapper>

@@ -165,4 +165,18 @@ public class MemberController {
         return "member/signup";
     }
 
+ // ========================================
+ // 로그아웃 처리
+ // ========================================
+
+ @GetMapping("/logout")
+ public String logout(
+         HttpSession session) {
+
+     // 현재 로그인 세션 전체 삭제
+     session.invalidate();
+
+     // 로그아웃 후 로그인 페이지로 이동
+     return "redirect:/member/signin";
+ }
 }

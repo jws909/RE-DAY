@@ -3,7 +3,6 @@ package com.app.service.review;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 import java.util.List;
-import java.util.List;
 import com.app.dto.review.SubReviewDTO;
 
 public interface ReviewService {
@@ -19,10 +18,15 @@ public interface ReviewService {
             String userId
     );
     
-    public List<SubReviewDTO> findSubReviewsByReviewId(
-            Long reviewId
-    );
+ // MY 페이지 - 데일리 기록별 서브 리뷰 조회
+    public List<SubReviewDTO> findSubReviewsByReviewId(Long reviewId);
 	
+ // MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+    public List<SubReviewDTO> findSubReviewsByUserId(String userId);    
+    
  // MY 페이지 - 내가 좋아요한 리뷰 개수
     public int countLikesByUserId(String userId);
+
+ // MY 페이지 - 내가 좋아요한 리뷰 목록
+ public List<DailyReviewFormDTO> findLikedReviewsByUserId(String userId);
 }
