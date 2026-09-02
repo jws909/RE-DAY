@@ -110,7 +110,7 @@
 							class="flex items-center gap-1.5 pl-2 border-l border-slate-300">
 							<!-- 수정 이동 -->
 							<a
-								href="${pageContext.request.contextPath}/review/edit?id=${review.reviewId}"
+								href="${pageContext.request.contextPath}/RE:DAY/review/edit/${review.reviewId}"
 								class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors">
 								<i class="fa-solid fa-pen text-xs mr-1 text-slate-500"></i>수정
 							</a>
