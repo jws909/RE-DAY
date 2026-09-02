@@ -19,6 +19,7 @@
 		<typeAlias type="com.app.dto.file.FileInfo" alias="FileInfo"/>
 		<typeAlias type="com.app.dto.review.DailyReviewImage" alias="DailyReviewImage"/>
 		<typeAlias type="com.app.dto.review.CommentDTO" alias="CommentDTO"/>
+		<typeAlias type="com.app.dto.member.MyProfileStatsDTO" alias="MyProfileStatsDTO"/>
 
 
 	</typeAliases>

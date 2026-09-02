@@ -23,4 +23,25 @@ public class ResponseResult<T> {
 		
 		return responseResult;
 	}
+	
+	public static <T> ResponseResult<T> fail(T data){
+		ResponseResult<T> responseResult = new ResponseResult<T>(); 
+		
+		responseResult.success = false;
+		responseResult.message = "실패";
+		responseResult.setData(data);
+		data = null;
+		
+		return responseResult;
+	}
+	
+	
+	public static <T> ResponseResult<T> fail(String message){
+	    ResponseResult<T> responseResult = new ResponseResult<T>(); 
+
+	    responseResult.success = false;
+	    responseResult.message = message;
+
+	    return responseResult;
+	}
 }
