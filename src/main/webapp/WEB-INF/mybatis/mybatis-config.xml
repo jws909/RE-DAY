@@ -57,6 +57,10 @@
         <typeAlias
             type="com.app.dto.member.MyPageStatsDTO"
             alias="MyPageStatsDTO" />
+            
+        <typeAlias
+            type="com.app.dto.member.MyProfileStatsDTO"
+            alias="MyProfileStatsDTO" />
 
     </typeAliases>
 
