@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.member.MemberDTO;
 import com.app.dto.member.MyPageStatsDTO;
+import java.util.List;
+import com.app.dto.member.WeeklyUserRankingDTO;
 
 
 public interface MemberService {
@@ -57,7 +59,11 @@ public interface MemberService {
     public MyPageStatsDTO getMyPageStats(
             String userId
     );
-    
+ 
+    // 회원 정보 조회
     public MemberDTO findUserInfoByUserId(String userId);
+    
+    //탐색페이지 -주간유저랭킹 top5 조회
+    public List<WeeklyUserRankingDTO> getWeeklyUserRanking();
 
 }

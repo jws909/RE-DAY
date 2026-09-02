@@ -1,5 +1,7 @@
 package com.app.controller;
 
+import com.app.dto.member.WeeklyUserRankingDTO;
+
 import java.time.LocalDate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +32,20 @@ public class MainPageController {
 	public String mainpage() {
 		return "mainpage/main";
 	}
-	
+	// 탐색- 랭킹
 	@GetMapping("/explore")
-	public String explore() {
-		return "mainpage/explore";
-	}
+    public String explore(Model model) {
+
+        List<WeeklyUserRankingDTO> weeklyRanking =
+                memberService.getWeeklyUserRanking();
+
+        model.addAttribute(
+                "weeklyRanking",
+                weeklyRanking
+        );
+
+        return "mainpage/explore";
+    }
 	
 	@GetMapping("/my")
 	public String my(

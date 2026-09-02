@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -168,6 +169,122 @@
 					</div>
 				</div>
 			</div>
+			    <%-- =========================================
+                 탐색 페이지 - 주간 유저 랭킹 Top 5
+                 - 이번 주 작성률 / 평균 평점 기준
+                 ========================================= --%>
+            <div class="ex_weekly_ranking_section">
+
+                <!-- 랭킹 영역 상단 -->
+                <div class="ex_ranking_header">
+
+                    <div class="ex_ranking_title_wrap">
+                        <span class="material-symbols-outlined icon_ranking">
+                            social_leaderboard
+                        </span>
+
+                        <div>
+                            <h2 class="ex_ranking_title">
+                                주간 유저 랭킹 Top 5
+                            </h2>
+
+                            <p class="ex_ranking_desc">
+                                이번 주 꾸준히 하루를 기록한 유저들의 작성률과 평균 평점입니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <span class="ex_ranking_badge font-mono">
+                        WEEKLY TOP 5
+                    </span>
+
+                </div>
+
+
+                <!-- 주간 랭킹 목록 -->
+                <div class="ex_ranking_list">
+
+                    <c:forEach var="user" items="${weeklyRanking}">
+
+                        <div class="ex_ranking_card">
+
+                            <!-- 순위 -->
+                            <div class="ex_rank_number">
+                                ${user.ranking}
+                            </div>
+
+
+                            <!-- 유저 프로필 -->
+                            <div class="ex_rank_user">
+
+                                <div class="ex_rank_profile">
+
+                                    <c:choose>
+
+                                        <c:when test="${not empty user.profileImg}">
+                                            <img src="${user.profileImg}"
+                                                 alt="${user.nickname} 프로필 이미지">
+                                        </c:when>
+
+                                        <c:otherwise>
+                                            <span class="material-symbols-outlined">
+                                                person
+                                            </span>
+                                        </c:otherwise>
+
+                                    </c:choose>
+
+                                </div>
+
+                                <div class="ex_rank_user_info">
+
+                                    <strong class="ex_rank_nickname">
+                                        ${user.nickname}
+                                    </strong>
+
+                                    <span class="ex_rank_review_count font-mono">
+                                        이번 주 ${user.weeklyReviewCount}일 기록
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- 작성률 -->
+                            <div class="ex_rank_stat">
+
+                                <span class="ex_rank_stat_label">
+                                    작성률
+                                </span>
+
+                                <strong class="ex_rank_stat_value">
+                                    ${user.writingRate}%
+                                </strong>
+
+                            </div>
+
+
+                            <!-- 평균 평점 -->
+                            <div class="ex_rank_stat">
+
+                                <span class="ex_rank_stat_label">
+                                    평균 평점
+                                </span>
+
+                                <strong class="ex_rank_stat_value">
+                                    ⭐ ${user.averageRating}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </c:forEach>
+
+                </div>
+
+            </div>
 		</div>
 	</div>
 </body>

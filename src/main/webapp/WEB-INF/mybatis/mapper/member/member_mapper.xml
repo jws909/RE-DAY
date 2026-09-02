@@ -256,5 +256,80 @@
 		FROM USERS
 		WHERE USER_ID = #{userId}
 	</select>
+	
+	    <!-- =========================================
+         탐색 페이지 - 주간 유저 랭킹 Top 5 조회
+         - 이번 주 월요일 00:00부터 다음 주 월요일 전까지 조회
+         - 작성률: 일주일 7일 기준 작성한 날짜 수 / 7 * 100
+         - 평균 평점: 이번 주 데일리 리뷰 평균
+         - 작성률 우선, 동률이면 평균 평점 순
+    ========================================== -->
+    <select id="findWeeklyUserRanking"
+        resultType="com.app.dto.member.WeeklyUserRankingDTO">
 
+        SELECT
+            RANKING,
+            USER_ID,
+            NICKNAME,
+            PROFILE_IMG,
+            WEEKLY_REVIEW_COUNT,
+            WRITING_RATE,
+            AVERAGE_RATING
+        FROM (
+            SELECT
+                ROW_NUMBER() OVER (
+                    ORDER BY
+                        WRITING_RATE DESC,
+                        AVERAGE_RATING DESC
+                ) AS RANKING,
+                USER_ID,
+                NICKNAME,
+                PROFILE_IMG,
+                WEEKLY_REVIEW_COUNT,
+                WRITING_RATE,
+                AVERAGE_RATING
+            FROM (
+                SELECT
+                    U.USER_ID,
+                    U.NICKNAME,
+                    U.PROFILE_IMG,
+
+                    /* 이번 주 데일리 리뷰 작성 일수 */
+                    COUNT(
+                        DISTINCT TRUNC(DR.REVIEW_DATE)
+                    ) AS WEEKLY_REVIEW_COUNT,
+
+                    /* 이번 주 작성률 */
+                    ROUND(
+                        COUNT(
+                            DISTINCT TRUNC(DR.REVIEW_DATE)
+                        ) / 7 * 100,
+                        1
+                    ) AS WRITING_RATE,
+
+                    /* 이번 주 평균 하루 평점 */
+                    ROUND(
+                        AVG(DR.TOTAL_RATING),
+                        1
+                    ) AS AVERAGE_RATING
+
+                FROM USERS U
+
+                JOIN DAILY_REVIEWS DR
+                    ON U.USER_ID = DR.USER_ID
+
+                WHERE DR.REVIEW_DATE >= TRUNC(SYSDATE, 'IW')
+                  AND DR.REVIEW_DATE <![CDATA[ < ]]> TRUNC(SYSDATE, 'IW') + 7
+
+                GROUP BY
+                    U.USER_ID,
+                    U.NICKNAME,
+                    U.PROFILE_IMG
+            )
+        )
+        WHERE RANKING <![CDATA[ <= ]]> 5
+
+        ORDER BY RANKING
+
+    </select>
 </mapper>
