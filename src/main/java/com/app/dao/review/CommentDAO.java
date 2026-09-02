@@ -33,4 +33,6 @@ public interface CommentDAO {
     int deleteCommentsByReviewId(
             long reviewId
     );
+    
+    List<CommentDTO> findCommentListForDetail(long reviewId);
 }

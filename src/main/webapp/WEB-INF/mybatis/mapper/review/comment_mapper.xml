@@ -101,17 +101,8 @@
         WHERE REVIEW_ID = #{reviewId}
 
     </delete>
-
-	<update id="modifyComment" parameterType="CommentDTO">
-		UPDATE COMMENTS
-		SET
-		review_id = #{reviewId},
-		content = #{content},
-		updated_at = CURRENT_TIMESTAMP
-		WHERE COMMENT_ID = #{commentId}
-	</update>
-	
-	<select id="findCommentListForDetail" resultType="CommentDTO" parameterType="long">
+    
+    <select id="findCommentListForDetail" resultType="CommentDTO" parameterType="long">
 		SELECT                                                                                             
             c.COMMENT_ID,                                                                                  
             c.REVIEW_ID,                                                                                   
@@ -128,4 +119,5 @@
         WHERE c.REVIEW_ID = #{reviewId}                                                                    
         ORDER BY c.CREATED_AT ASC 
 	</select>
+
 </mapper>

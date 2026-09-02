@@ -1,7 +1,6 @@
 package com.app.service.review.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.dao.file.FileDAO;
 import com.app.dao.review.CommentDAO;
 import com.app.dao.review.DailyReviewDAO;
-import com.app.dao.review.LikeDAO;
 import com.app.dao.review.SubReviewDAO;
 import com.app.dto.file.FileInfo;
 import com.app.dto.review.DailyReviewFormDTO;
@@ -19,343 +17,181 @@ import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
 import com.app.service.review.ReviewService;
 import com.app.util.FileManager;
+import java.util.List;
+import com.app.dao.review.LikeDAO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    @Autowired
-    DailyReviewDAO dailyReviewDAO;
+	@Autowired
+	DailyReviewDAO dailyReviewDAO;
 
-    @Autowired
-    SubReviewDAO subReviewDAO;
+	@Autowired
+	SubReviewDAO subReviewDAO;
+	@Autowired
+	LikeDAO likeDAO;
 
-    @Autowired
-    LikeDAO likeDAO;
+	@Autowired
+	FileDAO fileDAO;
+	
+	@Autowired
+	CommentDAO commentDAO;
 
-    @Autowired
-    CommentDAO commentDAO;
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public long createDailyReviewWithSubReviews(DailyReviewFormDTO formDTO) {
 
-    @Autowired
-    FileDAO fileDAO;
+		// 생성된 리뷰아이디
+		long generatedReviewId = 0;
 
+		// 파일 저장 후 url 설정
+		MultipartFile file = formDTO.getMainImageFile();
 
-    /* =========================================
-       데일리 리뷰 + 서브 리뷰 저장
-    ========================================= */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public long createDailyReviewWithSubReviews(
-            DailyReviewFormDTO formDTO) {
+		if (file != null) {
+			try {
+				FileInfo fileInfo = FileManager.storeFile(file, "images/reviews/");
 
-        // 생성된 리뷰 아이디
-        long generatedReviewId = 0;
+				int result = fileDAO.saveFileInfo(fileInfo);
 
-        // 파일 저장 후 URL 설정
-        MultipartFile file =
-                formDTO.getMainImageFile();
+				if (result > 0) {
+					formDTO.setMainImageUrl(fileInfo.getUrlFilePath() + fileInfo.getFileName());
 
-        if (file != null) {
+					generatedReviewId = dailyReviewDAO.saveDailyReview(formDTO);
 
-            try {
+					if (generatedReviewId == 0) {
+						throw new RuntimeException("메인 데일리 리뷰 저장에 실패했습니다.");
+					}
 
-                FileInfo fileInfo =
-                        FileManager.storeFile(
-                                file,
-                                "images/reviews/"
-                        );
+					DailyReviewImage imageInfo = new DailyReviewImage();
+					imageInfo.setFileName(fileInfo.getFileName());
+					imageInfo.setReviewId(generatedReviewId);
+					int result2 = dailyReviewDAO.saveDailyReviewImage(imageInfo);
 
-                int result =
-                        fileDAO.saveFileInfo(
-                                fileInfo
-                        );
+					if (result2 == 0) {
+						throw new RuntimeException("사진 정보 저장에 실패했습니다.");
+					}
+				} else {
+					throw new RuntimeException("사진 정보 저장에 실패했습니다.");
+				}
+
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException("사진 저장에 실패했습니다.");
+			}
+		} else {
+			generatedReviewId = dailyReviewDAO.saveDailyReview(formDTO);
 
-                if (result > 0) {
+			if (generatedReviewId == 0) {
+				throw new RuntimeException("메인 데일리 리뷰 저장에 실패했습니다.");
+			}
+		}
 
-                    formDTO.setMainImageUrl(
-                            fileInfo.getUrlFilePath()
-                            + fileInfo.getFileName()
-                    );
+		// 서브리뷰 목록이 비어있지 않은 경우에만 순회
+		if (formDTO.getSubReviews() != null && !formDTO.getSubReviews().isEmpty()) {
+			for (SubReviewDTO subreview : formDTO.getSubReviews()) {
+				subreview.setReviewId(generatedReviewId);
 
-                    generatedReviewId =
-                            dailyReviewDAO.saveDailyReview(
-                                    formDTO
-                            );
+				int result = subReviewDAO.saveSubReview(subreview);
+				if (result == 0) {
+					// ❌ return 0; -> 트랜잭션이 커밋됨
+					// ⭕ RuntimeException을 던져야 전체 롤백 발생
+					throw new RuntimeException("서브 리뷰 저장 실패로 전체 롤백 처리합니다. 항목: " + subreview.getItemName());
+				}
+			}
+		}
 
-                    if (generatedReviewId == 0) {
+		return generatedReviewId;
+	}
 
-                        throw new RuntimeException(
-                                "메인 데일리 리뷰 저장에 실패했습니다."
-                        );
-                    }
+	@Override
+	public int saveDailyReviewImage(DailyReviewImage dailyReviewImage) {
 
-                    DailyReviewImage imageInfo =
-                            new DailyReviewImage();
+		int result = dailyReviewDAO.saveDailyReviewImage(dailyReviewImage);
 
-                    imageInfo.setFileName(
-                            fileInfo.getFileName()
-                    );
+		return result;
+	}
 
-                    imageInfo.setReviewId(
-                            generatedReviewId
-                    );
+	@Override
+	public DailyReviewImage findDailyReviewImageByReviewId(long reviewId) {
 
-                    int result2 =
-                            dailyReviewDAO
-                                    .saveDailyReviewImage(
-                                            imageInfo
-                                    );
+		DailyReviewImage dailyReviewImage = dailyReviewDAO.findDailyReviewImageByReviewId(reviewId);
 
-                    if (result2 == 0) {
+		return dailyReviewImage;
+	}
 
-                        throw new RuntimeException(
-                                "사진 정보 저장에 실패했습니다."
-                        );
-                    }
+	@Override
+	public DailyReviewFormDTO findReviewDetailByReviewId(long reviewId) {
 
-                } else {
+		DailyReviewFormDTO formDTO = dailyReviewDAO.findReviewDetailByReviewId(reviewId);
 
-                    throw new RuntimeException(
-                            "사진 정보 저장에 실패했습니다."
-                    );
-                }
+		return formDTO;
+	}
 
-            } catch (
-                    IllegalStateException
-                    | IOException e) {
+	@Override
+	public List<DailyReviewFormDTO> findDailyReviewsByUserId(String userId) {
 
-                e.printStackTrace();
-
-                throw new RuntimeException(
-                        "사진 저장에 실패했습니다."
-                );
-            }
-
-        } else {
-
-            generatedReviewId =
-                    dailyReviewDAO.saveDailyReview(
-                            formDTO
-                    );
-
-            if (generatedReviewId == 0) {
-
-                throw new RuntimeException(
-                        "메인 데일리 리뷰 저장에 실패했습니다."
-                );
-            }
-        }
-
-
-        /* =========================================
-           서브 리뷰 저장
-        ========================================= */
-
-        if (
-            formDTO.getSubReviews() != null
-            && !formDTO.getSubReviews().isEmpty()
-        ) {
-
-            for (
-                SubReviewDTO subreview
-                    : formDTO.getSubReviews()
-            ) {
-
-                subreview.setReviewId(
-                        generatedReviewId
-                );
-
-                int result =
-                        subReviewDAO.saveSubReview(
-                                subreview
-                        );
-
-                if (result == 0) {
-
-                    throw new RuntimeException(
-                            "서브 리뷰 저장 실패로 "
-                            + "전체 롤백 처리합니다. 항목: "
-                            + subreview.getItemName()
-                    );
-                }
-            }
-        }
-
-        return generatedReviewId;
-    }
-
-
-    /* =========================================
-       데일리 리뷰 이미지 저장
-    ========================================= */
-    @Override
-    public int saveDailyReviewImage(
-            DailyReviewImage dailyReviewImage) {
-
-        int result =
-                dailyReviewDAO.saveDailyReviewImage(
-                        dailyReviewImage
-                );
-
-        return result;
-    }
-
-
-    /* =========================================
-       데일리 리뷰 이미지 조회
-    ========================================= */
-    @Override
-    public DailyReviewImage findDailyReviewImageByReviewId(
-            long reviewId) {
-
-        DailyReviewImage dailyReviewImage =
-                dailyReviewDAO
-                        .findDailyReviewImageByReviewId(
-                                reviewId
-                        );
-
-        return dailyReviewImage;
-    }
-
-
-    /* =========================================
-       데일리 리뷰 상세 조회
-    ========================================= */
-    @Override
-    public DailyReviewFormDTO findReviewDetailByReviewId(
-            long reviewId) {
-
-        DailyReviewFormDTO formDTO =
-                dailyReviewDAO
-                        .findReviewDetailByReviewId(
-                                reviewId
-                        );
-
-        return formDTO;
-    }
-
-
-    /* =========================================
-       MY 페이지 - 내가 작성한 데일리 기록 조회
-    ========================================= */
-    @Override
-    public List<DailyReviewFormDTO> findDailyReviewsByUserId(
-            String userId) {
-
-        return dailyReviewDAO
-                .findDailyReviewsByUserId(
-                        userId
-                );
-    }
-
-
-    /* =========================================
-       MY 페이지 - 데일리 기록별 서브 리뷰 조회
-    ========================================= */
-    @Override
-    public List<SubReviewDTO> findSubReviewsByReviewId(
-            Long reviewId) {
-
-        return subReviewDAO
-                .findSubReviewsByReviewId(
-                        reviewId
-                );
-    }
-
-
-    /* =========================================
-       MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
-    ========================================= */
-    @Override
-    public List<SubReviewDTO> findSubReviewsByUserId(
-            String userId) {
-
-        return subReviewDAO
-                .findSubReviewsByUserId(
-                        userId
-                );
-    }
-
-
-    /* =========================================
-       MY 페이지 - 내가 좋아요한 리뷰 개수
-    ========================================= */
-    @Override
-    public int countLikesByUserId(
-            String userId) {
-
-        return likeDAO
-                .countLikesByUserId(
-                        userId
-                );
-    }
-
-
-    /* =========================================
-       MY 페이지 - 내가 좋아요한 리뷰 목록
-    ========================================= */
-    @Override
-    public List<DailyReviewFormDTO> findLikedReviewsByUserId(
-            String userId) {
-
-        return likeDAO
-                .findLikedReviewsByUserId(
-                        userId
-                );
-    }
-
-
-    /* =========================================
-       MY 페이지 - 데일리 리뷰 삭제
-
-       삭제 순서
-       1. 서브 리뷰
-       2. 댓글
-       3. 좋아요
-       4. 리뷰 이미지 정보
-       5. 데일리 리뷰
-    ========================================= */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int deleteDailyReviewByReviewId(
-            long reviewId) {
-
-        /* 1. 해당 리뷰의 서브 리뷰 전체 삭제 */
-        subReviewDAO.deleteSubReviewsByReviewId(
-                reviewId
-        );
-
-        /* 2. 해당 리뷰의 댓글 전체 삭제 */
-        commentDAO.deleteCommentsByReviewId(
-                reviewId
-        );
-
-        /* 3. 해당 리뷰의 좋아요 전체 삭제 */
-        likeDAO.deleteLikesByReviewId(
-                reviewId
-        );
-
-        /* 4. 해당 리뷰의 이미지 정보 삭제 */
-        dailyReviewDAO
-                .deleteDailyReviewImageByReviewId(
-                        reviewId
-                );
-
-        /* 5. 부모 데일리 리뷰 삭제 */
-        int result =
-                dailyReviewDAO
-                        .deleteDailyReviewByReviewId(
-                                reviewId
-                        );
-
-        /* 부모 리뷰 삭제 실패 시 전체 롤백 */
-        if (result == 0) {
-
-            throw new RuntimeException(
-                    "데일리 리뷰 삭제에 실패했습니다."
-            );
-        }
-
-        return result;
-    }
+		return dailyReviewDAO.findDailyReviewsByUserId(userId);
+	}
 
+	// MY 페이지 - 데일리 기록별 서브 리뷰 조회
+	@Override
+	public List<SubReviewDTO> findSubReviewsByReviewId(Long reviewId) {
+
+		return subReviewDAO.findSubReviewsByReviewId(reviewId);
+	}
+
+	// MY 페이지 - 내가 작성한 전체 서브 리뷰 조회
+	@Override
+	public List<SubReviewDTO> findSubReviewsByUserId(String userId) {
+
+		return subReviewDAO.findSubReviewsByUserId(userId);
+	}
+
+	// MY 페이지 - 내가 좋아요한 리뷰 개수
+	@Override
+	public int countLikesByUserId(String userId) {
+
+		return likeDAO.countLikesByUserId(userId);
+	}
+
+	// MY 페이지 - 내가 좋아요한 리뷰 목록
+	@Override
+	public List<DailyReviewFormDTO> findLikedReviewsByUserId(String userId) {
+		return likeDAO.findLikedReviewsByUserId(userId);
+	}
+
+	/*
+	 * ========================================= 
+	 * MY 페이지 - 데일리 리뷰 삭제
+	 * 
+	 * 삭제 순서 1. 서브 리뷰 2. 댓글 3. 좋아요 4. 리뷰 이미지 정보 5. 데일리 리뷰
+	 * =========================================
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int deleteDailyReviewByReviewId(long reviewId) {
+
+		/* 1. 해당 리뷰의 서브 리뷰 전체 삭제 */
+		subReviewDAO.deleteSubReviewsByReviewId(reviewId);
+
+		/* 2. 해당 리뷰의 댓글 전체 삭제 */
+		commentDAO.deleteCommentsByReviewId(reviewId);
+
+		/* 3. 해당 리뷰의 좋아요 전체 삭제 */
+		likeDAO.deleteLikesByReviewId(reviewId);
+
+		/* 4. 해당 리뷰의 이미지 정보 삭제 */
+		dailyReviewDAO.deleteDailyReviewImageByReviewId(reviewId);
+
+		/* 5. 부모 데일리 리뷰 삭제 */
+		int result = dailyReviewDAO.deleteDailyReviewByReviewId(reviewId);
+
+		/* 부모 리뷰 삭제 실패 시 전체 롤백 */
+		if (result == 0) {
+
+			throw new RuntimeException("데일리 리뷰 삭제에 실패했습니다.");
+		}
+
+		return result;
+	}
 }
