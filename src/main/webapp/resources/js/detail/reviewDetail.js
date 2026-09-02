@@ -280,10 +280,10 @@ function initLikeFormAjaxEnhancement() {
 
                     var heartIcon = likeButton.querySelector('i');
                     if (isLiked) {
-                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-rose-50 border-rose-300 text-rose-600';        
+                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-rose-50 border-rose-300 text-rose-600';
                         if (heartIcon) heartIcon.className = 'fa-solid fa-heart text-xs text-rose-500';
                     } else {
-                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-white border-slate-200 text-slate-700 hover:bg-slate-50';                                                                                               
+                        likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-white border-slate-200 text-slate-700 hover:bg-slate-50';
                         if (heartIcon) heartIcon.className = 'fa-solid fa-heart text-xs text-slate-400';
                     }
                 } else {
@@ -295,4 +295,91 @@ function initLikeFormAjaxEnhancement() {
                 alert('처리 중 오류가 발생했습니다.');
             });
     });
-}                                               
+}
+
+// 1. 댓글 작성 AJAX (POST + JSON)                                                                     
+document.addEventListener('DOMContentLoaded', function() {
+    var commentForm = document.getElementById('commentForm');
+    if (commentForm) {
+        commentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var contentInput = document.getElementById('commentInput');
+            var content = contentInput.value.trim();
+            if (!content) {
+                alert('댓글 내용을 입력해주세요.');
+                return;
+            }
+
+            var reviewId = document.getElementById('commentReviewId').value;
+            var userId = document.getElementById('commentUserId').value;
+
+            // CommentDTO 구조에 맞춘 JSON 생성                                                        
+            var requestData = {
+                reviewId: parseInt(reviewId, 10),
+                userId: userId,
+                content: content
+            };
+
+            fetch(commentForm.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(function(res) { return res.json(); })
+                .then(function(res) {
+                    if (res && res.success) {
+                        contentInput.value = ''; // 입력창 비우기                                          
+                        location.reload(); // 새로 등록된 댓글 렌더링을 위해 새로고침 또는 동적 추가       
+                    } else {
+                        alert(res.message || '댓글 등록에 실패했습니다.');
+                    }
+                })
+                .catch(function(err) {
+                    console.error(err);
+                    alert('댓글 등록 중 오류가 발생했습니다.');
+                });
+        });
+    }
+});
+
+// 2. 댓글 삭제 AJAX (DELETE)                                                                          
+function removeComment(commentId) {
+    if (!confirm('정말 댓글을 삭제하시겠습니까?')) return;
+
+    var commentForm = document.getElementById('commentForm');
+    var reviewId = commentForm ? commentForm.getAttribute('data-review-id') : '${review.reviewId}';
+    var deleteUrl = (window.contextPath || '') + '/RE:DAY/reviews/' + reviewId + '/comments/' +
+        commentId;
+
+    fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+        .then(function(res) { return res.json(); })
+        .then(function(res) {
+            if (res && res.success) {
+                // 화면에서 해당 댓글 요소 즉시 제거                                                       
+                var targetItem = document.getElementById('comment-item-' + commentId);
+                if (targetItem) targetItem.remove();
+
+                // 카운트 숫자 -1 감소                                                                     
+                var countSpan = document.getElementById('commentCountSpan');
+                if (countSpan) {
+                    var cur = parseInt(countSpan.textContent, 10) || 0;
+                    countSpan.textContent = Math.max(0, cur - 1);
+                }
+            } else {
+                alert('댓글 삭제에 실패했습니다.');
+            }
+        })
+        .catch(function(err) {
+            console.error(err);
+            alert('댓글 삭제 중 오류가 발생했습니다.');
+        });
+}

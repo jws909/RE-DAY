@@ -93,7 +93,7 @@
 							<i
 								class="fa-solid fa-heart text-xs ${isLiked ? 'text-rose-500' : 'text-slate-400'}"></i>
 							<span>좋아요</span> <span id="likeCountSpan" class="font-mono">
-							${empty review.likeCount ? (empty likeCount ? 0 : likeCount) : review.likeCount}</span>
+								${empty review.likeCount ? (empty likeCount ? 0 : likeCount) : review.likeCount}</span>
 						</button>
 					</form>
 
@@ -110,12 +110,12 @@
 							class="flex items-center gap-1.5 pl-2 border-l border-slate-300">
 							<!-- 수정 이동 -->
 							<a
-								href="${pageContext.request.contextPath}/review/edit?id=${review.reviewId}"
+								href="${pageContext.request.contextPath}/RE:DAY/review/edit/${review.reviewId}"
 								class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors">
 								<i class="fa-solid fa-pen text-xs mr-1 text-slate-500"></i>수정
 							</a>
 							<!-- 삭제 폼 -->
-							<form action="${pageContext.request.contextPath}/review/delete"
+							<form action="${pageContext.request.contextPath}/RE:DAY/review/delete/${review.reviewId}"
 								method="post" class="inline m-0"
 								onsubmit="return confirm('정말 이 하루 리뷰를 삭제하시겠습니까?\n종속된 모든 서브 리뷰도 함께 삭제됩니다.');">
 								<input type="hidden" name="reviewId" value="${review.reviewId}" />
@@ -192,7 +192,7 @@
 
 								<!-- 유저 레벨 (USER_LEVEL: LV1~LV5) 뱃지 : 서버 JSTL 즉시 완성 + JS 연동 -->
 								<c:set var="rawLevel"
-									value="${not empty user.userLevel ? user.userLevel : (not empty user.user_level ? user.user_level : (not empty userLevel ? userLevel : 'LV1'))}" />
+									value="${not empty user.userLevel ? user.userLevel : (not empty user.userLevel ? user.userLevel : (not empty userLevel ? userLevel : 'LV1'))}" />
 								<c:choose>
 									<c:when test="${rawLevel eq 'LV5' or rawLevel eq '5'}">
 										<span id="userLevelBadge" data-level="${rawLevel}"
@@ -618,7 +618,8 @@
 					class="flex items-center justify-between pb-3 border-b border-slate-200">
 					<div class="flex items-center gap-2">
 						<i class="fa-regular fa-comment-dots text-slate-600 text-base"></i>
-						<h4 class="text-sm font-bold text-slate-800">댓글 및 반응 (${empty comments ? 0 : comments.size()})
+						<h4 class="text-sm font-bold text-slate-800">
+							댓글 및 반응 (<span id="commentCountSpan">${empty comments ? 0 : comments.size()}</span>)
 						</h4>
 					</div>
 					<span class="text-xs text-slate-400 font-mono"></span>
@@ -629,11 +630,12 @@
 					<c:choose>
 						<c:when test="${not empty comments}">
 							<c:forEach items="${comments}" var="comment">
-								<div
+								<!-- 댓글 단위 박스에 id 부여 (삭제 시 바로 DOM 제거용) -->
+								<div id="comment-item-${comment.commentId}"
 									class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
 									<div class="flex items-center justify-between">
 										<div class="flex items-center gap-2 flex-wrap">
-											<!-- 댓글 작성자 프로필 이미지 또는 이니셜 원형 -->
+											<!-- 프로필 이미지 / 아바타 -->
 											<c:choose>
 												<c:when test="${not empty comment.profileImg}">
 													<img src="${comment.profileImg}" alt="프로필"
@@ -643,19 +645,19 @@
 													<div
 														class="w-6 h-6 rounded-full bg-slate-800 text-white font-mono text-[10px] flex items-center justify-center font-bold uppercase shadow-2xs">
 														<c:choose>
-															<c:when test="${not empty comment.nickname}">
-																${fn:substring(comment.nickname, 0, 1)}
-															</c:when>
-															<c:when test="${not empty comment.userId}">
-																${fn:substring(comment.userId, 0, 1)}
-															</c:when>
+															<c:when test="${not empty comment.nickname}">              
+                                                    ${fn:substring(comment.nickname, 0, 1)}                
+                                                </c:when>
+															<c:when test="${not empty comment.userId}">                
+                                                    ${fn:substring(comment.userId, 0, 1)}                  
+                                                </c:when>
 															<c:otherwise>U</c:otherwise>
 														</c:choose>
 													</div>
 												</c:otherwise>
 											</c:choose>
 
-											<!-- 댓글 작성자 닉네임 -->
+											<!-- 작성자 닉네임 -->
 											<span class="font-bold text-slate-800"> <c:choose>
 													<c:when test="${not empty comment.nickname}">
 														<c:out value="${comment.nickname}" />
@@ -666,7 +668,7 @@
 												</c:choose>
 											</span>
 
-											<!-- 댓글 작성자 레벨 (LV1~LV5) 뱃지 -->
+											<!-- 레벨 뱃지 -->
 											<c:if test="${not empty comment.userLevel}">
 												<span
 													class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
@@ -674,7 +676,7 @@
 												</span>
 											</c:if>
 
-											<!-- 댓글 작성자 스트릭(연속 기록) 뱃지 -->
+											<!-- 스트릭 뱃지 -->
 											<c:if
 												test="${not empty comment.streakCount and comment.streakCount > 0}">
 												<span
@@ -686,27 +688,20 @@
 										</div>
 
 										<div class="flex items-center gap-2">
-											<!-- 작성 시간 -->
+											<!-- 작성 일시 -->
 											<span class="text-[10px] text-slate-400 font-mono"> <c:out
 													value="${comment.createdAt}" />
 											</span>
 
-											<!-- 작성자 본인 댓글 삭제 폼 -->
+											<!-- ★ 본인 댓글 삭제: Controller의 DELETE /RE:DAY/reviews/{reviewId}/comments/{commentId} 호출 버튼으로 변경 -->
 											<c:if
 												test="${not empty sessionScope.loginUser and (sessionScope.loginUser.userId eq comment.userId or sessionScope.loginUser.userId eq comment.userId)}">
-												<form
-													action="${pageContext.request.contextPath}/comment/delete"
-													method="post" class="inline m-0"
-													onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
-													<input type="hidden" name="commentId"
-														value="${comment.commentId}" /> <input type="hidden"
-														name="reviewId" value="${review.reviewId}" />
-													<button type="submit"
-														class="text-slate-400 hover:text-rose-600 transition-colors p-0.5 cursor-pointer"
-														title="댓글 삭제">
-														<i class="fa-regular fa-trash-can text-xs"></i>
-													</button>
-												</form>
+												<button type="button"
+													onclick="removeComment(${comment.commentId})"
+													class="text-slate-400 hover:text-rose-600 transition-colors p-0.5 cursor-pointer"
+													title="댓글 삭제">
+													<i class="fa-regular fa-trash-can text-xs"></i>
+												</button>
 											</c:if>
 										</div>
 									</div>
@@ -719,7 +714,8 @@
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
-							<div class="py-4 text-center text-xs text-slate-400 font-mono">
+							<div id="noCommentNotice"
+								class="py-4 text-center text-xs text-slate-400 font-mono">
 								아직 작성된 댓글이 없습니다. 첫 번째 응원의 한마디를 남겨보세요!</div>
 						</c:otherwise>
 					</c:choose>
@@ -727,17 +723,23 @@
 
 				<!-- Comment Input Skeleton -->
 				<c:choose>
-					<%-- 로그인 상태: 댓글 작성 폼 활성화 --%>
+					<%-- 로그인 상태: 댓글 작성 폼 --%>
 					<c:when test="${not empty sessionScope.loginUser}">
 						<form id="commentForm"
-							action="${pageContext.request.contextPath}/comment/write"
-							method="post" class="space-y-1.5 pt-2">
-							<input type="hidden" name="reviewId" value="${review.reviewId}" />
+							action="${pageContext.request.contextPath}/RE:DAY/reviews/${review.reviewId}/comments"
+							method="post" class="space-y-1.5 pt-2"
+							data-review-id="${review.reviewId}">
+
+							<!-- 백엔드 CommentDTO 매핑용 hidden inputs -->
+							<input type="hidden" id="commentReviewId"
+								value="${review.reviewId}" /> <input type="hidden"
+								id="commentUserId" value="${sessionScope.loginUser.userId}" />
+
 							<div class="flex gap-2">
 								<input type="text" name="content" id="commentInput" required
 									maxlength="500" placeholder="이 날의 하루에 응원의 한마디나 질문을 남겨보세요..."
 									class="flex-1 px-3 py-2 text-xs border border-dashed border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:border-slate-700 transition-colors font-sans" />
-								<button type="submit"
+								<button type="submit" id="commentSubmitBtn"
 									class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
 									<i class="fa-solid fa-paper-plane text-[10px]"></i> <span>등록</span>
 								</button>
@@ -750,15 +752,14 @@
 						</form>
 					</c:when>
 
-					<%-- 비로그인 상태: 로그인 안내 링크 --%>
+					<%-- 비로그인 상태 (그대로 유지) --%>
 					<c:otherwise>
 						<div
 							class="p-3 bg-slate-50 rounded-lg border border-dashed border-slate-300 text-center space-y-1.5">
 							<p class="text-xs text-slate-500">댓글을 작성하려면 로그인이 필요합니다.</p>
 							<a href="${pageContext.request.contextPath}/member/signin"
 								class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-xs font-bold hover:bg-blue-100 transition-colors">
-								<i class="fa-solid fa-right-to-bracket text-xs"></i> <span>로그인하러
-									가기</span>
+								<i class="fa-solid fa-right-to-bracket text-xs"></i> <span>로그인하러가기</span>
 							</a>
 						</div>
 					</c:otherwise>
@@ -775,8 +776,7 @@
 				</div>
 				<a href="${pageContext.request.contextPath}/RE:DAY/review/write"
 					class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1.5 shrink-0 transition-colors">
-					<i class="fa-solid fa-circle-plus text-xs"></i> <span>오늘 리뷰
-						작성하기</span>
+					<i class="fa-solid fa-circle-plus text-xs"></i> <span>오늘 리뷰작성하기</span>
 				</a>
 			</div>
 

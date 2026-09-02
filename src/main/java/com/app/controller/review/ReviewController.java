@@ -1,6 +1,9 @@
 package com.app.controller.review;
 
 import javax.servlet.http.HttpSession;
+
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.dto.review.DailyReviewFormDTO;
+import com.app.dto.review.SubReviewDTO;
 import com.app.service.member.MemberService;
 import com.app.service.review.CommentService;
 import com.app.service.review.ReviewService;
@@ -156,5 +160,39 @@ public class ReviewController {
         // 삭제 완료 후 MY 페이지 이동
         // ========================================
         return "redirect:/RE:DAY/my";
+    }
+    
+    @GetMapping("/RE:DAY/review/edit/{reviewId}")                                                                            
+    public String viewEditReview(@PathVariable Long reviewId, Model model, HttpSession session) {                         
+    	MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");                           
+        if (loginUser == null) {                                                                       
+            return "redirect:/member/signin"; // 비로그인 시 로그인 화면으로 이동                      
+        }                                                                                              
+                                                                                                       
+         //Service에서 기존 리뷰 정보 조회 후 작성자 본인 확인                                         
+        DailyReviewFormDTO existingReview = reviewService.findReviewDetailByReviewId(reviewId);               
+         if (!existingReview.getUserId().equals(loginUser.getUserId())) {                            
+             return "redirect:/review/detail/" + reviewId; // 타인 글 수정 시도시 차단            
+         }          
+    	
+    	// DB에서 리뷰 상세 정보 및 서브 리뷰 목록 조회                                                    
+        DailyReviewFormDTO review = reviewService.findReviewDetailByReviewId(reviewId);                             
+        List<SubReviewDTO> subReviews = review.getSubReviews();
+                                                                                                           
+        model.addAttribute("review", review);                                                              
+        model.addAttribute("subReviews", subReviews);                                               
+                                                                                                           
+        return "edit/editReview"; // editReview.jsp 로 이동                                                     
+    }
+
+    @PostMapping("/review/edit")                                                                           
+    public String updateReview(@ModelAttribute DailyReviewFormDTO formDto,                                 
+                               @RequestParam(value = "deleteMainImage", defaultValue = "N") String deleteMainImage, HttpSession session) {
+        // 1) reviewId 기준 메인 리뷰 UPDATE
+        // 2) deleteMainImage.equals("Y") 인 경우 기존 이미지 파일 삭제
+        // 3) mainImageFile 이 있는 경우 새 파일 업로드
+        // 4) subReviews 목록 수정/추가/삭제 동기화
+  
+        return "redirect:/RE:DAY/review/detail/" + formDto.getReviewId();
     }
 }
