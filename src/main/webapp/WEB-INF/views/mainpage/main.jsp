@@ -2,14 +2,16 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
-<link href="/css/mainpage/mainpage.css" rel="stylesheet">
-<script src="/js/mainpage/mainpage.js"></script>
+<link href="${pageContext.request.contextPath}/css/mainpage/mainpage.css?v=<%=System.currentTimeMillis()%>" rel="stylesheet">
+<script>var contextPath = "${pageContext.request.contextPath}";</script>
+<script src="${pageContext.request.contextPath}/js/mainpage/mainpage.js?v=<%=System.currentTimeMillis()%>"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
@@ -70,93 +72,148 @@
 					<div class="sort_filter_left">
 						<span class="material-symbols-outlined">sort</span>정렬
 						<div class="filter_button">
-							<button type="button" class="active">최신 날짜순</button>
-							<button type="button">하루 평점 높은순</button>
+							<button type="button" class="${currentSort eq 'latest' ? 'active' : ''}" data-sort="latest"
+									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=latest'">최신 날짜순</button>
+							<button type="button" class="${currentSort eq 'rating' ? 'active' : ''}" data-sort="rating"
+									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=rating'">하루 평점 높은순</button>
 						</div>
 					</div>
-					<div class="sort_filter_right">총 n개의 하루 리뷰</div>
+					<div class="sort_filter_right">총 <span id="feedTotalCount">${totalCount}</span>개의 하루 리뷰</div>
 				</div>
-				<!-- 메인 리뷰 카드 -->
-				<div class="main_review_container">
-					<div class="mp_review_card">
-						<div class="mp_review_header">
-							<div class="mp_review_author_info">
-								<div class="mp_author_avatar font-mono"></div>
-								<div class="mp_author_meta">
-									<div class="mp_author_name_row">
-										<span class="mp_author_name">승북이</span> <span
-											class="mp_author_level font-mono">lv.100 집에 얼른 가고 싶은
-											군산 출신 막내 팀장</span> <span class="mp_author_badge">5</span>
+
+				<!-- 메인 리뷰 카드 컨테이너 -->
+				<div class="main_review_container" id="mainReviewContainer" data-sort="${currentSort}" data-page="1" data-has-more="${hasMore}">
+					<c:choose>
+						<c:when test="${empty feedList}">
+							<div class="empty_feed_box" style="text-align: center; padding: 60px 20px; background: #ffffff; border: 2px dashed #CBD5E1; border-radius: 16px; margin-top: 20px;">
+								<span class="material-symbols-outlined" style="font-size: 48px; color: #94A3B8;">sentiment_dissatisfied</span>
+								<p style="margin-top: 12px; font-size: 15px; font-weight: bold; color: #475569;">등록된 데일리 리뷰가 없습니다.</p>
+								<p style="font-size: 13px; color: #94A3B8; margin-top: 4px;">첫 번째 하루 리뷰를 기록해보세요!</p>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<c:forEach items="${feedList}" var="review">
+								<div class="mp_review_card" data-review-id="${review.reviewId}">
+									<div class="mp_review_header">
+										<div class="mp_review_author_info">
+											<div class="mp_author_avatar font-mono">
+												<c:choose>
+													<c:when test="${not empty review.authorProfileImg}">
+														<img src="${pageContext.request.contextPath}${review.authorProfileImg}" alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" onerror="this.style.display='none';">
+													</c:when>
+													<c:otherwise>
+														<span class="material-symbols-outlined" style="font-size: 20px; color: #64748B;">person</span>
+													</c:otherwise>
+												</c:choose>
+											</div>
+											<div class="mp_author_meta">
+												<div class="mp_author_name_row">
+													<span class="mp_author_name"><c:out value="${empty review.authorNickname ? '익명' : review.authorNickname}" /></span>
+													<span class="mp_author_level font-mono"><c:out value="${empty review.authorLevel ? 'lv.1 초보 기록러' : review.authorLevel}" /></span>
+													<c:if test="${not empty review.authorStreakCount && review.authorStreakCount > 0}">
+														<span class="mp_author_badge font-mono">${review.authorStreakCount}</span>
+													</c:if>
+												</div>
+												<div class="mp_review_date_row">
+													<span class="material-symbols-outlined">calendar_today</span>
+													<span class="font-mono">${review.reviewDate}</span>
+													<c:if test="${review.reviewDate eq todayDate}">
+														<span class="mp_today_badge font-mono">TODAY</span>
+													</c:if>
+												</div>
+											</div>
+										</div>
+
+										<div class="mp_review_score_box">
+											<span class="mp_score_title">오늘의 하루 평점</span>
+											<div class="mp_score_stars">
+												<span class="material-symbols-outlined star_fill">star</span>
+												<span class="font-mono font-bold">${review.totalRating}</span>
+											</div>
+										</div>
 									</div>
-									<div class="mp_review_date_row">
-										<span class="material-symbols-outlined">calendar_today</span>
-										<span class="font-mono">2026-09-08</span> <span
-											class="mp_today_badge font-mono">TODAY</span>
+
+									<c:if test="${not empty review.moodTags}">
+										<div class="mp_mood_tags_wrapper">
+											<c:forEach items="${fn:split(review.moodTags, ',')}" var="tag">
+												<c:if test="${not empty fn:trim(tag)}">
+													<span class="mp_mood_tag">#${fn:trim(tag)}</span>
+												</c:if>
+											</c:forEach>
+										</div>
+									</c:if>
+
+									<p class="mp_review_summary"><c:out value="${review.overallComment}" /></p>
+
+									<%-- 대표 사진 --%>
+									<c:if test="${not empty review.mainImageUrl}">
+										<div class="mp_review_main_image" style="margin: 12px 0; border-radius: 12px; overflow: hidden; max-height: 360px; background: #f1f5f9;">
+											<img src="${pageContext.request.contextPath}${review.mainImageUrl}" alt="대표 이미지" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.parentElement.style.display='none';">
+										</div>
+									</c:if>
+
+									<%-- 서브 리뷰 목록 리본 --%>
+									<c:if test="${not empty review.subReviews}">
+										<div class="mp_sub_reviews_container">
+											<div class="mp_sub_reviews_header">
+												<div class="mp_sub_reviews_title">
+													<span class="material-symbols-outlined">layers</span>
+													<span>이 날의 서브 리뷰 (${fn:length(review.subReviews)}개)</span>
+												</div>
+												<span class="mp_sub_reviews_caption font-mono">세부 평가 항목</span>
+											</div>
+
+											<div class="mp_sub_reviews_grid">
+												<c:forEach items="${review.subReviews}" var="sub">
+													<div class="mp_sub_review_item">
+														<div class="mp_sub_item_left">
+															<span class="mp_category_badge"><c:out value="${sub.category}" /></span>
+															<span class="mp_sub_item_name"><c:out value="${sub.itemName}" /></span>
+															<c:if test="${sub.isCertified eq 'Y'}">
+																<span class="material-symbols-outlined icon_verified">check_circle</span>
+															</c:if>
+														</div>
+														<div class="mp_sub_item_right">
+															<span class="material-symbols-outlined star_fill">star</span>
+															<span class="font-mono font-bold">${sub.subRating}</span>
+														</div>
+													</div>
+												</c:forEach>
+											</div>
+										</div>
+									</c:if>
+
+									<div class="mp_review_footer">
+										<div class="mp_interaction_group">
+											<button type="button" class="mp_action_btn like_btn ${review.likedByMe ? 'active' : ''}"
+												data-review-id="${review.reviewId}" data-liked="${review.likedByMe}">
+												<span class="material-symbols-outlined icon_heart">favorite</span>
+												<span class="font-mono like_count">${review.likeCount}</span>
+											</button>
+											<span class="mp_action_info">
+												<span class="material-symbols-outlined">chat_bubble</span>
+												<span>댓글 ${review.commentCount}</span>
+											</span>
+										</div>
+										<div class="mp_detail_link" onclick="location.href='${pageContext.request.contextPath}/RE:DAY/review/detail/${review.reviewId}'" style="cursor: pointer;">
+											<span>상세 보기</span>
+											<span class="material-symbols-outlined">arrow_forward</span>
+										</div>
 									</div>
 								</div>
-							</div>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</div>
 
-							<div class="mp_review_score_box">
-								<span class="mp_score_title">오늘의 하루 평점</span>
-								<div class="mp_score_stars">
-									<span class="material-symbols-outlined star_fill">star</span> <span
-										class="font-mono font-bold">5</span>
-								</div>
-							</div>
-						</div>
-						<div class="mp_mood_tags_wrapper">
-							<span class="mp_mood_tag">피곤함</span>
-						</div>
-						<p class="mp_review_summary">집 가고 싶다~!!! 집 가고 싶다~!!!집 가고
-							싶다~!!!집 가고 싶다~!!!집 가고 싶다~!!!</p>
-
-						<div class="mp_review_image_placeholder">
-							<span class="material-symbols-outlined">image</span>
-							<p class="placeholder_title">'[오늘 하루 대표 이미지 영역]' :</p>
-							<span class="placeholder_sub">일기 대표 컷 / 장소 뷰 / 하이라이트 사진</span>
-						</div>
-
-						<!-- 서브 리뷰 목록 리본 -->
-						<div class="mp_sub_reviews_container">
-							<div class="mp_sub_reviews_header">
-								<div class="mp_sub_reviews_title">
-									<span class="material-symbols-outlined">layers</span> <span>이
-										날의 서브 리뷰 (n개)</span>
-								</div>
-								<span class="mp_sub_reviews_caption font-mono">세부 평가 항목</span>
-							</div>
-
-							<div class="mp_sub_reviews_grid">
-								<div class="mp_sub_review_item">
-									<div class="mp_sub_item_left">
-										<span class="mp_category_badge">카테고리 뱃지</span> <span
-											class="mp_sub_item_name">그냥 사람1</span> <span
-											class="material-symbols-outlined icon_verified">check_circle</span>
-									</div>
-									<div class="mp_sub_item_right">
-										<span class="material-symbols-outlined star_fill">star</span>
-										<span class="font-mono font-bold">5</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="mp_review_footer">
-							<div class="mp_interaction_group">
-								<button type="button" class="mp_action_btn like_btn"
-									data-review-id="1" data-liked="false">
-									<span class="material-symbols-outlined icon_heart">favorite</span>
-									<span class="font-mono like_count">${likeCount}</span>
-								</button>
-								<span class="mp_action_info"> <span
-									class="material-symbols-outlined">chat_bubble</span> <span>댓글
-										100</span>
-								</span>
-							</div>
-							<div class="mp_detail_link">
-								<span>상세 보기</span> <span class="material-symbols-outlined">arrow_forward</span>
-							</div>
-						</div>
-					</div>
+				<!-- 피드 더보기 버튼 영역 -->
+				<div id="feedMoreContainer" style="margin-top: 24px; text-align: center; ${hasMore ? '' : 'display: none;'}">
+					<button type="button" id="btnLoadMore" 
+							onclick="if(window.loadMoreReviews) window.loadMoreReviews();"
+							style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 320px; padding: 12px 20px; background-color: #ffffff; border: 2px dashed #CBD5E1; border-radius: 12px; font-weight: bold; font-size: 14px; color: #475569; cursor: pointer; transition: all 0.2s ease;">
+						<span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span>
+						<span>리뷰 더보기 (+5개)</span>
+					</button>
 				</div>
 
 			</div>

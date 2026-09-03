@@ -371,6 +371,12 @@
 	gap: 16px;
 }
 
+.main_review_container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
 .mp_review_card {
 	background-color: #ffffff;
 	border: 3px dashed #CBD5E1;
