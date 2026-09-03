@@ -28,44 +28,7 @@
 				가장 많이 등장한 실사용 장소·아이템 트렌드를 확인해보세요.</div>
 		</div>
 		<div class="ex_bottom_column">
-			<!-- 라이프스타일 테마 필터 바 -->
-			<div class="ex_theme_filter_section">
-				<div class="ex_theme_header">
-					<div class="ex_theme_title">
-						<span class="material-symbols-outlined icon_compass">explore</span>
-						<span class="title_text">라이프스타일 테마별 하루 엿보기</span>
-					</div>
-					<span class="ex_theme_sub font-mono">관심 있는 키워드로 둘러보기</span>
-				</div>
-
-				<div class="ex_theme_list">
-					<button type="button" class="ex_theme_btn active">
-						<span class="theme_label">전체 둘러보기</span> <span
-							class="theme_count font-mono">1.2k+</span>
-					</button>
-					<button type="button" class="ex_theme_btn">
-						<span class="theme_label">💻 재택 & 생산성 데이</span> <span
-							class="theme_count font-mono">342</span>
-					</button>
-					<button type="button" class="ex_theme_btn">
-						<span class="theme_label">☕ 주말 카페 & 핫플</span> <span
-							class="theme_count font-mono">489</span>
-					</button>
-					<button type="button" class="ex_theme_btn">
-						<span class="theme_label">🏃 오운완 & 미라클모닝</span> <span
-							class="theme_count font-mono">215</span>
-					</button>
-					<button type="button" class="ex_theme_btn">
-						<span class="theme_label">🚗 야간 드라이브 & 여행</span> <span
-							class="theme_count font-mono">178</span>
-					</button>
-					<button type="button" class="ex_theme_btn">
-						<span class="theme_label">🎬 집콕 넷플릭스 & 휴식</span> <span
-							class="theme_count font-mono">164</span>
-					</button>
-				</div>
 			</div>
-
 			<!-- 하단 2열 컨텐츠 영역 -->
 			<div class="ex_b_bottom_column">
 				<!-- 좌측: 연속 기록 스트릭 챌린저 -->
