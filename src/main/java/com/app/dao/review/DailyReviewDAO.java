@@ -1,6 +1,7 @@
 package com.app.dao.review;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
@@ -44,4 +45,12 @@ public interface DailyReviewDAO {
     public int updateDailyReview(
             DailyReviewFormDTO formDTO
     );
+
+    // 메인 피드 - 공개 데일리 리뷰 목록 페이징 조회
+    public List<DailyReviewFormDTO> findPublicReviewFeed(
+            Map<String, Object> params
+    );
+
+    // 메인 피드 - 공개 데일리 리뷰 전체 개수 조회
+    public int countPublicReviewFeed();
 }

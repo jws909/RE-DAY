@@ -13,6 +13,8 @@ public class DailyReviewFormDTO {
 
     private String authorNickname;           // 작성자 닉네임
     private String authorProfileImg;         // 작성자 프로필 이미지
+    private String authorLevel;              // 작성자 레벨/칭호
+    private Integer authorStreakCount;       // 작성자 스트릭 수
 
     private String reviewDate;              // review_date ("YYYY-MM-DD")
     private Double totalRating;             // total_rating (0.5 ~ 5.0)
@@ -21,7 +23,9 @@ public class DailyReviewFormDTO {
     private String mainImageUrl;            // main_image_url (DB 저장용 URL/경로)
     private MultipartFile mainImageFile;    // mainImageFile (업로드된 실제 파일)
     private String isPublic;                // is_public ('Y' / 'N')
-    private int likeCount;
+    private int likeCount;                  // 좋아요 수
+    private int commentCount;               // 댓글 수
+    private boolean likedByMe;              // 현재 로그인 사용자의 좋아요 여부
 
     // 1:N 서브 리뷰 목록 바인딩
     private List<SubReviewDTO> subReviews;  // subReviews[0], subReviews[1]...

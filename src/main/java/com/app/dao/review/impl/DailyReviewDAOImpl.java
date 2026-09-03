@@ -1,6 +1,7 @@
 package com.app.dao.review.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,6 +144,30 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
         return sqlSessionTemplate.update(
                 "review_mapper.updateDailyReview",
                 formDTO
+        );
+    }
+
+    /* =========================================
+       메인 피드 - 공개 데일리 리뷰 목록 페이징 조회
+    ========================================= */
+    @Override
+    public List<DailyReviewFormDTO> findPublicReviewFeed(
+            Map<String, Object> params) {
+
+        return sqlSessionTemplate.selectList(
+                "review_mapper.findPublicReviewFeed",
+                params
+        );
+    }
+
+    /* =========================================
+       메인 피드 - 공개 데일리 리뷰 전체 개수 조회
+    ========================================= */
+    @Override
+    public int countPublicReviewFeed() {
+
+        return sqlSessionTemplate.selectOne(
+                "review_mapper.countPublicReviewFeed"
         );
     }
 }

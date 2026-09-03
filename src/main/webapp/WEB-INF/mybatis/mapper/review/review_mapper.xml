@@ -335,4 +335,56 @@
 
     </update>
 
+
+    <!-- =========================================
+         메인 피드 - 공개 데일리 리뷰 목록 페이징 조회
+    ========================================== -->
+    <select id="findPublicReviewFeed"
+            parameterType="map"
+            resultType="DailyReviewFormDTO">
+
+        SELECT
+            d.REVIEW_ID,
+            d.USER_ID,
+            u.NICKNAME AS AUTHOR_NICKNAME,
+            u.PROFILE_IMG AS AUTHOR_PROFILE_IMG,
+            u.USER_LEVEL AS AUTHOR_LEVEL,
+            u.STREAK_COUNT AS AUTHOR_STREAK_COUNT,
+            TO_CHAR(d.REVIEW_DATE, 'YYYY-MM-DD') AS REVIEW_DATE,
+            d.TOTAL_RATING,
+            d.MOOD_TAGS,
+            d.OVERALL_COMMENT,
+            d.MAIN_IMAGE_URL,
+            d.IS_PUBLIC,
+            (SELECT COUNT(*) FROM LIKES l WHERE l.REVIEW_ID = d.REVIEW_ID) AS LIKE_COUNT,
+            (SELECT COUNT(*) FROM COMMENTS c WHERE c.REVIEW_ID = d.REVIEW_ID) AS COMMENT_COUNT
+        FROM DAILY_REVIEWS d
+        JOIN USERS u
+            ON d.USER_ID = u.USER_ID
+        WHERE d.IS_PUBLIC = 'Y'
+        <choose>
+            <when test='sort != null and sort == "rating"'>
+                ORDER BY d.TOTAL_RATING DESC, d.REVIEW_DATE DESC, d.REVIEW_ID DESC
+            </when>
+            <otherwise>
+                ORDER BY d.REVIEW_DATE DESC, d.REVIEW_ID DESC
+            </otherwise>
+        </choose>
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+
+    </select>
+
+
+    <!-- =========================================
+         메인 피드 - 공개 데일리 리뷰 전체 개수 조회
+    ========================================== -->
+    <select id="countPublicReviewFeed"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM DAILY_REVIEWS
+        WHERE IS_PUBLIC = 'Y'
+
+    </select>
+
 </mapper>
