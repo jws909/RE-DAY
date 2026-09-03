@@ -14,8 +14,6 @@ local.properties
 .loadpath
 .recommenders
 
-**/config/*.properties
-
 # External tool builders
 .externalToolBuilders/
 
@@ -140,4 +138,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java,maven
+# End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java,mavensrc/main/resources/config/oauth.properties
+/src/main/resources/config/oauth.properties

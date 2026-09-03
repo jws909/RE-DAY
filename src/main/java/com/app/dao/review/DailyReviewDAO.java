@@ -53,29 +53,4 @@ public interface DailyReviewDAO {
 
     // 메인 피드 - 공개 데일리 리뷰 전체 개수 조회
     public int countPublicReviewFeed();
-    
-    // 특정 데일리 리뷰 1건 공개/비공개 수정
-    public int updateDailyReviewPublic(
-            long reviewId,
-            String userId,
-            String isPublic
-    );
-
-    // 선택된 특정 데일리 리뷰들 일괄 공개/비공개 수정
-    public int updateSelectedDailyReviewsPublic(
-            List<Long> reviewIds,
-            String userId,
-            String isPublic
-    );
-
-    // 사용자의 전체 데일리 리뷰 일괄 공개/비공개 수정
-    public int updateAllDailyReviewsPublic(
-            String userId,
-            String isPublic
-    );
-
-    // 작성자 및 일자 기준 데일리 리뷰 중복/단건 조회
-    public DailyReviewFormDTO findReviewByUserIdAndDate(
-            Map<String, Object> params
-    );
 }
