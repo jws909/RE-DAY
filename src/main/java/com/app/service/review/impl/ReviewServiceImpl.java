@@ -194,4 +194,89 @@ public class ReviewServiceImpl implements ReviewService {
 
 		return result;
 	}
+
+	/*
+	 * ========================================= 
+	 * 데일리 리뷰 수정 (메인 리뷰, 서브 리뷰 재등록, 이미지 처리)
+	 * =========================================
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int updateDailyReviewWithSubReviews(DailyReviewFormDTO formDTO, String deleteMainImage) {
+		long reviewId = formDTO.getReviewId();
+
+		// 1. 기존 리뷰 정보 조회
+		DailyReviewFormDTO existingReview = dailyReviewDAO.findReviewDetailByReviewId(reviewId);
+		if (existingReview == null) {
+			throw new RuntimeException("수정할 데일리 리뷰가 존재하지 않습니다.");
+		}
+
+		// 2. 대표 이미지 처리
+		MultipartFile file = formDTO.getMainImageFile();
+
+		if (file != null && !file.isEmpty()) {
+			// [경우 1] 새 이미지 파일이 업로드된 경우
+			try {
+				FileInfo fileInfo = FileManager.storeFile(file, "images/reviews/");
+				int saveFileResult = fileDAO.saveFileInfo(fileInfo);
+
+				if (saveFileResult > 0) {
+					// 기존 리뷰 이미지 매핑 정보 삭제 후 신규 등록
+					dailyReviewDAO.deleteDailyReviewImageByReviewId(reviewId);
+
+					DailyReviewImage imageInfo = new DailyReviewImage();
+					imageInfo.setReviewId(reviewId);
+					imageInfo.setFileName(fileInfo.getFileName());
+					int saveImgResult = dailyReviewDAO.saveDailyReviewImage(imageInfo);
+
+					if (saveImgResult == 0) {
+						throw new RuntimeException("리뷰 이미지 정보 저장에 실패했습니다.");
+					}
+
+					formDTO.setMainImageUrl(fileInfo.getUrlFilePath() + fileInfo.getFileName());
+				} else {
+					throw new RuntimeException("파일 메타데이터 저장에 실패했습니다.");
+				}
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException("사진 저장에 실패했습니다.", e);
+			}
+		} else if ("Y".equalsIgnoreCase(deleteMainImage)) {
+			// [경우 2] 새 이미지는 없으나 기존 이미지 삭제를 요청한 경우
+			dailyReviewDAO.deleteDailyReviewImageByReviewId(reviewId);
+			formDTO.setMainImageUrl(null);
+		} else {
+			// [경우 3] 이미지 변경 없음 (기존 이미지 URL 유지)
+			formDTO.setMainImageUrl(existingReview.getMainImageUrl());
+		}
+
+		// 3. 메인 데일리 리뷰 UPDATE
+		int updateCount = dailyReviewDAO.updateDailyReview(formDTO);
+		if (updateCount == 0) {
+			throw new RuntimeException("메인 데일리 리뷰 수정에 실패했습니다.");
+		}
+
+		// 4. 서브 리뷰 Delete & Re-insert (삭제 후 재등록)
+		// 4-1. 기존 서브 리뷰 전체 삭제
+		subReviewDAO.deleteSubReviewsByReviewId(reviewId);
+
+		// 4-2. 전달받은 새로운 서브 리뷰 목록 재등록
+		if (formDTO.getSubReviews() != null && !formDTO.getSubReviews().isEmpty()) {
+			for (SubReviewDTO subReview : formDTO.getSubReviews()) {
+				if (subReview == null) continue;
+				// 항목명이 비어있는 서브리뷰는 등록하지 않음
+				if (subReview.getItemName() == null || subReview.getItemName().trim().isEmpty()) {
+					continue;
+				}
+				subReview.setReviewId(reviewId);
+
+				int saveSubResult = subReviewDAO.saveSubReview(subReview);
+				if (saveSubResult == 0) {
+					throw new RuntimeException("서브 리뷰 저장 실패로 전체 롤백 처리합니다. 항목: " + subReview.getItemName());
+				}
+			}
+		}
+
+		return updateCount;
+	}
 }

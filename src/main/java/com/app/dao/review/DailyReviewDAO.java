@@ -39,4 +39,9 @@ public interface DailyReviewDAO {
     public int deleteDailyReviewImageByReviewId(
          long reviewId
     );
+
+    // 데일리 리뷰 수정
+    public int updateDailyReview(
+            DailyReviewFormDTO formDTO
+    );
 }

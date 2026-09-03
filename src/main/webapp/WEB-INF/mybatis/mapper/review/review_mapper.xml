@@ -318,4 +318,21 @@
 
     </delete>
 
+
+    <!-- =========================================
+         데일리 리뷰 수정
+    ========================================== -->
+    <update id="updateDailyReview"
+            parameterType="DailyReviewFormDTO">
+
+        UPDATE DAILY_REVIEWS
+        SET TOTAL_RATING    = #{totalRating},
+            MOOD_TAGS       = #{moodTags},
+            OVERALL_COMMENT = #{overallComment},
+            REVIEW_DATE     = TO_DATE(SUBSTR(#{reviewDate}, 1, 10), 'YYYY-MM-DD'),
+            MAIN_IMAGE_URL  = #{mainImageUrl, jdbcType=VARCHAR}
+        WHERE REVIEW_ID = #{reviewId}
+
+    </update>
+
 </mapper>
