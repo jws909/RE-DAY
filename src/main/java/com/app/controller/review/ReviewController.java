@@ -3,6 +3,7 @@ package com.app.controller.review;
 import javax.servlet.http.HttpSession;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,6 +76,7 @@ public class ReviewController {
 			model.addAttribute("user", user);
 			model.addAttribute("comments", commentService.findCommentListForDetail(reviewId));
 			model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
+			model.addAttribute("todayDate", LocalDate.now().toString());
 			model.addAttribute("review", review);
 			model.addAttribute("subReviews", review.getSubReviews());
 		}

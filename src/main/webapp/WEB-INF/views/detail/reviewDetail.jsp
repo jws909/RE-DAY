@@ -274,7 +274,7 @@
 								</c:choose>
 							</div>
 
-							<!-- 2. 날짜 + 요일 표시 (백엔드 Model의 dayOfWeek / review.dayOfWeek 바인딩) -->
+							<!-- 2. 날짜 + 요일 + TODAY 뱃지 표시 -->
 							<div
 								class="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
 								<i class="fa-regular fa-calendar-days text-slate-400"></i> <span
@@ -283,6 +283,9 @@
 									value="${not empty dayOfWeek ? dayOfWeek : (not empty review.dayOfWeek ? review.dayOfWeek : '')}" />
 								<c:if test="${not empty dw}">
 									<span class="font-mono font-medium text-slate-500">(${dw})</span>
+								</c:if>
+								<c:if test="${review.reviewDate eq todayDate}">
+									<span class="bg-[#DCFCE7] text-[#047857] font-bold text-[10px] px-1.5 py-0.5 rounded font-mono shadow-2xs">TODAY</span>
 								</c:if>
 							</div>
 						</div>

@@ -17,6 +17,7 @@ public class DailyReviewFormDTO {
     private Integer authorStreakCount;       // 작성자 스트릭 수
 
     private String reviewDate;              // review_date ("YYYY-MM-DD")
+    private String dayOfWeek;               // 요일 ("월요일", "화요일"...)
     private Double totalRating;             // total_rating (0.5 ~ 5.0)
     private String moodTags;                // mood_tags ("생산적인하루,힐링성공")
     private String overallComment;          // overall_comment (오늘 하루 총평)
