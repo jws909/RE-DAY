@@ -336,16 +336,15 @@
 
 .sub_review_category_filter_info_right {
 	display: flex;
-	width: 6%;
-	height: 70%;
 	text-align :center;
 	flex-direction: column;
-	align-items: flex-end;
+	aspect-ratio: 1/1;
+	align-items: center;
 	border: 1px solid #E2E8F0;
-	border-radius: 2px;
+	border-radius: 10px;
 	background-color:#E2E8F0;
 	gap: 4px;
-	font-size : 10px;
+	font-size : 12px;
 }
 
 .sub_review_category_filter_card.active {
@@ -363,6 +362,15 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.sub_review_category_filter_score{
+	justify-content: center;
+	align-items: center;
+	min-width : 24px;
+	height: 24px;
+	padding: 0 6px;
+	display: inline-flex;
+	line-height: 1;
+}
 
 /*메인 리뷰 카드  */
 .mp_bottom_main {

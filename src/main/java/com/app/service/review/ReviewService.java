@@ -3,6 +3,7 @@ package com.app.service.review;
 import java.util.List;
 import java.util.Map;
 
+import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
@@ -68,4 +69,7 @@ public interface ReviewService {
             String sort,
             String loginUserId
     );
+    
+    // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
+    public CategoryCountDTO findCategoryCounts();
 }

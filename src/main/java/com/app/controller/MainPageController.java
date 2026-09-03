@@ -21,6 +21,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.app.common.ResponseResult;
 
+import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.service.review.ReviewService;
 import com.app.dto.review.SubReviewDTO;
@@ -56,6 +57,8 @@ public class MainPageController {
 		model.addAttribute("currentSort", sort);
 		model.addAttribute("todayDate", LocalDate.now().toString()); // "YYYY-MM-DD"
 
+		CategoryCountDTO categoryCounts = reviewService.findCategoryCounts();
+		model.addAttribute("categoryCounts", categoryCounts);
 		return "mainpage/main";
 	}
 
