@@ -18,6 +18,7 @@ import com.app.service.member.MemberService;
 
 import java.util.List;
 
+import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.service.review.ReviewService;
 import com.app.dto.review.SubReviewDTO;
@@ -31,7 +32,9 @@ public class MainPageController {
 	ReviewService reviewService;
 	
 	@GetMapping("/mainpage")
-	public String mainpage() {
+	public String mainpage(Model model) {
+		CategoryCountDTO categoryCounts = reviewService.findCategoryCounts();
+		model.addAttribute("categoryCounts", categoryCounts);
 		return "mainpage/main";
 	}
 	

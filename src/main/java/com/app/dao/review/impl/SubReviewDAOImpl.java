@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.app.dao.review.SubReviewDAO;
+import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.SubReviewDTO;
 
 @Repository
@@ -74,5 +75,17 @@ public class SubReviewDAOImpl implements SubReviewDAO {
                 reviewId
         );
     }
+
+
+    /*===========================================
+ 	메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
+	============================================*/
+    
+	@Override
+	public CategoryCountDTO findCategoryCounts() {
+		
+		return sqlSessionTemplate.selectOne("review_mapper.findCategoryCounts");
+		
+	}
 
 }

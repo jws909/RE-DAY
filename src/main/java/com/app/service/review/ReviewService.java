@@ -2,6 +2,7 @@ package com.app.service.review;
 
 import java.util.List;
 
+import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
@@ -53,4 +54,7 @@ public interface ReviewService {
     public int deleteDailyReviewByReviewId(
             long reviewId
     );
+    
+    // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
+    public CategoryCountDTO findCategoryCounts();
 }

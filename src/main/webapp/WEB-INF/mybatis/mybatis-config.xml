@@ -61,6 +61,11 @@
          <typeAlias
             type="com.app.dto.member.WeekRateDTO"
             alias="WeekRateDTO" />
+            
+            
+         <typeAlias
+            type="com.app.dto.review.CategoryCountDTO"
+            alias="CategoryCountDTO" />
 
     </typeAliases>
     

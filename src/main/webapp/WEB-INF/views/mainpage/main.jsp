@@ -217,7 +217,7 @@
 							<span class="sub_review_category_filter_label">전체 리뷰 보기</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono active">n</span>
+							<span class="sub_review_category_filter_score font-mono active">${not empty categoryCounts ? categoryCounts.totalCount : 0}</span>
 						</div>
 					</button>
 					<button type="button" class="sub_review_category_filter_card">
@@ -225,7 +225,7 @@
 							<span class="sub_review_category_filter_label">☕장소·식당·카페</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">n</span>
+							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.placeCount : 0}</span>
 						</div>
 					</button>
 					<button type="button" class="sub_review_category_filter_card">
@@ -233,7 +233,7 @@
 							<span class="sub_review_category_filter_label">💻아이템·기기</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">n</span>
+							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.itemCount : 0}</span>
 						</div>
 					</button>
 					<button type="button" class="sub_review_category_filter_card">
@@ -241,7 +241,7 @@
 							<span class="sub_review_category_filter_label">🚗이동수단·모빌리티</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">n</span>
+							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.transportCount : 0}</span>
 						</div>
 					</button>
 					<button type="button" class="sub_review_category_filter_card">
@@ -249,7 +249,7 @@
 							<span class="sub_review_category_filter_label">🎬콘텐츠·미디어</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">n</span>
+							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.contentCount : 0}</span>
 						</div>
 					</button>
 				</div>
