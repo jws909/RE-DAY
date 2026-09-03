@@ -325,6 +325,14 @@
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 5px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.sub_review_category_filter_card:not(.active):hover {
+	background-color: #F1F5F9;
+	border-color: #CBD5E1;
+	transform: translateX(3px);
 }
 
 .sub_review_category_filter_info_left {

@@ -76,16 +76,16 @@
 						<span class="material-symbols-outlined">sort</span>정렬
 						<div class="filter_button">
 							<button type="button" class="${currentSort eq 'latest' ? 'active' : ''}" data-sort="latest"
-									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=latest'">최신 날짜순</button>
+									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=latest&category=${not empty currentCategory ? currentCategory : 'all'}'">최신 날짜순</button>
 							<button type="button" class="${currentSort eq 'rating' ? 'active' : ''}" data-sort="rating"
-									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=rating'">하루 평점 높은순</button>
+									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=rating&category=${not empty currentCategory ? currentCategory : 'all'}'">하루 평점 높은순</button>
 						</div>
 					</div>
 					<div class="sort_filter_right">총 <span id="feedTotalCount">${totalCount}</span>개의 하루 리뷰</div>
 				</div>
 
 				<!-- 메인 리뷰 카드 컨테이너 -->
-				<div class="main_review_container" id="mainReviewContainer" data-sort="${currentSort}" data-page="1" data-has-more="${hasMore}">
+				<div class="main_review_container" id="mainReviewContainer" data-sort="${currentSort}" data-category="${not empty currentCategory ? currentCategory : 'all'}" data-page="1" data-has-more="${hasMore}">
 					<c:choose>
 						<c:when test="${empty feedList}">
 							<div class="empty_feed_box" style="text-align: center; padding: 60px 20px; background: #ffffff; border: 2px dashed #CBD5E1; border-radius: 16px; margin-top: 20px;">
@@ -222,9 +222,17 @@
 
 											<div class="mp_sub_reviews_grid">
 												<c:forEach items="${review.subReviews}" var="sub">
-													<div class="mp_sub_review_item">
+													<div class="mp_sub_review_item" data-category="${sub.category}">
 														<div class="mp_sub_item_left">
-															<span class="mp_category_badge"><c:out value="${sub.category}" /></span>
+															<span class="mp_category_badge">
+																<c:choose>
+																	<c:when test="${sub.category eq 'place' or sub.category eq '장소'}">장소</c:when>
+																	<c:when test="${sub.category eq 'item' or sub.category eq '아이템'}">아이템</c:when>
+																	<c:when test="${sub.category eq 'transport' or sub.category eq '이동수단'}">이동수단</c:when>
+																	<c:when test="${sub.category eq 'content' or sub.category eq '콘텐츠'}">콘텐츠</c:when>
+																	<c:otherwise><c:out value="${sub.category}" /></c:otherwise>
+																</c:choose>
+															</span>
 															<span class="mp_sub_item_name"><c:out value="${sub.itemName}" /></span>
 															<c:if test="${sub.isCertified eq 'Y'}">
 																<span class="material-symbols-outlined icon_verified">check_circle</span>
@@ -318,6 +326,7 @@
 					</div>
 				</div>
 				<!-- 서브 리뷰 카테고리 필터 -->
+				<c:set var="curCat" value="${not empty currentCategory ? currentCategory : 'all'}" />
 				<div class="mp_sub_review_category_filter">
 					<div class="sub_review_category_filter_header">
 						<div class="sub_review_category_filter_title">
@@ -326,44 +335,49 @@
 						</div>
 					</div>
 					<button type="button"
-						class="sub_review_category_filter_card active">
+						class="sub_review_category_filter_card ${curCat eq 'all' ? 'active' : ''}"
+						data-category="all">
 						<div class="sub_review_category_filter_info_left">
 							<span class="sub_review_category_filter_label">전체 리뷰 보기</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono active">${not empty categoryCounts ? categoryCounts.totalCount : 0}</span>
+							<span class="sub_review_category_filter_score font-mono ${curCat eq 'all' ? 'active' : ''}">${not empty categoryCounts ? categoryCounts.totalCount : 0}</span>
 						</div>
 					</button>
-					<button type="button" class="sub_review_category_filter_card">
+					<button type="button" class="sub_review_category_filter_card ${curCat eq 'place' ? 'active' : ''}"
+						data-category="place">
 						<div class="sub_review_category_filter_info_left">
 							<span class="sub_review_category_filter_label">☕장소·식당·카페</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.placeCount : 0}</span>
+							<span class="sub_review_category_filter_score font-mono ${curCat eq 'place' ? 'active' : ''}">${not empty categoryCounts ? categoryCounts.placeCount : 0}</span>
 						</div>
 					</button>
-					<button type="button" class="sub_review_category_filter_card">
+					<button type="button" class="sub_review_category_filter_card ${curCat eq 'item' ? 'active' : ''}"
+						data-category="item">
 						<div class="sub_review_category_filter_info_left">
 							<span class="sub_review_category_filter_label">💻아이템·기기</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.itemCount : 0}</span>
+							<span class="sub_review_category_filter_score font-mono ${curCat eq 'item' ? 'active' : ''}">${not empty categoryCounts ? categoryCounts.itemCount : 0}</span>
 						</div>
 					</button>
-					<button type="button" class="sub_review_category_filter_card">
+					<button type="button" class="sub_review_category_filter_card ${curCat eq 'transport' ? 'active' : ''}"
+						data-category="transport">
 						<div class="sub_review_category_filter_info_left">
 							<span class="sub_review_category_filter_label">🚗이동수단·모빌리티</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.transportCount : 0}</span>
+							<span class="sub_review_category_filter_score font-mono ${curCat eq 'transport' ? 'active' : ''}">${not empty categoryCounts ? categoryCounts.transportCount : 0}</span>
 						</div>
 					</button>
-					<button type="button" class="sub_review_category_filter_card">
+					<button type="button" class="sub_review_category_filter_card ${curCat eq 'content' ? 'active' : ''}"
+						data-category="content">
 						<div class="sub_review_category_filter_info_left">
 							<span class="sub_review_category_filter_label">🎬콘텐츠·미디어</span>
 						</div>
 						<div class="sub_review_category_filter_info_right">
-							<span class="sub_review_category_filter_score font-mono">${not empty categoryCounts ? categoryCounts.contentCount : 0}</span>
+							<span class="sub_review_category_filter_score font-mono ${curCat eq 'content' ? 'active' : ''}">${not empty categoryCounts ? categoryCounts.contentCount : 0}</span>
 						</div>
 					</button>
 				</div>

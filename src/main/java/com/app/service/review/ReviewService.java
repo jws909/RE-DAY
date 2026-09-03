@@ -69,6 +69,15 @@ public interface ReviewService {
             String sort,
             String loginUserId
     );
+
+    // 메인 피드 - 공개 데일리 리뷰 목록 페이징 및 정렬 조회 (카테고리 필터 포함)
+    public Map<String, Object> getPublicReviewFeedPaging(
+            int page,
+            int size,
+            String sort,
+            String loginUserId,
+            String category
+    );
     
     // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
     public CategoryCountDTO findCategoryCounts();

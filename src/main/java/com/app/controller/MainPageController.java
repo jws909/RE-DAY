@@ -41,20 +41,22 @@ public class MainPageController {
 	@GetMapping("/mainpage")
 	public String mainpage(
 			@RequestParam(value = "sort", defaultValue = "latest") String sort,
+			@RequestParam(value = "category", defaultValue = "all") String category,
 			HttpSession session,
 			Model model) {
 
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;
 
-		// 1. 피드 첫 페이지 (5개) 조회
-		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(1, 5, sort, loginUserId);
+		// 1. 피드 첫 페이지 (5개) 조회 (카테고리 필터 포함)
+		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(1, 5, sort, loginUserId, category);
 
 		// 2. 모델 전달
 		model.addAttribute("feedList", feedData.get("reviews"));
 		model.addAttribute("totalCount", feedData.get("totalCount"));
 		model.addAttribute("hasMore", feedData.get("hasMore"));
 		model.addAttribute("currentSort", sort);
+		model.addAttribute("currentCategory", category);
 		model.addAttribute("todayDate", LocalDate.now().toString()); // "YYYY-MM-DD"
 
 		CategoryCountDTO categoryCounts = reviewService.findCategoryCounts();
@@ -71,12 +73,13 @@ public class MainPageController {
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "size", defaultValue = "5") int size,
 			@RequestParam(value = "sort", defaultValue = "latest") String sort,
+			@RequestParam(value = "category", defaultValue = "all") String category,
 			HttpSession session) {
 
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;
 
-		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(page, size, sort, loginUserId);
+		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(page, size, sort, loginUserId, category);
 
 		return ResponseResult.success(feedData);
 	}

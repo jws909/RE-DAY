@@ -20,6 +20,7 @@ import com.app.service.review.ReviewService;
 import com.app.util.FileManager;
 import com.app.util.DateUtil;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import com.app.dao.member.MemberDAO;
@@ -308,10 +309,27 @@ public class ReviewServiceImpl implements ReviewService {
 	 */
 	@Override
 	public Map<String, Object> getPublicReviewFeedPaging(int page, int size, String sort, String loginUserId) {
+		return getPublicReviewFeedPaging(page, size, sort, loginUserId, "all");
+	}
+
+	// 메인 피드 - 공개 데일리 리뷰 목록 페이징 및 정렬 조회 (카테고리 필터 포함)
+	@Override
+	public Map<String, Object> getPublicReviewFeedPaging(
+			int page,
+			int size,
+			String sort,
+			String loginUserId,
+			String category) {
+
 		if (page < 1) page = 1;
 		if (size < 1) size = 5;
 		if (sort == null || (!sort.equals("latest") && !sort.equals("rating"))) {
 			sort = "latest";
+		}
+		if (category == null || category.trim().isEmpty() || "all".equalsIgnoreCase(category)) {
+			category = "all";
+		} else {
+			category = category.trim().toLowerCase();
 		}
 
 		int offset = (page - 1) * size;
@@ -320,15 +338,27 @@ public class ReviewServiceImpl implements ReviewService {
 		params.put("offset", offset);
 		params.put("size", size);
 		params.put("sort", sort);
+		params.put("category", category);
 
 		List<DailyReviewFormDTO> reviews = dailyReviewDAO.findPublicReviewFeed(params);
-		int totalCount = dailyReviewDAO.countPublicReviewFeed();
+		int totalCount = dailyReviewDAO.countPublicReviewFeed(params);
 
 		// 서브 리뷰 목록 및 로그인 유저의 좋아요 상태 바인딩
 		if (reviews != null && !reviews.isEmpty()) {
 			for (DailyReviewFormDTO review : reviews) {
-				// 서브 리뷰 목록 매핑
-				review.setSubReviews(subReviewDAO.findSubReviewsByReviewId(review.getReviewId()));
+				// 서브 리뷰 목록 매핑 (특정 카테고리 필터 적용 시 해당 카테고리의 서브 리뷰만 바인딩)
+				List<SubReviewDTO> subs = subReviewDAO.findSubReviewsByReviewId(review.getReviewId());
+				if (!"all".equals(category) && subs != null) {
+					List<SubReviewDTO> filteredSubs = new ArrayList<>();
+					for (SubReviewDTO sub : subs) {
+						if (isCategoryMatch(category, sub.getCategory())) {
+							filteredSubs.add(sub);
+						}
+					}
+					review.setSubReviews(filteredSubs);
+				} else {
+					review.setSubReviews(subs);
+				}
 
 				// 요일 매핑 (예: "수요일", "목요일")
 				if (review.getReviewDate() != null) {
@@ -356,8 +386,21 @@ public class ReviewServiceImpl implements ReviewService {
 		result.put("page", page);
 		result.put("size", size);
 		result.put("sort", sort);
+		result.put("category", category);
 
 		return result;
+	}
+
+	private boolean isCategoryMatch(String filterCategory, String subCategory) {
+		if (filterCategory == null || subCategory == null) return false;
+		String fc = filterCategory.trim().toLowerCase();
+		String sc = subCategory.trim().toLowerCase();
+		if (fc.equals(sc)) return true;
+		if (fc.equals("place") && (sc.equals("장소") || sc.contains("식당") || sc.contains("카페"))) return true;
+		if (fc.equals("item") && (sc.equals("아이템") || sc.contains("기기"))) return true;
+		if (fc.equals("transport") && (sc.equals("이동수단") || sc.contains("모빌리티"))) return true;
+		if (fc.equals("content") && (sc.equals("콘텐츠") || sc.contains("미디어"))) return true;
+		return false;
 	}
 	
 	 // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계

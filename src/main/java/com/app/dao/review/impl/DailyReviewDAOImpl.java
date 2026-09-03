@@ -172,6 +172,15 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
         );
     }
 
+    @Override
+    public int countPublicReviewFeed(Map<String, Object> params) {
+
+        return sqlSessionTemplate.selectOne(
+                "review_mapper.countPublicReviewFeed",
+                params
+        );
+    }
+
     /* =========================================
        특정 데일리 리뷰 1건 공개/비공개 수정
     ========================================= */
