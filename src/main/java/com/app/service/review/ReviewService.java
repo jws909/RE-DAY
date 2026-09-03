@@ -7,6 +7,7 @@ import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
+import com.app.dto.review.TrendingItemDTO;
 
 public interface ReviewService {
 
@@ -96,4 +97,7 @@ public interface ReviewService {
             String userId,
             String reviewDate
     );
+
+    // 탐색 페이지 - 이번 주 최다 언급 아이템 & 장소 트렌드 목록 조회
+    public List<TrendingItemDTO> getWeeklyTrendingItems();
 }

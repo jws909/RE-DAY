@@ -8,10 +8,10 @@
 <title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
 
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
-<link href="/css/mainpage/explore.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/mainpage/explore.css?v=<%=System.currentTimeMillis()%>" rel="stylesheet">
 <link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<script src="/js/mainpage/explore.js"></script>
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="${pageContext.request.contextPath}/js/mainpage/explore.js?v=<%=System.currentTimeMillis()%>"></script>
 </head>
 <body>
 	<!-- 상단 네비게이션 바 불러오기 -->
@@ -153,34 +153,56 @@
 
 					<!-- 카테고리 탭 버튼 -->
 					<div class="ex_curation_tab_bar">
-						<button type="button" onclick="filterCuration('all')" id="tab-all"
+						<button type="button" onclick="filterCuration('all', this)" id="tab-all"
 							class="ex_curation_tab active">전체 트렌드</button>
-						<button type="button" onclick="filterCuration('item')"
+						<button type="button" onclick="filterCuration('item', this)"
 							id="tab-item" class="ex_curation_tab">💻 전자기기/아이템</button>
-						<button type="button" onclick="filterCuration('place')"
+						<button type="button" onclick="filterCuration('place', this)"
 							id="tab-place" class="ex_curation_tab">☕ 핫플 장소/카페</button>
-						<button type="button" onclick="filterCuration('transport')"
+						<button type="button" onclick="filterCuration('transport', this)"
 							id="tab-transport" class="ex_curation_tab">🚗 모빌리티/차량</button>
+						<button type="button" onclick="filterCuration('content', this)"
+							id="tab-content" class="ex_curation_tab">🎬 콘텐츠/미디어</button>
 					</div>
 
 					<!-- 큐레이션 카드 그리드 -->
 					<div class="ex_curation_grid" id="curation-list">
-						<div class="ex_curation_card" data-category="item">
-							<div class="card_header">
-								<span class="category_label">💻 전자기기/아이템</span> <span
-									class="mention_cnt font-mono">언급 248회</span>
-							</div>
-							<h4 class="curation_title">로지텍 MX Master 3S</h4>
-							<p class="curation_desc">재택/생산성 데이 일기에 가장 많이 등장한 무소음 마우스</p>
-						</div>
-						<div class="ex_curation_card" data-category="place">
-							<div class="card_header">
-								<span class="category_label">☕ 핫플 장소/카페</span> <span
-									class="mention_cnt font-mono">언급 182회</span>
-							</div>
-							<h4 class="curation_title">블루보틀 삼청 한옥</h4>
-							<p class="curation_desc">주말 카페 탐방 기록 1위, 고즈넉한 뷰와 드립 커피</p>
-						</div>
+						<c:choose>
+							<c:when test="${not empty trendingItems}">
+								<c:forEach var="item" items="${trendingItems}">
+									<div class="ex_curation_card" data-category="${item.category}">
+										<div class="card_header">
+											<span class="category_label">${item.categoryLabel}</span>
+											<span class="mention_cnt font-mono">언급 ${item.mentionCount}회</span>
+										</div>
+										<h4 class="curation_title"><c:out value="${item.itemName}" /></h4>
+										<p class="curation_desc">
+											<c:choose>
+												<c:when test="${not empty item.latestComment}">
+													<c:out value="${item.latestComment}" />
+												</c:when>
+												<c:otherwise>
+													유저들의 실제 일기 속에 자주 기록된 인기 ${item.categoryLabel}입니다.
+												</c:otherwise>
+											</c:choose>
+										</p>
+										<c:if test="${not empty item.avgRating and item.avgRating > 0}">
+											<div class="flex items-center gap-1 mt-auto pt-2 text-xs font-mono text-amber-500 font-semibold">
+												<i class="fa-solid fa-star text-xs"></i>
+												<span>${item.avgRating}</span>
+												<span class="text-slate-400 font-normal">/ 5.0</span>
+											</div>
+										</c:if>
+									</div>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="col-span-full py-12 text-center text-slate-400 text-sm bg-slate-50 rounded-xl border border-dashed border-slate-200">
+									<i class="fa-regular fa-clipboard text-2xl mb-2 text-slate-300 block"></i>
+									<p>아직 등록된 핫 아이템/장소 언급 데이터가 없습니다.</p>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
