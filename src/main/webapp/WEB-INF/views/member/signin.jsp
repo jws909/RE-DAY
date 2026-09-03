@@ -153,37 +153,7 @@
 				</button>
 
 			</form>
-
-
-			<!-- 테스트 계정 영역 -->
-			<div
-				class="mt-6 p-3
-                       bg-blue-50
-                       border border-dashed border-blue-300
-                       rounded-xl">
-
-				<p class="text-xs font-bold text-blue-700 mb-2">☆ 와이어프레임 빠른 체험
-					계정</p>
-
-				<div class="grid grid-cols-2 gap-2">
-
-					<button type="button"
-						class="py-2 bg-white
-                               border border-blue-300
-                               rounded-lg
-                               text-xs text-blue-700">
-
-						제이콥 (Lv.4) 로그인</button>
-
-					<button type="button"
-						class="py-2 bg-white
-                               border border-blue-300
-                               rounded-lg
-                               text-xs text-blue-700">
-
-						하나 (28일 스트릭) 로그인</button>
-
-				</div>
+			
 
 			</div>
 

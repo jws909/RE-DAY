@@ -25,6 +25,7 @@ import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.service.review.ReviewService;
 import com.app.dto.review.SubReviewDTO;
+import com.app.dto.review.TrendingItemDTO;
 
 @Controller
 @RequestMapping("/RE:DAY")
@@ -41,20 +42,22 @@ public class MainPageController {
 	@GetMapping("/mainpage")
 	public String mainpage(
 			@RequestParam(value = "sort", defaultValue = "latest") String sort,
+			@RequestParam(value = "category", defaultValue = "all") String category,
 			HttpSession session,
 			Model model) {
 
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;
 
-		// 1. 피드 첫 페이지 (5개) 조회
-		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(1, 5, sort, loginUserId);
+		// 1. 피드 첫 페이지 (5개) 조회 (카테고리 필터 포함)
+		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(1, 5, sort, loginUserId, category);
 
 		// 2. 모델 전달
 		model.addAttribute("feedList", feedData.get("reviews"));
 		model.addAttribute("totalCount", feedData.get("totalCount"));
 		model.addAttribute("hasMore", feedData.get("hasMore"));
 		model.addAttribute("currentSort", sort);
+		model.addAttribute("currentCategory", category);
 		model.addAttribute("todayDate", LocalDate.now().toString()); // "YYYY-MM-DD"
 
 		CategoryCountDTO categoryCounts = reviewService.findCategoryCounts();
@@ -71,12 +74,13 @@ public class MainPageController {
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "size", defaultValue = "5") int size,
 			@RequestParam(value = "sort", defaultValue = "latest") String sort,
+			@RequestParam(value = "category", defaultValue = "all") String category,
 			HttpSession session) {
 
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;
 
-		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(page, size, sort, loginUserId);
+		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(page, size, sort, loginUserId, category);
 
 		return ResponseResult.success(feedData);
 	}
@@ -136,12 +140,19 @@ public class MainPageController {
 	    }
 
 	    // JSP로 스트릭 유저 목록 전달
-	
 	    model.addAttribute(
 	            "streakUsers",
 	            streakUsers
 	    );
 
+	    // 이번 주 최다 언급 아이템 & 장소 트렌드 목록 조회
+	    List<TrendingItemDTO> trendingItems =
+	            reviewService.getWeeklyTrendingItems();
+
+	    model.addAttribute(
+	            "trendingItems",
+	            trendingItems
+	    );
 
 	    return "mainpage/explore";
 	}

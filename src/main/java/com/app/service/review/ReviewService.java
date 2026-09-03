@@ -7,6 +7,7 @@ import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
+import com.app.dto.review.TrendingItemDTO;
 
 public interface ReviewService {
 
@@ -69,6 +70,15 @@ public interface ReviewService {
             String sort,
             String loginUserId
     );
+
+    // 메인 피드 - 공개 데일리 리뷰 목록 페이징 및 정렬 조회 (카테고리 필터 포함)
+    public Map<String, Object> getPublicReviewFeedPaging(
+            int page,
+            int size,
+            String sort,
+            String loginUserId,
+            String category
+    );
     
     // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
     public CategoryCountDTO findCategoryCounts();
@@ -81,4 +91,13 @@ public interface ReviewService {
 
     // 사용자의 전체 데일리 리뷰 일괄 공개/비공개 변경
     public boolean updateAllDailyReviewsPublic(String userId, String isPublic);
+    
+    // 작성자 및 일자 기준 데일리 리뷰 단건/중복 조회
+    public DailyReviewFormDTO findReviewByUserIdAndDate(
+            String userId,
+            String reviewDate
+    );
+
+    // 탐색 페이지 - 이번 주 최다 언급 아이템 & 장소 트렌드 목록 조회
+    public List<TrendingItemDTO> getWeeklyTrendingItems();
 }
