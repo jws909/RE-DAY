@@ -12,6 +12,7 @@ import com.app.dao.review.CommentDAO;
 import com.app.dao.review.DailyReviewDAO;
 import com.app.dao.review.SubReviewDAO;
 import com.app.dto.file.FileInfo;
+import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
@@ -335,5 +336,10 @@ public class ReviewServiceImpl implements ReviewService {
 		result.put("sort", sort);
 
 		return result;
+	
+	 // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
+	@Override
+	public CategoryCountDTO findCategoryCounts() {
+		return subReviewDAO.findCategoryCounts();
 	}
 }

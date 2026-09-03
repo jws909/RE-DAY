@@ -387,4 +387,21 @@
 
     </select>
 
+    
+    <!-- =========================================
+         메인 페이지 - 서브 리뷰 카테고리별 등록 건수 합계
+    ========================================== -->
+	<select id="findCategoryCounts"
+			resultType="CategoryCountDTO">
+	
+		SELECT
+			COUNT(*) AS totalCount,
+			COUNT(CASE WHEN CATEGORY = 'place' THEN 1 END) AS placeCount,
+			COUNT(CASE WHEN CATEGORY = 'item' THEN 1 END) AS itemCount,
+			COUNT(CASE WHEN CATEGORY = 'transport' THEN 1 END) AS transportCount,
+			COUNT(CASE WHEN CATEGORY = 'content' THEN 1 END) AS contentCount
+		FROM SUB_REVIEWS
+						
+	</select>
+	
 </mapper>
