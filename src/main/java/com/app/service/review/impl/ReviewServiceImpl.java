@@ -349,4 +349,31 @@ public class ReviewServiceImpl implements ReviewService {
 	public CategoryCountDTO findCategoryCounts() {
 		return subReviewDAO.findCategoryCounts();
 	}
+
+	// 특정 데일리 리뷰 1건 공개/비공개 토글
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean updateDailyReviewPublic(long reviewId, String userId, String isPublic) {
+		int rows = dailyReviewDAO.updateDailyReviewPublic(reviewId, userId, isPublic);
+		return rows > 0;
+	}
+
+	// 선택된 특정 데일리 리뷰들 일괄 공개/비공개 변경
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean updateSelectedReviewsPublic(List<Long> reviewIds, String userId, String isPublic) {
+		if (reviewIds == null || reviewIds.isEmpty()) {
+			return false;
+		}
+		int rows = dailyReviewDAO.updateSelectedDailyReviewsPublic(reviewIds, userId, isPublic);
+		return rows > 0;
+	}
+
+	// 사용자의 전체 데일리 리뷰 일괄 공개/비공개 변경
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean updateAllDailyReviewsPublic(String userId, String isPublic) {
+		int rows = dailyReviewDAO.updateAllDailyReviewsPublic(userId, isPublic);
+		return rows > 0;
+	}
 }

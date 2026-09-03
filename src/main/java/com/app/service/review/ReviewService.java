@@ -72,4 +72,13 @@ public interface ReviewService {
     
     // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
     public CategoryCountDTO findCategoryCounts();
+
+    // 특정 데일리 리뷰 1건 공개/비공개 토글
+    public boolean updateDailyReviewPublic(long reviewId, String userId, String isPublic);
+
+    // 선택된 특정 데일리 리뷰들 일괄 공개/비공개 변경
+    public boolean updateSelectedReviewsPublic(List<Long> reviewIds, String userId, String isPublic);
+
+    // 사용자의 전체 데일리 리뷰 일괄 공개/비공개 변경
+    public boolean updateAllDailyReviewsPublic(String userId, String isPublic);
 }

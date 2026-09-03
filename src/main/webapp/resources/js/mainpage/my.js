@@ -222,6 +222,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
         });
+
+        if (typeof updateSelectionSummary === "function") {
+            updateSelectionSummary();
+        }
     }
 
 
@@ -472,11 +476,17 @@ document.addEventListener("DOMContentLoaded", function() {
                    선택한 컨텐츠만 표시
                 ========================================= */
 
+                const dailySelectionBar = document.getElementById("myDailySelectionBar");
+
                 /* 내 데일리 기록 */
                 if (selectedTab === "daily") {
 
                     if (dailyContent) {
                         dailyContent.style.display = "grid";
+                    }
+
+                    if (dailySelectionBar) {
+                        dailySelectionBar.style.display = "flex";
                     }
 
                 }
@@ -487,6 +497,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     if (subreviewsContent) {
                         subreviewsContent.style.display = "grid";
+                    }
+
+                    if (dailySelectionBar) {
+                        dailySelectionBar.style.display = "none";
                     }
 
                     /*
@@ -505,6 +519,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     if (likesContent) {
                         likesContent.style.display = "grid";
+                    }
+
+                    if (dailySelectionBar) {
+                        dailySelectionBar.style.display = "none";
                     }
 
                 }
@@ -583,6 +601,294 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         );
 
+    }
+
+
+    /* ==========================================================================
+       MY 페이지 - 데일리 리뷰 선택 및 공개 / 비공개 (is_public) 설정 처리
+       ========================================================================== */
+
+    const basePath = window.location.pathname.startsWith("/RE:DAY") ? "/RE:DAY" : "";
+
+    /* --------------------------------------------------------------------------
+       1. 개별 토글 버튼 UI 갱신 헬퍼
+       -------------------------------------------------------------------------- */
+    function updateDailyBtnUI(btn, isPublic) {
+        btn.dataset.isPublic = isPublic;
+        const icon = btn.querySelector(".public_icon");
+        const label = btn.querySelector(".public_label");
+
+        if (isPublic === "Y") {
+            btn.classList.remove("is_private");
+            btn.classList.add("is_public");
+            if (icon) icon.textContent = "public";
+            if (label) label.textContent = "공개";
+        } else {
+            btn.classList.remove("is_public");
+            btn.classList.add("is_private");
+            if (icon) icon.textContent = "lock";
+            if (label) label.textContent = "비공개";
+        }
+    }
+
+    /* --------------------------------------------------------------------------
+       2. 개별 데일리 리뷰 1건 공개/비공개 토글 (원클릭)
+       -------------------------------------------------------------------------- */
+    document.addEventListener("click", function(e) {
+        const toggleBtn = e.target.closest(".my_public_toggle_btn");
+        if (!toggleBtn) return;
+
+        const reviewId = toggleBtn.dataset.reviewId;
+        const currentIsPublic = toggleBtn.dataset.isPublic || "Y";
+        const nextIsPublic = (currentIsPublic === "Y") ? "N" : "Y";
+        const stateText = (nextIsPublic === "Y") ? "공개" : "비공개";
+
+        if (!confirm("이 데일리 리뷰를 '" + stateText + "' 상태로 변경하시겠습니까?")) {
+            return;
+        }
+
+        toggleBtn.disabled = true;
+
+        const params = new URLSearchParams();
+        params.append("reviewId", reviewId);
+        params.append("isPublic", nextIsPublic);
+
+        fetch(basePath + "/review/public/daily", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: params.toString()
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(result) {
+            toggleBtn.disabled = false;
+            if (result.success) {
+                updateDailyBtnUI(toggleBtn, nextIsPublic);
+            } else {
+                alert(result.message || "데일리 리뷰 공개 설정 변경에 실패했습니다.");
+            }
+        })
+        .catch(function(err) {
+            toggleBtn.disabled = false;
+            console.error("데일리 리뷰 공개 토글 오류:", err);
+            alert("서버 통신 중 오류가 발생했습니다.");
+        });
+    });
+
+    /* --------------------------------------------------------------------------
+       3. 체크박스 선택 (단일/전체) 및 상태 관리
+       -------------------------------------------------------------------------- */
+    const selectAllDailyCheckbox = document.getElementById("mySelectAllDaily");
+    const selectedCountSpan = document.getElementById("mySelectedCount");
+    const btnSelectedPublic = document.getElementById("btnSelectedPublic");
+    const btnSelectedPrivate = document.getElementById("btnSelectedPrivate");
+    const btnAllPublic = document.getElementById("btnAllPublic");
+    const btnAllPrivate = document.getElementById("btnAllPrivate");
+
+    function getVisibleDailyCheckboxes() {
+        const dailyTab = document.getElementById("tabContent-daily");
+        if (!dailyTab) return [];
+        // 화면에 보이는(검색/필터에 의해 숨겨지지 않은) 카드의 체크박스만 대상
+        const cards = Array.from(dailyTab.querySelectorAll(".my_daily_card"));
+        return cards
+            .filter(card => card.style.display !== "none")
+            .map(card => card.querySelector(".my_daily_checkbox"))
+            .filter(Boolean);
+    }
+
+    function updateSelectionSummary() {
+        const checkboxes = getVisibleDailyCheckboxes();
+        const checkedList = checkboxes.filter(cb => cb.checked);
+        const count = checkedList.length;
+
+        if (selectedCountSpan) {
+            selectedCountSpan.textContent = count;
+        }
+
+        const hasSelected = count > 0;
+        if (btnSelectedPublic) btnSelectedPublic.disabled = !hasSelected;
+        if (btnSelectedPrivate) btnSelectedPrivate.disabled = !hasSelected;
+
+        if (selectAllDailyCheckbox) {
+            if (checkboxes.length === 0) {
+                selectAllDailyCheckbox.checked = false;
+                selectAllDailyCheckbox.indeterminate = false;
+            } else if (count === checkboxes.length) {
+                selectAllDailyCheckbox.checked = true;
+                selectAllDailyCheckbox.indeterminate = false;
+            } else if (count > 0) {
+                selectAllDailyCheckbox.checked = false;
+                selectAllDailyCheckbox.indeterminate = true;
+            } else {
+                selectAllDailyCheckbox.checked = false;
+                selectAllDailyCheckbox.indeterminate = false;
+            }
+        }
+    }
+
+    // 개별 체크박스 변경 이벤트 위임
+    document.addEventListener("change", function(e) {
+        if (!e.target.classList.contains("my_daily_checkbox")) return;
+
+        const checkbox = e.target;
+        const card = checkbox.closest(".my_daily_card");
+        if (card) {
+            card.classList.toggle("is_selected", checkbox.checked);
+        }
+        updateSelectionSummary();
+    });
+
+    // 전체 선택 체크박스 클릭
+    if (selectAllDailyCheckbox) {
+        selectAllDailyCheckbox.addEventListener("change", function() {
+            const isChecked = selectAllDailyCheckbox.checked;
+            const checkboxes = getVisibleDailyCheckboxes();
+
+            checkboxes.forEach(function(cb) {
+                cb.checked = isChecked;
+                const card = cb.closest(".my_daily_card");
+                if (card) {
+                    card.classList.toggle("is_selected", isChecked);
+                }
+            });
+
+            updateSelectionSummary();
+        });
+    }
+
+    /* --------------------------------------------------------------------------
+       4. 선택된 특정 데일리 리뷰들 일괄 공개 / 비공개
+       -------------------------------------------------------------------------- */
+    function executeSelectedAction(isPublic) {
+        const checkboxes = getVisibleDailyCheckboxes();
+        const checkedList = checkboxes.filter(cb => cb.checked);
+        if (checkedList.length === 0) {
+            alert("선택된 데일리 리뷰가 없습니다.");
+            return;
+        }
+
+        const stateText = (isPublic === "Y") ? "공개" : "비공개";
+        const count = checkedList.length;
+        if (!confirm("선택한 " + count + "개의 데일리 리뷰를 '" + stateText + "' 상태로 변경하시겠습니까?")) {
+            return;
+        }
+
+        const selectedIds = checkedList.map(cb => cb.value);
+
+        if (btnSelectedPublic) btnSelectedPublic.disabled = true;
+        if (btnSelectedPrivate) btnSelectedPrivate.disabled = true;
+
+        const params = new URLSearchParams();
+        selectedIds.forEach(id => params.append("reviewIds", id));
+        params.append("isPublic", isPublic);
+
+        fetch(basePath + "/review/public/selected", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: params.toString()
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(result) {
+            if (result.success) {
+                checkedList.forEach(function(cb) {
+                    const card = cb.closest(".my_daily_card");
+                    if (card) {
+                        const toggleBtn = card.querySelector(".my_public_toggle_btn");
+                        if (toggleBtn) {
+                            updateDailyBtnUI(toggleBtn, isPublic);
+                        }
+                    }
+                });
+                alert("선택한 " + count + "개 데일리 리뷰가 '" + stateText + "' 상태로 변경되었습니다.");
+            } else {
+                alert(result.message || "공개 설정 변경에 실패했습니다.");
+            }
+        })
+        .catch(function(err) {
+            console.error("선택 리뷰 공개 변경 오류:", err);
+            alert("서버 통신 중 오류가 발생했습니다.");
+        })
+        .finally(function() {
+            updateSelectionSummary();
+        });
+    }
+
+    if (btnSelectedPublic) {
+        btnSelectedPublic.addEventListener("click", function() {
+            executeSelectedAction("Y");
+        });
+    }
+
+    if (btnSelectedPrivate) {
+        btnSelectedPrivate.addEventListener("click", function() {
+            executeSelectedAction("N");
+        });
+    }
+
+    /* --------------------------------------------------------------------------
+       5. 전체 데일리 리뷰 일괄 공개 / 비공개
+       -------------------------------------------------------------------------- */
+    function executeAllAction(isPublic) {
+        const stateText = (isPublic === "Y") ? "전체 공개" : "전체 비공개";
+        const warning = (isPublic === "N") ? "\n(모든 데일리 리뷰가 메인 피드 및 타인에게서 숨겨집니다)" : "";
+
+        if (!confirm("모든 데일리 리뷰를 '" + stateText + "' 상태로 변경하시겠습니까?" + warning)) {
+            return;
+        }
+
+        if (btnAllPublic) btnAllPublic.disabled = true;
+        if (btnAllPrivate) btnAllPrivate.disabled = true;
+
+        const params = new URLSearchParams();
+        params.append("isPublic", isPublic);
+
+        fetch(basePath + "/review/public/all", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: params.toString()
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(result) {
+            if (result.success) {
+                document.querySelectorAll(".my_public_toggle_btn").forEach(function(btn) {
+                    updateDailyBtnUI(btn, isPublic);
+                });
+                alert("모든 데일리 리뷰가 '" + stateText + "' 상태로 변경되었습니다.");
+            } else {
+                alert(result.message || "전체 공개 설정 변경에 실패했습니다.");
+            }
+        })
+        .catch(function(err) {
+            console.error("전체 리뷰 공개 변경 오류:", err);
+            alert("서버 통신 중 오류가 발생했습니다.");
+        })
+        .finally(function() {
+            if (btnAllPublic) btnAllPublic.disabled = false;
+            if (btnAllPrivate) btnAllPrivate.disabled = false;
+        });
+    }
+
+    if (btnAllPublic) {
+        btnAllPublic.addEventListener("click", function() {
+            executeAllAction("Y");
+        });
+    }
+
+    if (btnAllPrivate) {
+        btnAllPrivate.addEventListener("click", function() {
+            executeAllAction("N");
+        });
     }
 
 });
