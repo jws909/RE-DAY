@@ -24,10 +24,13 @@ public class LikeController {
 	
 	private final LikeService likeService;
 	
-	// 게시글 좋아요 활성화
+	// 게시글 좋아요 활성화 및 토글
 	@PostMapping(consumes = "application/json")
 	public ResponseResult<?> insert(@RequestBody LikeRequestDTO likeRequestDTO, HttpSession session) throws Exception {
 		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return ResponseResult.fail("로그인이 필요한 서비스입니다.");
+		}
 		likeRequestDTO.setUserId(loginUser.getUserId());
 		likeService.insert(likeRequestDTO);
 		return ResponseResult.success(null);
@@ -37,6 +40,9 @@ public class LikeController {
 	@DeleteMapping(consumes = "application/json")
 	public ResponseResult<?> delete(@RequestBody LikeRequestDTO likeRequestDTO, HttpSession session) throws Exception {
 		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return ResponseResult.fail("로그인이 필요한 서비스입니다.");
+		}
 		likeRequestDTO.setUserId(loginUser.getUserId());
 		likeService.delete(likeRequestDTO);
 		return ResponseResult.success(null);
