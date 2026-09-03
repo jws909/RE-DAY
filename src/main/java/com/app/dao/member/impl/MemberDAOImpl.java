@@ -200,4 +200,14 @@ public int decreaseCheerCount(String responseUserId) {
             responseUserId
     );
 }
+
+// 데일리 리뷰 작성 시 연속 기록(스트릭) 갱신
+@Override
+public int updateStreakCount(String userId) {
+
+    return sqlSessionTemplate.update(
+            "member_mapper.updateStreakCount",
+            userId
+    );
+}
 }

@@ -22,6 +22,7 @@ import com.app.util.DateUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import com.app.dao.member.MemberDAO;
 import com.app.dao.review.LikeDAO;
 import com.app.dto.review.LikeRequestDTO;
 
@@ -30,6 +31,9 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Autowired
 	DailyReviewDAO dailyReviewDAO;
+
+	@Autowired
+	MemberDAO memberDAO;
 
 	@Autowired
 	SubReviewDAO subReviewDAO;
@@ -45,6 +49,15 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public long createDailyReviewWithSubReviews(DailyReviewFormDTO formDTO) {
+
+		// 동일 작성자 당일 중복 등록 방지 검증
+		Map<String, Object> checkParams = new HashMap<>();
+		checkParams.put("userId", formDTO.getUserId());
+		checkParams.put("reviewDate", formDTO.getReviewDate());
+		DailyReviewFormDTO existing = dailyReviewDAO.findReviewByUserIdAndDate(checkParams);
+		if (existing != null) {
+			throw new IllegalStateException("오늘의 데일리 리뷰는 이미 작성하셨습니다.");
+		}
 
 		// 생성된 리뷰아이디
 		long generatedReviewId = 0;
@@ -104,6 +117,9 @@ public class ReviewServiceImpl implements ReviewService {
 				}
 			}
 		}
+
+		// 데일리 리뷰 등록 완료 후 연속 출석(스트릭) 갱신
+		memberDAO.updateStreakCount(formDTO.getUserId());
 
 		return generatedReviewId;
 	}
@@ -375,5 +391,14 @@ public class ReviewServiceImpl implements ReviewService {
 	public boolean updateAllDailyReviewsPublic(String userId, String isPublic) {
 		int rows = dailyReviewDAO.updateAllDailyReviewsPublic(userId, isPublic);
 		return rows > 0;
+	}
+
+	// 작성자 및 일자 기준 데일리 리뷰 단건/중복 조회
+	@Override
+	public DailyReviewFormDTO findReviewByUserIdAndDate(String userId, String reviewDate) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userId", userId);
+		params.put("reviewDate", reviewDate);
+		return dailyReviewDAO.findReviewByUserIdAndDate(params);
 	}
 }

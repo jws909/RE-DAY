@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.SubReviewDTO;
@@ -38,7 +39,7 @@ public class ReviewController {
 	MemberService memberService;
 
 	@GetMapping("/RE:DAY/review/write")
-	public String writeReview(HttpSession session) {
+	public String writeReview(HttpSession session, RedirectAttributes rttr) {
 
 	    MemberDTO loginUser =
 	            (MemberDTO) session.getAttribute("loginUser");
@@ -47,24 +48,50 @@ public class ReviewController {
 	        return "redirect:/member/signin";
 	    }
 
+	    // 당일 이미 작성된 리뷰가 있는지 확인하여 중복 진입 방지
+	    DailyReviewFormDTO todayReview = reviewService.findReviewByUserIdAndDate(loginUser.getUserId(), LocalDate.now().toString());
+	    if (todayReview != null) {
+	        rttr.addFlashAttribute("errorMessage", "오늘의 데일리 리뷰는 이미 작성하셨습니다.");
+	        return "redirect:/RE:DAY/review/detail/" + todayReview.getReviewId();
+	    }
+
 	    return "write/writeReview";
 	}
 	
 	@PostMapping("/review/write")
-	public String writeReviewAction(@ModelAttribute DailyReviewFormDTO formDTO, HttpSession session) {
+	public String writeReviewAction(@ModelAttribute DailyReviewFormDTO formDTO, HttpSession session, RedirectAttributes rttr) {
 		
 		// 세션에서 로그인 ID 획득
 		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return "redirect:/member/signin";
+		}
 		formDTO.setUserId(loginUser.getUserId());
 		
-		long generatedReviewId = reviewService.createDailyReviewWithSubReviews(formDTO);
-		
-		if(generatedReviewId > 0) {
-			return "redirect:/RE:DAY/mainpage";
-		} else {
-			return "redirect:/RE:DAY/review/write";
+		// 당일 중복 등록 방지 2차 검증
+		DailyReviewFormDTO todayReview = reviewService.findReviewByUserIdAndDate(loginUser.getUserId(), LocalDate.now().toString());
+		if (todayReview != null) {
+			rttr.addFlashAttribute("errorMessage", "오늘의 데일리 리뷰가 이미 등록되어 있어 중복 등록할 수 없습니다.");
+			return "redirect:/RE:DAY/review/detail/" + todayReview.getReviewId();
 		}
-		
+
+		try {
+			long generatedReviewId = reviewService.createDailyReviewWithSubReviews(formDTO);
+			
+			if(generatedReviewId > 0) {
+				// 리뷰 등록 성공 후 세션의 loginUser(MemberDTO) 정보 갱신 (증가된 STREAK_COUNT 반영)
+				MemberDTO updatedUser = memberService.findUserInfoByUserId(loginUser.getUserId());
+				if (updatedUser != null) {
+					session.setAttribute("loginUser", updatedUser);
+				}
+				return "redirect:/RE:DAY/mainpage";
+			} else {
+				return "redirect:/RE:DAY/review/write";
+			}
+		} catch (IllegalStateException e) {
+			rttr.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:/RE:DAY/mainpage";
+		}
 	}
 	
 	@GetMapping("/RE:DAY/review/detail/{reviewId}")

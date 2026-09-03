@@ -81,4 +81,10 @@ public interface ReviewService {
 
     // 사용자의 전체 데일리 리뷰 일괄 공개/비공개 변경
     public boolean updateAllDailyReviewsPublic(String userId, String isPublic);
+    
+    // 작성자 및 일자 기준 데일리 리뷰 단건/중복 조회
+    public DailyReviewFormDTO findReviewByUserIdAndDate(
+            String userId,
+            String reviewDate
+    );
 }
