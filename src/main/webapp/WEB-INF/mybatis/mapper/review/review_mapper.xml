@@ -369,6 +369,17 @@
         JOIN USERS u
             ON d.USER_ID = u.USER_ID
         WHERE d.IS_PUBLIC = 'Y'
+        <if test="category != null and category != '' and category != 'all'">
+          AND EXISTS (
+              SELECT 1 FROM SUB_REVIEWS s
+              WHERE s.REVIEW_ID = d.REVIEW_ID
+                AND (LOWER(s.CATEGORY) = LOWER(#{category})
+                     OR (LOWER(#{category}) = 'place' AND s.CATEGORY = '장소')
+                     OR (LOWER(#{category}) = 'item' AND s.CATEGORY = '아이템')
+                     OR (LOWER(#{category}) = 'transport' AND s.CATEGORY = '이동수단')
+                     OR (LOWER(#{category}) = 'content' AND s.CATEGORY = '콘텐츠'))
+          )
+        </if>
         <choose>
             <when test='sort != null and sort == "rating"'>
                 ORDER BY d.TOTAL_RATING DESC, d.REVIEW_DATE DESC, d.REVIEW_ID DESC
@@ -386,11 +397,23 @@
          메인 피드 - 공개 데일리 리뷰 전체 개수 조회
     ========================================== -->
     <select id="countPublicReviewFeed"
+            parameterType="map"
             resultType="int">
 
         SELECT COUNT(*)
-        FROM DAILY_REVIEWS
-        WHERE IS_PUBLIC = 'Y'
+        FROM DAILY_REVIEWS d
+        WHERE d.IS_PUBLIC = 'Y'
+        <if test="category != null and category != '' and category != 'all'">
+          AND EXISTS (
+              SELECT 1 FROM SUB_REVIEWS s
+              WHERE s.REVIEW_ID = d.REVIEW_ID
+                AND (LOWER(s.CATEGORY) = LOWER(#{category})
+                     OR (LOWER(#{category}) = 'place' AND s.CATEGORY = '장소')
+                     OR (LOWER(#{category}) = 'item' AND s.CATEGORY = '아이템')
+                     OR (LOWER(#{category}) = 'transport' AND s.CATEGORY = '이동수단')
+                     OR (LOWER(#{category}) = 'content' AND s.CATEGORY = '콘텐츠'))
+          )
+        </if>
 
     </select>
 

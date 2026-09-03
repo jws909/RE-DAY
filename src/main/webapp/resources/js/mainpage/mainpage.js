@@ -5,31 +5,151 @@
 // 전역 contextPath 안전 참조
 var ctx = (typeof contextPath !== 'undefined') ? contextPath : '';
 
-/* 필터 바 정렬 버튼 기능 */
+/* 필터 바 정렬 버튼 기능 (현재 선택된 카테고리 유지) */
 document.addEventListener("DOMContentLoaded", function() {
     var filterButtons = document.querySelectorAll('.filter_button button');
 
     filterButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             var sortType = this.getAttribute('data-sort');
             if (!sortType) {
                 sortType = (this.textContent.indexOf('평점') !== -1) ? 'rating' : 'latest';
             }
-            location.href = ctx + '/RE:DAY/mainpage?sort=' + encodeURIComponent(sortType);
+            var container = document.getElementById('mainReviewContainer');
+            var currentCategory = container ? (container.getAttribute('data-category') || 'all') : 'all';
+            location.href = ctx + '/RE:DAY/mainpage?sort=' + encodeURIComponent(sortType) + '&category=' + encodeURIComponent(currentCategory);
         });
     });
 });
 
-/* 카테고리분류 필터바 (기존 유지) */
+/* 카테고리 매칭 헬퍼 함수 (영문/한글 모두 지원) */
+function isCategoryMatching(filterCat, itemCat) {
+    if (!filterCat || filterCat === 'all') return true;
+    if (!itemCat) return false;
+    var fc = filterCat.trim().toLowerCase();
+    var ic = itemCat.trim().toLowerCase();
+    if (fc === ic) return true;
+    if (fc === 'place' && (ic === '장소' || ic.indexOf('식당') !== -1 || ic.indexOf('카페') !== -1)) return true;
+    if (fc === 'item' && (ic === '아이템' || ic.indexOf('기기') !== -1)) return true;
+    if (fc === 'transport' && (ic === '이동수단' || ic.indexOf('모빌리티') !== -1)) return true;
+    if (fc === 'content' && (ic === '콘텐츠' || ic.indexOf('미디어') !== -1)) return true;
+    return false;
+}
+
+/* 서브 리뷰 카테고리 필터링 기능 (즉시 DOM 필터링 + 비동기 AJAX 피드 갱신) */
 document.addEventListener("DOMContentLoaded", function() {
     var mpSubReviewCategoryFilter = document.querySelectorAll('.sub_review_category_filter_card');
+    var container = document.getElementById('mainReviewContainer');
+    var feedTotalCount = document.getElementById('feedTotalCount');
+    var feedMoreContainer = document.getElementById('feedMoreContainer');
 
     mpSubReviewCategoryFilter.forEach(function(button) {
         button.addEventListener('click', function() {
+            var selectedCategory = this.getAttribute('data-category') || 'all';
+
+            // 1. 카테고리 탭 UI 활성화 전환
             mpSubReviewCategoryFilter.forEach(function(btn) {
                 btn.classList.remove('active');
+                var score = btn.querySelector('.sub_review_category_filter_score');
+                if (score) score.classList.remove('active');
             });
             this.classList.add('active');
+            var thisScore = this.querySelector('.sub_review_category_filter_score');
+            if (thisScore) thisScore.classList.add('active');
+
+            if (!container) return;
+
+            // 2. 현재 정렬 방식 가져오기
+            var currentSort = container.getAttribute('data-sort') || 'latest';
+
+            // 3. 브라우저 URL 갱신 (새로고침 시에도 유지되도록 history.pushState 사용)
+            var newUrl = ctx + '/RE:DAY/mainpage?sort=' + encodeURIComponent(currentSort) + '&category=' + encodeURIComponent(selectedCategory);
+            if (window.history && window.history.pushState) {
+                window.history.pushState(null, '', newUrl);
+            }
+
+            // 4. 즉시 클라이언트 DOM 필터링 (서버 응답 전에도 즉각적으로 화면 반영)
+            var cards = container.querySelectorAll('.mp_review_card');
+            var visibleCardCount = 0;
+
+            cards.forEach(function(card) {
+                var subItems = card.querySelectorAll('.mp_sub_review_item');
+                var matchedSubCount = 0;
+
+                subItems.forEach(function(item) {
+                    var itemCat = item.getAttribute('data-category') || '';
+                    var badge = item.querySelector('.mp_category_badge');
+                    var badgeText = badge ? badge.textContent.trim() : '';
+
+                    if (isCategoryMatching(selectedCategory, itemCat) || isCategoryMatching(selectedCategory, badgeText)) {
+                        item.style.display = '';
+                        matchedSubCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // 카드 내 서브리뷰 개수 텍스트 갱신
+                var titleSpan = card.querySelector('.mp_sub_reviews_title span:last-child');
+                if (titleSpan) {
+                    titleSpan.textContent = '이 날의 서브 리뷰 (' + matchedSubCount + '개)';
+                }
+
+                // 해당 카테고리 서브리뷰가 1개 이상이거나 '전체'인 경우만 카드 표시
+                if (selectedCategory === 'all' || matchedSubCount > 0) {
+                    card.style.display = '';
+                    visibleCardCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 5. 서버에 카테고리별 1페이지 비동기 요청 (전체 데이터 동기화 및 페이징)
+            var feedUrl = ctx + '/RE:DAY/feed?page=1&size=5&sort=' + encodeURIComponent(currentSort) + '&category=' + encodeURIComponent(selectedCategory);
+
+            fetch(feedUrl)
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(response) {
+                    if (response.success && response.data) {
+                        var data = response.data;
+                        var reviews = data.reviews;
+
+                        // 컨테이너 상태 갱신
+                        container.setAttribute('data-page', '1');
+                        container.setAttribute('data-category', selectedCategory);
+                        container.setAttribute('data-has-more', data.hasMore);
+
+                        // 상단 총 개수 텍스트 갱신
+                        if (feedTotalCount) {
+                            feedTotalCount.textContent = data.totalCount;
+                        }
+
+                        if (!reviews || reviews.length === 0) {
+                            container.innerHTML = '<div class="empty_feed_box" style="text-align: center; padding: 60px 20px; background: #ffffff; border: 2px dashed #CBD5E1; border-radius: 16px; margin-top: 20px;">' +
+                                                  '<span class="material-symbols-outlined" style="font-size: 48px; color: #94A3B8;">sentiment_dissatisfied</span>' +
+                                                  '<p style="margin-top: 12px; font-size: 15px; font-weight: bold; color: #475569;">선택한 카테고리에 해당하는 리뷰가 없습니다.</p>' +
+                                                  '<p style="font-size: 13px; color: #94A3B8; margin-top: 4px;">다른 카테고리를 선택하거나 새 리뷰를 작성해보세요!</p>' +
+                                                  '</div>';
+                        } else {
+                            var html = '';
+                            reviews.forEach(function(rev) {
+                                html += buildReviewCardHtml(rev);
+                            });
+                            container.innerHTML = html;
+                        }
+
+                        // 더보기 버튼 가시성 제어
+                        if (feedMoreContainer) {
+                            feedMoreContainer.style.display = data.hasMore ? '' : 'none';
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.error('카테고리 필터링 요청 실패:', err);
+                });
         });
     });
 });
@@ -120,12 +240,13 @@ window.loadMoreReviews = function() {
 
     var currentPage = parseInt(container.getAttribute('data-page') || '1', 10);
     var currentSort = container.getAttribute('data-sort') || 'latest';
+    var currentCategory = container.getAttribute('data-category') || 'all';
     var nextPage = currentPage + 1;
 
     btnLoadMore.disabled = true;
     btnLoadMore.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">sync</span> <span>로딩 중...</span>';
 
-    var feedUrl = ctx + '/RE:DAY/feed?page=' + nextPage + '&size=5&sort=' + encodeURIComponent(currentSort);
+    var feedUrl = ctx + '/RE:DAY/feed?page=' + nextPage + '&size=5&sort=' + encodeURIComponent(currentSort) + '&category=' + encodeURIComponent(currentCategory);
 
     fetch(feedUrl)
         .then(function(res) {
@@ -214,6 +335,16 @@ function getStreakBadgeHtml(streak) {
     }
 }
 
+function getCategoryLabel(category) {
+    if (!category) return '';
+    var cat = category.toLowerCase().trim();
+    if (cat === 'place' || cat === '장소') return '장소';
+    if (cat === 'item' || cat === '아이템') return '아이템';
+    if (cat === 'transport' || cat === '이동수단') return '이동수단';
+    if (cat === 'content' || cat === '콘텐츠') return '콘텐츠';
+    return category;
+}
+
 function buildReviewCardHtml(review) {
     var avatarSrc = review.authorProfileImg 
         ? (review.authorProfileImg.startsWith('http') ? review.authorProfileImg : (ctx + review.authorProfileImg))
@@ -270,9 +401,10 @@ function buildReviewCardHtml(review) {
             var verifiedHtml = sub.isCertified === 'Y' 
                 ? '<span class="material-symbols-outlined icon_verified">check_circle</span>' 
                 : '';
-            subReviewsHtml += '<div class="mp_sub_review_item">' +
+            var catLabel = getCategoryLabel(sub.category);
+            subReviewsHtml += '<div class="mp_sub_review_item" data-category="' + escapeHtml(sub.category || '') + '">' +
                               '<div class="mp_sub_item_left">' +
-                              '<span class="mp_category_badge">' + escapeHtml(sub.category || '') + '</span>' +
+                              '<span class="mp_category_badge">' + escapeHtml(catLabel) + '</span>' +
                               '<span class="mp_sub_item_name">' + escapeHtml(sub.itemName || '') + '</span>' +
                               verifiedHtml +
                               '</div>' +

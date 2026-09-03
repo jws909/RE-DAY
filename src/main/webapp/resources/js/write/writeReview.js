@@ -563,3 +563,59 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+/* ==========================================================================
+   리뷰 작성 - 공개 / 비공개 단일 토글 처리
+   ========================================================================== */
+document.addEventListener("DOMContentLoaded", function() {
+    const singlePublicCheckbox = document.getElementById("singlePublicCheckbox");
+    const hiddenInput = document.getElementById("isPublicInput");
+    const badge = document.getElementById("publicStatusBadge");
+    const icon = document.getElementById("publicStatusIcon");
+    const text = document.getElementById("publicStatusText");
+
+    function updatePublicUI(isChecked) {
+        // Form 전송용 Hidden 필드 값 갱신 ('Y' or 'N')
+        if (hiddenInput) {
+            hiddenInput.value = isChecked ? "Y" : "N";
+        }
+
+        if (isChecked) {
+            if (badge) {
+                badge.className = "text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200 inline-flex items-center gap-1 cursor-pointer";
+            }
+            if (icon) {
+                icon.className = "fa-solid fa-earth-americas text-[10px]";
+            }
+            if (text) {
+                text.textContent = "공개";
+            }
+        } else {
+            if (badge) {
+                badge.className = "text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-300 inline-flex items-center gap-1 cursor-pointer";
+            }
+            if (icon) {
+                icon.className = "fa-solid fa-lock text-[10px]";
+            }
+            if (text) {
+                text.textContent = "비공개";
+            }
+        }
+    }
+
+    // 1) 체크박스 직접 클릭 시 동작
+    if (singlePublicCheckbox) {
+        singlePublicCheckbox.addEventListener("change", function() {
+            updatePublicUI(this.checked);
+        });
+    }
+
+    // 2) 옆의 [공개/비공개] 뱃지 박스를 눌러도 체크박스가 토글되도록 처리
+    if (badge && singlePublicCheckbox) {
+        badge.addEventListener("click", function() {
+            singlePublicCheckbox.checked = !singlePublicCheckbox.checked;
+            updatePublicUI(singlePublicCheckbox.checked);
+        });
+    }
+});

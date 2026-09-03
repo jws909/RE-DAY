@@ -372,28 +372,39 @@
 			</section>
 
 			<!-- ========================================================================= -->
-			<!-- Submit Bar: 발행 완료 버튼 -->
+			<!-- Submit Bar: 공개 여부 토글 & 발행 완료 버튼 -->
 			<!-- ========================================================================= -->
 			<div
 				class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t-2 border-dashed border-slate-300">
-				<p id="submitInfoText" class="text-xs text-slate-500 font-mono">
+				<!-- 좌측 안내 문구 -->
+				<p id="submitInfoText"
+					class="text-xs text-slate-500 font-mono text-center sm:text-left">
 					* 등록 시 메인 데일리 리뷰 1건과 서브 리뷰 0건이 발행됩니다.</p>
 
-				<label
-					class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-3.5 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-slate-400 transition-colors shadow-xs">
-					<span class="text-xs font-bold text-slate-700">공개 여부</span> <input
-					type="checkbox" id="singlePublicCheckbox" checked
-					onchange="handleSinglePublicToggle(this)"
-					class="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 cursor-pointer" />
-				</span>
-				</label>
+				<!-- 우측 액션 그룹 -->
+				<div class="flex items-center gap-4 w-full sm:w-auto justify-end">
 
+					<!-- 단일 공개 여부 토글 박스 -->
+					<div
+						class="inline-flex items-center gap-2.5 bg-white px-3.5 py-2.5 rounded-xl border border-dashed border-slate-300 shadow-xs select-none">
+						<span class="text-xs font-bold text-slate-700">공개 여부</span> <input
+							type="checkbox" id="singlePublicCheckbox" checked
+							class="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 cursor-pointer" />
 
+						<span id="publicStatusBadge"
+							class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200 inline-flex items-center gap-1 cursor-pointer">
+							<i id="publicStatusIcon"
+							class="fa-solid fa-earth-americas text-[10px]"></i> <span
+							id="publicStatusText">공개</span>
+						</span>
+					</div>
 
-				<button type="submit"
-					class="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
-					<i class="fa-solid fa-check text-sm"></i> <span>하루 리뷰 발행 완료</span>
-				</button>
+					<!-- 하루 리뷰 발행 완료 버튼 -->
+					<button type="submit"
+						class="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0">
+						<i class="fa-solid fa-check text-sm"></i> <span>하루 리뷰 발행 완료</span>
+					</button>
+				</div>
 			</div>
 		</form>
 	</div>

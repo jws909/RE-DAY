@@ -53,6 +53,7 @@ public interface DailyReviewDAO {
 
     // 메인 피드 - 공개 데일리 리뷰 전체 개수 조회
     public int countPublicReviewFeed();
+    public int countPublicReviewFeed(Map<String, Object> params);
 
     // 특정 데일리 리뷰 1건 공개/비공개 수정
     public int updateDailyReviewPublic(
