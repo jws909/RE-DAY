@@ -25,6 +25,7 @@ import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.service.review.ReviewService;
 import com.app.dto.review.SubReviewDTO;
+import com.app.dto.review.TrendingItemDTO;
 
 @Controller
 @RequestMapping("/RE:DAY")
@@ -139,12 +140,19 @@ public class MainPageController {
 	    }
 
 	    // JSP로 스트릭 유저 목록 전달
-	
 	    model.addAttribute(
 	            "streakUsers",
 	            streakUsers
 	    );
 
+	    // 이번 주 최다 언급 아이템 & 장소 트렌드 목록 조회
+	    List<TrendingItemDTO> trendingItems =
+	            reviewService.getWeeklyTrendingItems();
+
+	    model.addAttribute(
+	            "trendingItems",
+	            trendingItems
+	    );
 
 	    return "mainpage/explore";
 	}

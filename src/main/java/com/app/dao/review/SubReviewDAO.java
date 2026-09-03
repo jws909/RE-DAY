@@ -1,9 +1,11 @@
 package com.app.dao.review;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.SubReviewDTO;
+import com.app.dto.review.TrendingItemDTO;
 
 public interface SubReviewDAO {
 
@@ -34,5 +36,10 @@ public interface SubReviewDAO {
      	메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
    ============================================*/
     public CategoryCountDTO findCategoryCounts();
+
+    /*===========================================
+     	탐색 페이지 - 이번 주 최다 언급 아이템 & 장소 Top N 조회
+    ============================================*/
+    public List<TrendingItemDTO> findWeeklyTrendingItems(Map<String, Object> params);
     
 }

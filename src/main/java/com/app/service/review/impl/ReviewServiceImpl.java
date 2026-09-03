@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import com.app.dto.review.TrendingItemDTO;
 import com.app.dao.member.MemberDAO;
 import com.app.dao.review.LikeDAO;
 import com.app.dto.review.LikeRequestDTO;
@@ -443,5 +444,23 @@ public class ReviewServiceImpl implements ReviewService {
 		params.put("userId", userId);
 		params.put("reviewDate", reviewDate);
 		return dailyReviewDAO.findReviewByUserIdAndDate(params);
+	}
+
+	// 탐색 페이지 - 이번 주 최다 언급 아이템 & 장소 트렌드 목록 조회
+	@Override
+	public List<TrendingItemDTO> getWeeklyTrendingItems() {
+		// 1. 먼저 이번 주(weekly) 최다 언급 아이템/장소 조회 (최대 12개)
+		Map<String, Object> params = new HashMap<>();
+		params.put("period", "weekly");
+		params.put("limit", 12);
+		List<TrendingItemDTO> items = subReviewDAO.findWeeklyTrendingItems(params);
+
+		// 2. 만약 이번 주에 등록된 서브 리뷰가 부족한 경우(0개), 전체 기간(all) 누적 트렌드로 대체 조회하여 화면을 풍성하게 유지
+		if (items == null || items.isEmpty()) {
+			params.put("period", "all");
+			items = subReviewDAO.findWeeklyTrendingItems(params);
+		}
+
+		return items != null ? items : new ArrayList<>();
 	}
 }

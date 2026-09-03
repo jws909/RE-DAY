@@ -505,5 +505,47 @@
         WHERE USER_ID = #{userId}
 
     </update>
+
+    <!-- =========================================
+         탐색 페이지 - 이번 주 최다 언급 아이템 & 장소 Top N 조회
+    ========================================== -->
+    <select id="findWeeklyTrendingItems"
+            parameterType="map"
+            resultType="TrendingItemDTO">
+        SELECT
+            SR.CATEGORY AS category,
+            CASE SR.CATEGORY
+                WHEN 'item' THEN '💻 전자기기/아이템'
+                WHEN 'place' THEN '☕ 핫플 장소/카페'
+                WHEN 'transport' THEN '🚗 모빌리티/차량'
+                WHEN 'content' THEN '🎬 콘텐츠/미디어'
+                ELSE '📌 기타'
+            END AS categoryLabel,
+            SR.ITEM_NAME AS itemName,
+            COUNT(*) AS mentionCount,
+            ROUND(AVG(SR.SUB_RATING), 1) AS avgRating,
+            MAX(SR.SUB_COMMENT) KEEP (DENSE_RANK LAST ORDER BY SR.SUB_REVIEW_ID) AS latestComment
+        FROM SUB_REVIEWS SR
+        JOIN DAILY_REVIEWS DR ON SR.REVIEW_ID = DR.REVIEW_ID
+        WHERE NVL(DR.IS_PUBLIC, 'Y') = 'Y'
+          AND SR.ITEM_NAME IS NOT NULL
+          <if test="category != null and category != '' and category != 'all'">
+              AND SR.CATEGORY = #{category}
+          </if>
+          <choose>
+              <when test="period == 'weekly'">
+                  AND DR.REVIEW_DATE >= TRUNC(SYSDATE, 'IW')
+                  AND DR.REVIEW_DATE &lt; TRUNC(SYSDATE, 'IW') + 7
+              </when>
+              <when test="period == 'monthly'">
+                  AND DR.REVIEW_DATE >= ADD_MONTHS(TRUNC(SYSDATE), -1)
+              </when>
+          </choose>
+        GROUP BY SR.CATEGORY, SR.ITEM_NAME
+        ORDER BY COUNT(*) DESC, AVG(SR.SUB_RATING) DESC, MAX(SR.SUB_REVIEW_ID) DESC
+        <if test="limit != null">
+            FETCH FIRST #{limit} ROWS ONLY
+        </if>
+    </select>
 	
 </mapper>
