@@ -68,6 +68,11 @@ public class OAuthServiceImpl implements OAuthService {
         String clientId = requiredConfig("GOOGLE_CLIENT_ID");
         String redirectUri = requiredConfig("GOOGLE_REDIRECT_URI");
 
+        System.out.println(
+        	    "GOOGLE_REDIRECT_URI = "
+        	    + requiredConfig("GOOGLE_REDIRECT_URI")
+        	);
+        
         return GOOGLE_AUTH_URL
                 + "?client_id=" + encode(clientId)
                 + "&redirect_uri=" + encode(redirectUri)
