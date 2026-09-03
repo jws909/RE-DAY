@@ -10,10 +10,13 @@
 <title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 <link href="${pageContext.request.contextPath}/css/mainpage/mainpage.css?v=<%=System.currentTimeMillis()%>" rel="stylesheet">
-<script>var contextPath = "${pageContext.request.contextPath}";</script>
+<script>
+	var contextPath = "${pageContext.request.contextPath}";
+	var isUserLoggedIn = ${not empty sessionScope.loginUser ? 'true' : 'false'};
+</script>
 <script src="${pageContext.request.contextPath}/js/mainpage/mainpage.js?v=<%=System.currentTimeMillis()%>"></script>
 <link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
 	<!-- 상단 네비게이션 바 불러오기 -->
@@ -107,16 +110,70 @@
 												</c:choose>
 											</div>
 											<div class="mp_author_meta">
-												<div class="mp_author_name_row">
-													<span class="mp_author_name"><c:out value="${empty review.authorNickname ? '익명' : review.authorNickname}" /></span>
-													<span class="mp_author_level font-mono"><c:out value="${empty review.authorLevel ? 'lv.1 초보 기록러' : review.authorLevel}" /></span>
-													<c:if test="${not empty review.authorStreakCount && review.authorStreakCount > 0}">
-														<span class="mp_author_badge font-mono">${review.authorStreakCount}</span>
-													</c:if>
+												<div class="mp_author_name_row" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+													<span class="mp_author_name font-bold text-sm text-slate-900"><c:out value="${empty review.authorNickname ? '익명' : review.authorNickname}" /></span>
+
+													<!-- 유저 레벨 (USER_LEVEL: LV1~LV5) 뱃지 -->
+													<c:set var="rawLevel" value="${not empty review.authorLevel ? review.authorLevel : 'LV1'}" />
+													<c:choose>
+														<c:when test="${rawLevel eq 'LV5' or rawLevel eq '5'}">
+															<span class="text-xs font-mono px-2 py-0.5 rounded border border-purple-300 bg-purple-50 text-purple-700 font-bold">
+																Lv.5 라이프 해커
+															</span>
+														</c:when>
+														<c:when test="${rawLevel eq 'LV4' or rawLevel eq '4'}">
+															<span class="text-xs font-mono px-2 py-0.5 rounded border border-blue-300 bg-blue-50 text-blue-700 font-semibold">
+																Lv.4 프로 기록러
+															</span>
+														</c:when>
+														<c:when test="${rawLevel eq 'LV3' or rawLevel eq '3'}">
+															<span class="text-xs font-mono px-2 py-0.5 rounded border border-emerald-300 bg-emerald-50 text-emerald-700 font-semibold">
+																Lv.3 데일리 아카이버
+															</span>
+														</c:when>
+														<c:when test="${rawLevel eq 'LV2' or rawLevel eq '2'}">
+															<span class="text-xs font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-100 text-slate-600 font-medium">
+																Lv.2 루키 아카이버
+															</span>
+														</c:when>
+														<c:otherwise>
+															<span class="text-xs font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-100 text-slate-600 font-medium">
+																Lv.1 일상 기록러
+															</span>
+														</c:otherwise>
+													</c:choose>
+
+													<!-- 스트릭 연속 기록 (STREAK_COUNT) 뱃지 -->
+													<c:set var="rawStreak" value="${not empty review.authorStreakCount ? review.authorStreakCount : 0}" />
+													<c:choose>
+														<c:when test="${rawStreak >= 30}">
+															<span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-300 font-mono inline-flex items-center gap-1 shadow-2xs streak-badge">
+																<i class="fa-solid fa-trophy text-amber-500 text-xs"></i> <span>${rawStreak}일 연속 챔피언</span>
+															</span>
+														</c:when>
+														<c:when test="${rawStreak >= 14}">
+															<span class="text-[11px] font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200 font-mono inline-flex items-center gap-1 shadow-2xs streak-badge">
+																<i class="fa-solid fa-fire text-orange-500 text-xs"></i> <span>${rawStreak}일 연속 마스터</span>
+															</span>
+														</c:when>
+														<c:when test="${rawStreak >= 7}">
+															<span class="text-[11px] font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200 font-mono inline-flex items-center gap-1 shadow-2xs streak-badge">
+																<i class="fa-solid fa-fire text-orange-500 text-xs"></i> <span>${rawStreak}일 연속 챌린저</span>
+															</span>
+														</c:when>
+														<c:when test="${rawStreak > 0}">
+															<span class="text-[11px] font-medium text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200 font-mono inline-flex items-center gap-1 shadow-2xs streak-badge">
+																<i class="fa-solid fa-fire text-orange-500 text-xs"></i> <span>${rawStreak}일 연속 기록</span>
+															</span>
+														</c:when>
+													</c:choose>
 												</div>
-												<div class="mp_review_date_row">
-													<span class="material-symbols-outlined">calendar_today</span>
-													<span class="font-mono">${review.reviewDate}</span>
+												<div class="mp_review_date_row flex items-center gap-1.5 text-xs text-slate-500">
+													<span class="material-symbols-outlined text-[16px] text-slate-400">calendar_today</span>
+													<span class="font-mono font-medium">${review.reviewDate}</span>
+													<c:if test="${not empty review.dayOfWeek}">
+														<span class="font-mono font-medium text-slate-500">(${review.dayOfWeek})</span>
+													</c:if>
 													<c:if test="${review.reviewDate eq todayDate}">
 														<span class="mp_today_badge font-mono">TODAY</span>
 													</c:if>

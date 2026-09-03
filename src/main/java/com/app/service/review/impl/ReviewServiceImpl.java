@@ -17,6 +17,7 @@ import com.app.dto.review.DailyReviewImage;
 import com.app.dto.review.SubReviewDTO;
 import com.app.service.review.ReviewService;
 import com.app.util.FileManager;
+import com.app.util.DateUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -311,6 +312,11 @@ public class ReviewServiceImpl implements ReviewService {
 			for (DailyReviewFormDTO review : reviews) {
 				// 서브 리뷰 목록 매핑
 				review.setSubReviews(subReviewDAO.findSubReviewsByReviewId(review.getReviewId()));
+
+				// 요일 매핑 (예: "수요일", "목요일")
+				if (review.getReviewDate() != null) {
+					review.setDayOfWeek(DateUtil.DateToDayOfWeek(review.getReviewDate()));
+				}
 
 				// 로그인 사용자 좋아요 여부 매핑
 				if (loginUserId != null) {

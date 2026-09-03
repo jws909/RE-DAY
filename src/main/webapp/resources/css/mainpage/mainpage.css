@@ -685,17 +685,59 @@
 	cursor: pointer;
 	color: #475569;
 	font-size: 12px;
-	transition: background-color 0.2s;
+	transition: all 0.2s ease;
 }
 
 .mp_action_btn:hover {
 	background-color: #F8FAFC;
 }
 
-.icon_heart {
-	font-size: 15px;
+/* 좋아요 버튼 전용 스타일 */
+.like_btn {
+	background-color: #ffffff;
+	border: 1px solid #E2E8F0;
+	color: #64748B;
+}
+
+.like_btn:hover {
+	background-color: #FFF1F2;
+	border-color: #FECDD3;
+}
+
+.like_btn:hover .icon_heart {
 	color: #F43F5E;
-	font-variation-settings: 'FILL' 1;
+}
+
+.icon_heart {
+	font-size: 16px;
+	color: #94A3B8; /* 평소 미선택 시 회색 */
+	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.like_btn .like_count {
+	font-weight: 600;
+	color: #64748B;
+	transition: color 0.2s ease;
+}
+
+/* 좋아요 버튼이 활성화(active: 내가 누른 상태) 되었을 때 확실한 차별화 디자인 */
+.like_btn.active {
+	background-color: #FFF1F2; /* 산뜻한 로즈 연분홍 배경 */
+	border-color: #FDA4AF;     /* 로즈 테두리 */
+	color: #E11D48;            /* 로즈 텍스트 */
+	box-shadow: 0 1px 3px rgba(244, 63, 94, 0.15);
+}
+
+.like_btn.active .icon_heart {
+	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	color: #F43F5E;            /* 선명한 꽉 찬 레드 하트 */
+	transform: scale(1.15);
+}
+
+.like_btn.active .like_count {
+	color: #E11D48;            /* 강조된 로즈 숫자 */
+	font-weight: 700;
 }
 
 .mp_action_info {
@@ -726,17 +768,6 @@
 .mp_detail_link .material-symbols-outlined {
 	font-size: 16px;
 	transition: transform 0.2s ease;
-}
-
-/* 좋아요 버튼이 활성화(active) 되었을 때 스타일 */
-.like_btn.active .icon_heart {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    color: #ff4757; 
-}
-
-
-.like_btn:hover .icon_heart {
-    color: #ff4757;
 }
 
 /*===========모바일 반응형 */
