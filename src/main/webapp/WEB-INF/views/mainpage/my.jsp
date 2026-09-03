@@ -520,9 +520,24 @@
 
 			</div>
 
-
-
-
+			<%-- =========================================
+			     MY 페이지 - 데일리 리뷰 선택 및 일괄 공개/비공개 툴바
+			========================================= --%>
+			<c:if test="${not empty myReviews}">
+				<div id="myDailySelectionBar" class="my_selection_bar">
+					<div class="my_selection_right">
+						<div class="my_batch_divider"></div>
+						<button type="button" id="btnAllPublic" class="my_batch_btn is_all_public" title="모든 데일리 리뷰를 전체 공개로 변경">
+							<span class="material-symbols-outlined">visibility</span>
+							<span>전체 공개</span>
+						</button>
+						<button type="button" id="btnAllPrivate" class="my_batch_btn is_all_private" title="모든 데일리 리뷰를 전체 비공개로 변경">
+							<span class="material-symbols-outlined">visibility_off</span>
+							<span>전체 비공개</span>
+						</button>
+					</div>
+				</div>
+			</c:if>
 
 			<%-- 1. 내 데일리 기록 --%>
 
@@ -551,6 +566,11 @@
 								<%--작성자 / 날짜 / 평점--%>
 
 								<div class="my_daily_card_header">
+
+									<%-- 데일리 리뷰 선택 체크박스 --%>
+									<div class="my_daily_select_box">
+										<input type="checkbox" class="my_daily_checkbox my_checkbox_custom" value="${rev.reviewId}" data-review-id="${rev.reviewId}" title="리뷰 선택">
+									</div>
 
 									<%-- 작성자 영역 --%>
 
@@ -625,9 +645,23 @@
 
 
 
-									<%-- 평점 / 삭제 --%>
+									<%-- 평점 / 공개여부 / 삭제 --%>
 
 									<div class="my_daily_header_right">
+
+										<%-- 개별 공개/비공개 토글 버튼 --%>
+										<button type="button" 
+												class="my_public_toggle_btn ${rev.isPublic eq 'N' ? 'is_private' : 'is_public'}"
+												data-review-id="${rev.reviewId}"
+												data-is-public="${empty rev.isPublic ? 'Y' : rev.isPublic}"
+												title="클릭하여 공개/비공개 전환">
+											<span class="material-symbols-outlined public_icon">
+												${rev.isPublic eq 'N' ? 'lock' : 'public'}
+											</span>
+											<span class="public_label font-mono">
+												${rev.isPublic eq 'N' ? '비공개' : '공개'}
+											</span>
+										</button>
 
 										<%-- 리뷰 평점 --%>
 
