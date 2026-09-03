@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,7 +17,6 @@ import com.app.dto.member.MemberDTO;
 import com.app.service.oauth.OAuthService;
 
 @Controller
-@RequestMapping("/oauth")
 public class OAuthController {
 
     @Autowired
@@ -36,7 +34,7 @@ public class OAuthController {
     /*
      * Google 로그인 시작
      */
-    @GetMapping("/google")
+    @GetMapping("/oauth/google")
     public String googleLogin(HttpSession session) {
 
         String state = createState();
@@ -56,7 +54,7 @@ public class OAuthController {
     /*
      * Google 로그인 Callback
      */
-    @GetMapping("/google/callback")
+    @GetMapping("/login/oauth2/code/google")
     public String googleCallback(
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String state,
@@ -160,7 +158,7 @@ public class OAuthController {
     /*
      * Kakao 로그인 시작
      */
-    @GetMapping("/kakao")
+    @GetMapping("/oauth/kakao")
     public String kakaoLogin(HttpSession session) {
 
         String state = createState();
@@ -180,7 +178,7 @@ public class OAuthController {
     /*
      * Kakao 로그인 Callback
      */
-    @GetMapping("/kakao/callback")
+    @GetMapping("/oauth/kakao/callback")
     public String kakaoCallback(
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String state,
