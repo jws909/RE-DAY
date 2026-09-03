@@ -342,6 +342,7 @@ public class ReviewServiceImpl implements ReviewService {
 		result.put("sort", sort);
 
 		return result;
+	}
 	
 	 // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
 	@Override
