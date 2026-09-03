@@ -90,16 +90,42 @@
 	min-height : 1000px;
 	display:flex;
 	justify-content: space-between;
+	align-items: flex-start;
 	margin-top: 30px;
+	margin-bottom: 60px;
 	flex-wrap: nowrap;
 }
 
 .mp_bottom_main{
 	width:65%;
+	margin-bottom: 60px;
 }
 
 .mp_bottom_side{
 	width:30%;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 80px;
+	align-self: flex-start;
+	max-height: calc(100vh - 95px);
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: #CBD5E1 transparent;
+	padding-bottom: 16px;
+	z-index: 30;
+}
+
+.mp_bottom_side::-webkit-scrollbar {
+	width: 4px;
+}
+
+.mp_bottom_side::-webkit-scrollbar-thumb {
+	background-color: #CBD5E1;
+	border-radius: 4px;
+}
+
+.mp_bottom_side::-webkit-scrollbar-track {
+	background: transparent;
 }
 
 
@@ -152,6 +178,7 @@
 	border-radius: 10px;
 	border: 3px dashed #CBD5E1;
 	flex-direction: column;
+	background-color: #ffffff;
 }
 
 .day_rating_header{
@@ -296,6 +323,7 @@
 	border: 3px dashed #CBD5E1;
 	flex-direction: column;
 	margin-top : 30px;
+	background-color: #ffffff;
 }
 
 .sub_review_category_filter_header{
@@ -795,16 +823,23 @@
 		flex-direction: column;
 		flex-wrap: nowrap;
 		gap: 20px;
+		margin-bottom: 40px;
 	}
 
 	/* 메인 리뷰 영역 */
 	.mp_bottom_main{
 		width: 100%;
+		margin-bottom: 24px;
 	}
 
 	/* 오른쪽 사이드 영역 */
 	.mp_bottom_side{
 		width: 100%;
+		position: static;
+		top: auto;
+		max-height: none;
+		overflow-y: visible;
+		padding-bottom: 0;
 	}
 
 }
@@ -860,14 +895,21 @@
 		flex-direction: column;
 		flex-wrap: nowrap;
 		gap: 20px;
+		margin-bottom: 40px;
 	}
 
 	.mp_bottom_main {
 		width: 100%;
+		margin-bottom: 24px;
 	}
 
 	.mp_bottom_side {
 		width: 100%;
+		position: static;
+		top: auto;
+		max-height: none;
+		overflow-y: visible;
+		padding-bottom: 0;
 	}
 
 	/* 정렬/필터바 */
