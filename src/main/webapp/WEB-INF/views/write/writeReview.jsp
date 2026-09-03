@@ -84,17 +84,29 @@
 						class="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
 						필수 입력 </span>
 				</div>
-
-				<!-- Date & Total Score -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-					<div>
-						<label
-							class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-							<i class="fa-regular fa-calendar-days text-slate-400"></i> <span>리뷰
-								일자</span>
-						</label> <input type="date" id="reviewDate" name="reviewDate" required
-							class="w-full px-3 py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:border-slate-800 bg-slate-50" />
-					</div>
+                <!-- Date & Total Score -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                            <i class="fa-regular fa-calendar-days text-slate-400"></i>
+                            <span>리뷰 일자</span>
+                            <span class="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-mono font-medium border border-emerald-200">오늘 날짜 자동 지정</span>
+                        </label>
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="reviewDate"
+                                name="reviewDate"
+                                readonly
+                                required
+                                class="w-full px-3 py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm font-mono bg-slate-100 text-slate-600 cursor-not-allowed focus:outline-none"
+                            />
+                            <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-mono flex items-center gap-1 pointer-events-none">
+                                <span class="bg-[#DCFCE7] text-[#047857] font-bold text-[10px] px-1.5 py-0.5 rounded font-mono shadow-2xs">TODAY</span>
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">* 데일리 라이프 리뷰는 당일(오늘) 기준으로 등록됩니다.</p>
+                    </div>
 
 					<div>
 						<label
