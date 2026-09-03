@@ -132,4 +132,17 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
              reviewId
      );
  }
+
+    /* =========================================
+       데일리 리뷰 수정
+    ========================================= */
+    @Override
+    public int updateDailyReview(
+            DailyReviewFormDTO formDTO) {
+
+        return sqlSessionTemplate.update(
+                "review_mapper.updateDailyReview",
+                formDTO
+        );
+    }
 }

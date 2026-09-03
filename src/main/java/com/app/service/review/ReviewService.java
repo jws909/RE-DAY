@@ -53,4 +53,10 @@ public interface ReviewService {
     public int deleteDailyReviewByReviewId(
             long reviewId
     );
+
+    // 데일리 리뷰 수정 (메인 리뷰 및 서브 리뷰 동기화, 이미지 처리)
+    public int updateDailyReviewWithSubReviews(
+            DailyReviewFormDTO formDTO,
+            String deleteMainImage
+    );
 }

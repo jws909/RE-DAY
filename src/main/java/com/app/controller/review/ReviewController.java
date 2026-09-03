@@ -185,13 +185,30 @@ public class ReviewController {
         return "edit/editReview"; // editReview.jsp 로 이동                                                     
     }
 
-    @PostMapping("/review/edit")                                                                           
+    @PostMapping({"/review/edit", "/RE:DAY/review/edit"})                                                                           
     public String updateReview(@ModelAttribute DailyReviewFormDTO formDto,                                 
-                               @RequestParam(value = "deleteMainImage", defaultValue = "N") String deleteMainImage, HttpSession session) {
-        // 1) reviewId 기준 메인 리뷰 UPDATE
-        // 2) deleteMainImage.equals("Y") 인 경우 기존 이미지 파일 삭제
-        // 3) mainImageFile 이 있는 경우 새 파일 업로드
-        // 4) subReviews 목록 수정/추가/삭제 동기화
+                               @RequestParam(value = "deleteMainImage", defaultValue = "N") String deleteMainImage, 
+                               HttpSession session) {
+        // 1) 로그인 확인
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/member/signin";
+        }
+
+        // 2) 기존 리뷰 확인 및 작성자 본인 검증
+        DailyReviewFormDTO existingReview = reviewService.findReviewDetailByReviewId(formDto.getReviewId());
+        if (existingReview == null) {
+            return "redirect:/RE:DAY/mainpage";
+        }
+
+        if (!loginUser.getUserId().equals(existingReview.getUserId())) {
+            return "redirect:/RE:DAY/review/detail/" + formDto.getReviewId();
+        }
+
+        formDto.setUserId(loginUser.getUserId());
+
+        // 3) 리뷰 수정 서비스 호출 (메인 리뷰 UPDATE, 서브리뷰 delete & re-insert, 대표 이미지 처리)
+        reviewService.updateDailyReviewWithSubReviews(formDto, deleteMainImage);
   
         return "redirect:/RE:DAY/review/detail/" + formDto.getReviewId();
     }
