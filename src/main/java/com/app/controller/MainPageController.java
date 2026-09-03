@@ -17,6 +17,9 @@ import com.app.dto.member.MyPageStatsDTO;
 import com.app.service.member.MemberService;
 
 import java.util.List;
+import java.util.Map;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.app.common.ResponseResult;
 
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.service.review.ReviewService;
@@ -30,9 +33,49 @@ public class MainPageController {
 	@Autowired
 	ReviewService reviewService;
 	
+	// ========================================
+	// 메인 페이지
+	// - 최신/평점순 공개 데일리 리뷰 피드 (초기 5개)
+	// ========================================
 	@GetMapping("/mainpage")
-	public String mainpage() {
+	public String mainpage(
+			@RequestParam(value = "sort", defaultValue = "latest") String sort,
+			HttpSession session,
+			Model model) {
+
+		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;
+
+		// 1. 피드 첫 페이지 (5개) 조회
+		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(1, 5, sort, loginUserId);
+
+		// 2. 모델 전달
+		model.addAttribute("feedList", feedData.get("reviews"));
+		model.addAttribute("totalCount", feedData.get("totalCount"));
+		model.addAttribute("hasMore", feedData.get("hasMore"));
+		model.addAttribute("currentSort", sort);
+		model.addAttribute("todayDate", LocalDate.now().toString()); // "YYYY-MM-DD"
+
 		return "mainpage/main";
+	}
+
+	// ========================================
+	// 메인 피드 더보기 비동기 API (JSON)
+	// ========================================
+	@GetMapping("/feed")
+	@ResponseBody
+	public ResponseResult<?> getFeed(
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = "5") int size,
+			@RequestParam(value = "sort", defaultValue = "latest") String sort,
+			HttpSession session) {
+
+		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;
+
+		Map<String, Object> feedData = reviewService.getPublicReviewFeedPaging(page, size, sort, loginUserId);
+
+		return ResponseResult.success(feedData);
 	}
 	
 	// ========================================

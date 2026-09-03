@@ -1,6 +1,7 @@
 package com.app.service.review;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.dto.review.DailyReviewFormDTO;
 import com.app.dto.review.DailyReviewImage;
@@ -58,5 +59,13 @@ public interface ReviewService {
     public int updateDailyReviewWithSubReviews(
             DailyReviewFormDTO formDTO,
             String deleteMainImage
+    );
+
+    // 메인 피드 - 공개 데일리 리뷰 목록 페이징 및 정렬 조회
+    public Map<String, Object> getPublicReviewFeedPaging(
+            int page,
+            int size,
+            String sort,
+            String loginUserId
     );
 }

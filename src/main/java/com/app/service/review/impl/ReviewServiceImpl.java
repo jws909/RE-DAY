@@ -18,7 +18,10 @@ import com.app.dto.review.SubReviewDTO;
 import com.app.service.review.ReviewService;
 import com.app.util.FileManager;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import com.app.dao.review.LikeDAO;
+import com.app.dto.review.LikeRequestDTO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -278,5 +281,59 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 
 		return updateCount;
+	}
+
+	/*
+	 * ========================================= 
+	 * 메인 피드 - 공개 데일리 리뷰 목록 페이징 및 정렬 조회
+	 * =========================================
+	 */
+	@Override
+	public Map<String, Object> getPublicReviewFeedPaging(int page, int size, String sort, String loginUserId) {
+		if (page < 1) page = 1;
+		if (size < 1) size = 5;
+		if (sort == null || (!sort.equals("latest") && !sort.equals("rating"))) {
+			sort = "latest";
+		}
+
+		int offset = (page - 1) * size;
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("offset", offset);
+		params.put("size", size);
+		params.put("sort", sort);
+
+		List<DailyReviewFormDTO> reviews = dailyReviewDAO.findPublicReviewFeed(params);
+		int totalCount = dailyReviewDAO.countPublicReviewFeed();
+
+		// 서브 리뷰 목록 및 로그인 유저의 좋아요 상태 바인딩
+		if (reviews != null && !reviews.isEmpty()) {
+			for (DailyReviewFormDTO review : reviews) {
+				// 서브 리뷰 목록 매핑
+				review.setSubReviews(subReviewDAO.findSubReviewsByReviewId(review.getReviewId()));
+
+				// 로그인 사용자 좋아요 여부 매핑
+				if (loginUserId != null) {
+					LikeRequestDTO likeDto = new LikeRequestDTO();
+					likeDto.setUserId(loginUserId);
+					likeDto.setReviewId(review.getReviewId());
+					review.setLikedByMe(likeDAO.checkExists(likeDto) > 0);
+				} else {
+					review.setLikedByMe(false);
+				}
+			}
+		}
+
+		boolean hasMore = (offset + (reviews != null ? reviews.size() : 0)) < totalCount;
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("reviews", reviews);
+		result.put("totalCount", totalCount);
+		result.put("hasMore", hasMore);
+		result.put("page", page);
+		result.put("size", size);
+		result.put("sort", sort);
+
+		return result;
 	}
 }
