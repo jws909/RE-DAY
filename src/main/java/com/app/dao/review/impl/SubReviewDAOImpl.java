@@ -1,6 +1,7 @@
 package com.app.dao.review.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.app.dao.review.SubReviewDAO;
 import com.app.dto.review.CategoryCountDTO;
 import com.app.dto.review.SubReviewDTO;
+import com.app.dto.review.TrendingItemDTO;
 
 @Repository
 public class SubReviewDAOImpl implements SubReviewDAO {
@@ -87,5 +89,13 @@ public class SubReviewDAOImpl implements SubReviewDAO {
 		return sqlSessionTemplate.selectOne("review_mapper.findCategoryCounts");
 		
 	}
+
+    /*===========================================
+     	탐색 페이지 - 이번 주 최다 언급 아이템 & 장소 Top N 조회
+    ============================================*/
+    @Override
+    public List<TrendingItemDTO> findWeeklyTrendingItems(Map<String, Object> params) {
+        return sqlSessionTemplate.selectList("review_mapper.findWeeklyTrendingItems", params);
+    }
 
 }
