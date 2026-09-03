@@ -16,6 +16,9 @@
              			http://www.springframework.org/schema/context/spring-context.xsd">
 
 
+	<!-- properties 파일 로드 -->
+	<context:property-placeholder
+		location="classpath:config/oauth.properties" />
 	<context:property-placeholder
 		location="classpath:config/db.properties" />
 
