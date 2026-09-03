@@ -491,4 +491,79 @@
       AND CHEER_COUNT > 0
 
 </update>
+
+<!-- 소셜 로그인 회원 조회 -->
+<select id="findOAuthMemberByProvider"
+        parameterType="map"
+        resultType="com.app.dto.member.MemberDTO">
+
+    SELECT
+        USER_ID       AS "userId",
+        EMAIL         AS "email",
+        PASSWORD      AS "password",
+        NICKNAME      AS "nickname",
+        PROFILE_IMG   AS "profileImg",
+        PROVIDER      AS "provider",
+        CHEER_COUNT   AS "cheerCount",
+        USER_LEVEL    AS "userLevel",
+        INTERESTS     AS "interests",
+        IS_PUBLIC     AS "isPublic",
+        STREAK_COUNT  AS "streakCount"
+    FROM USERS
+    WHERE PROVIDER = #{provider}
+      AND PROVIDER_ID = #{providerId}
+</select>
+
+
+<!-- 소셜 로그인 이메일 중복 확인 -->
+<select id="findOAuthMemberByEmail"
+        parameterType="String"
+        resultType="com.app.dto.member.MemberDTO">
+
+    SELECT
+        USER_ID       AS "userId",
+        EMAIL         AS "email",
+        PASSWORD      AS "password",
+        NICKNAME      AS "nickname",
+        PROFILE_IMG   AS "profileImg",
+        PROVIDER      AS "provider",
+        CHEER_COUNT   AS "cheerCount",
+        USER_LEVEL    AS "userLevel",
+        INTERESTS     AS "interests",
+        IS_PUBLIC     AS "isPublic",
+        STREAK_COUNT  AS "streakCount"
+    FROM USERS
+    WHERE EMAIL = #{email}
+</select>
+
+
+<!-- 소셜 로그인 신규 회원 등록 -->
+<insert id="insertOAuthMember"
+        parameterType="com.app.dto.oauth.OAuthUserDTO">
+
+    INSERT INTO USERS
+    (
+        USER_ID,
+        EMAIL,
+        PASSWORD,
+        NICKNAME,
+        PROFILE_IMG,
+        PROVIDER,
+        PROVIDER_ID,
+        INTERESTS
+    )
+    VALUES
+    (
+        #{userId},
+        #{email},
+        #{password},
+        #{nickname},
+        #{profileImg},
+        #{provider},
+        #{providerId},
+        #{interests}
+    )
+</insert>
+
+
 </mapper>

@@ -49,19 +49,22 @@
 
 			<!-- 소셜 로그인 -->
 			<div class="space-y-2 mb-6">
+    			<button type="button"
+        			onclick="location.href='${pageContext.request.contextPath}/oauth/kakao'"
+        			class="w-full py-2.5 rounded-xl
+               			bg-yellow-400 hover:bg-yellow-500
+               			text-xs font-bold">
+        			카카오로 1초 만에 시작하기
+    			</button>
 
-				<button type="button"
-					class="w-full py-2.5 rounded-xl
-                           bg-yellow-400 hover:bg-yellow-500
-                           text-xs font-bold">
-					카카오로 1초 만에 시작하기</button>
-
-				<button type="button"
-					class="w-full py-2.5 rounded-xl
-                           border border-slate-300
-                           bg-white hover:bg-slate-50
-                           text-xs font-bold">
-					Google 계정으로 계속하기</button>
+    			<button type="button"
+        			onclick="location.href='${pageContext.request.contextPath}/oauth/google'"
+        			class="w-full py-2.5 rounded-xl
+               			border border-slate-300
+               			bg-white hover:bg-slate-50
+               			text-xs font-bold">
+        			Google 계정으로 계속하기
+    			</button>
 
 			</div>
 
