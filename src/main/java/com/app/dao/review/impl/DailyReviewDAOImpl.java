@@ -1,5 +1,6 @@
 package com.app.dao.review.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -168,6 +169,53 @@ public class DailyReviewDAOImpl implements DailyReviewDAO {
 
         return sqlSessionTemplate.selectOne(
                 "review_mapper.countPublicReviewFeed"
+        );
+    }
+
+    /* =========================================
+       특정 데일리 리뷰 1건 공개/비공개 수정
+    ========================================= */
+    @Override
+    public int updateDailyReviewPublic(long reviewId, String userId, String isPublic) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("reviewId", reviewId);
+        params.put("userId", userId);
+        params.put("isPublic", isPublic);
+
+        return sqlSessionTemplate.update(
+                "review_mapper.updateDailyReviewPublic",
+                params
+        );
+    }
+
+    /* =========================================
+       선택된 특정 데일리 리뷰들 일괄 공개/비공개 수정
+    ========================================= */
+    @Override
+    public int updateSelectedDailyReviewsPublic(List<Long> reviewIds, String userId, String isPublic) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("reviewIds", reviewIds);
+        params.put("userId", userId);
+        params.put("isPublic", isPublic);
+
+        return sqlSessionTemplate.update(
+                "review_mapper.updateSelectedDailyReviewsPublic",
+                params
+        );
+    }
+
+    /* =========================================
+       사용자의 전체 데일리 리뷰 일괄 공개/비공개 수정
+    ========================================= */
+    @Override
+    public int updateAllDailyReviewsPublic(String userId, String isPublic) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("isPublic", isPublic);
+
+        return sqlSessionTemplate.update(
+                "review_mapper.updateAllDailyReviewsPublicByUserId",
+                params
         );
     }
 }

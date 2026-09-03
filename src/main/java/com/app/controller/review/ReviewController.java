@@ -21,6 +21,8 @@ import com.app.dto.review.SubReviewDTO;
 import com.app.service.member.MemberService;
 import com.app.service.review.CommentService;
 import com.app.service.review.ReviewService;
+import com.app.common.ResponseResult;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.app.util.DateUtil;
 import com.app.dto.member.MemberDTO;
 @Controller
@@ -213,5 +215,77 @@ public class ReviewController {
         reviewService.updateDailyReviewWithSubReviews(formDto, deleteMainImage);
   
         return "redirect:/RE:DAY/review/detail/" + formDto.getReviewId();
+    }
+
+    // ========================================
+    // MY 페이지 - 특정 데일리 리뷰 1건 공개/비공개 토글 (AJAX)
+    // ========================================
+    @PostMapping({"/review/public/daily", "/RE:DAY/review/public/daily"})
+    @ResponseBody
+    public ResponseResult<?> toggleDailyReviewPublic(
+            @RequestParam("reviewId") long reviewId,
+            @RequestParam("isPublic") String isPublic,
+            HttpSession session) {
+
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseResult.fail("로그인이 필요한 서비스입니다.");
+        }
+
+        boolean success = reviewService.updateDailyReviewPublic(reviewId, loginUser.getUserId(), isPublic);
+        if (success) {
+            return ResponseResult.success(isPublic);
+        } else {
+            return ResponseResult.fail("데일리 리뷰 공개 설정 변경에 실패했습니다.");
+        }
+    }
+
+    // ========================================
+    // MY 페이지 - 선택된 특정 데일리 리뷰들 일괄 공개/비공개 변경 (AJAX)
+    // ========================================
+    @PostMapping({"/review/public/selected", "/RE:DAY/review/public/selected"})
+    @ResponseBody
+    public ResponseResult<?> toggleSelectedReviewsPublic(
+            @RequestParam("reviewIds") List<Long> reviewIds,
+            @RequestParam("isPublic") String isPublic,
+            HttpSession session) {
+
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseResult.fail("로그인이 필요한 서비스입니다.");
+        }
+
+        if (reviewIds == null || reviewIds.isEmpty()) {
+            return ResponseResult.fail("선택된 데일리 리뷰가 없습니다.");
+        }
+
+        boolean success = reviewService.updateSelectedReviewsPublic(reviewIds, loginUser.getUserId(), isPublic);
+        if (success) {
+            return ResponseResult.success(isPublic);
+        } else {
+            return ResponseResult.fail("선택한 데일리 리뷰 공개 설정 변경에 실패했습니다.");
+        }
+    }
+
+    // ========================================
+    // MY 페이지 - 전체 데일리 리뷰 일괄 공개/비공개 변경 (AJAX)
+    // ========================================
+    @PostMapping({"/review/public/all", "/RE:DAY/review/public/all"})
+    @ResponseBody
+    public ResponseResult<?> toggleAllReviewsPublic(
+            @RequestParam("isPublic") String isPublic,
+            HttpSession session) {
+
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseResult.fail("로그인이 필요한 서비스입니다.");
+        }
+
+        boolean success = reviewService.updateAllDailyReviewsPublic(loginUser.getUserId(), isPublic);
+        if (success) {
+            return ResponseResult.success(isPublic);
+        } else {
+            return ResponseResult.fail("전체 데일리 리뷰 공개 설정 변경에 실패했습니다.");
+        }
     }
 }

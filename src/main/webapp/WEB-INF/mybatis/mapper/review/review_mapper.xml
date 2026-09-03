@@ -26,6 +26,8 @@
 
         <result property="mainImageUrl" column="MAIN_IMAGE_URL" />
 
+        <result property="isPublic" column="IS_PUBLIC" />
+
 
         <!-- 1:N 서브 리뷰 리스트 컬렉션 매핑 -->
         <collection property="subReviews"
@@ -73,6 +75,7 @@
             d.MOOD_TAGS,
             d.OVERALL_COMMENT,
             d.MAIN_IMAGE_URL,
+            d.IS_PUBLIC,
 
             s.SUB_REVIEW_ID,
             s.REVIEW_ID AS SUB_REVIEW_FK,
@@ -118,7 +121,8 @@
             TOTAL_RATING,
             MOOD_TAGS,
             OVERALL_COMMENT,
-            MAIN_IMAGE_URL
+            MAIN_IMAGE_URL,
+            IS_PUBLIC
         )
         VALUES (
             #{reviewId},
@@ -127,7 +131,8 @@
             #{totalRating},
             #{moodTags},
             #{overallComment},
-            #{mainImageUrl}
+            #{mainImageUrl},
+            NVL(#{isPublic, jdbcType=VARCHAR}, 'Y')
         )
 
     </insert>
@@ -208,7 +213,8 @@
             TOTAL_RATING,
             MOOD_TAGS,
             OVERALL_COMMENT,
-            MAIN_IMAGE_URL
+            MAIN_IMAGE_URL,
+            IS_PUBLIC
 
         FROM DAILY_REVIEWS
 
@@ -330,7 +336,8 @@
             MOOD_TAGS       = #{moodTags},
             OVERALL_COMMENT = #{overallComment},
             REVIEW_DATE     = TO_DATE(SUBSTR(#{reviewDate}, 1, 10), 'YYYY-MM-DD'),
-            MAIN_IMAGE_URL  = #{mainImageUrl, jdbcType=VARCHAR}
+            MAIN_IMAGE_URL  = #{mainImageUrl, jdbcType=VARCHAR},
+            IS_PUBLIC       = NVL(#{isPublic, jdbcType=VARCHAR}, IS_PUBLIC)
         WHERE REVIEW_ID = #{reviewId}
 
     </update>
@@ -403,5 +410,46 @@
 		FROM SUB_REVIEWS
 						
 	</select>
+
+    <!-- =========================================
+         특정 데일리 리뷰 1건 공개/비공개 토글
+    ========================================== -->
+    <update id="updateDailyReviewPublic"
+            parameterType="map">
+
+        UPDATE DAILY_REVIEWS
+        SET IS_PUBLIC = #{isPublic}
+        WHERE REVIEW_ID = #{reviewId}
+          AND USER_ID = #{userId}
+
+    </update>
+
+    <!-- =========================================
+         선택된 특정 데일리 리뷰들 일괄 공개/비공개 변경
+    ========================================== -->
+    <update id="updateSelectedDailyReviewsPublic"
+            parameterType="map">
+
+        UPDATE DAILY_REVIEWS
+        SET IS_PUBLIC = #{isPublic}
+        WHERE USER_ID = #{userId}
+          AND REVIEW_ID IN
+          <foreach collection="reviewIds" item="id" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+
+    </update>
+
+    <!-- =========================================
+         해당 사용자의 전체 데일리 리뷰 일괄 공개/비공개 변경
+    ========================================== -->
+    <update id="updateAllDailyReviewsPublicByUserId"
+            parameterType="map">
+
+        UPDATE DAILY_REVIEWS
+        SET IS_PUBLIC = #{isPublic}
+        WHERE USER_ID = #{userId}
+
+    </update>
 	
 </mapper>
