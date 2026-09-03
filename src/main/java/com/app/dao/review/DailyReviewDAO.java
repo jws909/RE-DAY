@@ -53,4 +53,9 @@ public interface DailyReviewDAO {
 
     // 메인 피드 - 공개 데일리 리뷰 전체 개수 조회
     public int countPublicReviewFeed();
+
+    // 작성자 및 일자 기준 데일리 리뷰 중복/단건 조회
+    public DailyReviewFormDTO findReviewByUserIdAndDate(
+            Map<String, Object> params
+    );
 }

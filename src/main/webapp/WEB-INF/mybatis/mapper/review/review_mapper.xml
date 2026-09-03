@@ -220,6 +220,37 @@
 
 
     <!-- =========================================
+         작성자 및 일자 기준 데일리 리뷰 중복/단건 조회
+    ========================================== -->
+    <select id="findReviewByUserIdAndDate"
+            parameterType="map"
+            resultType="DailyReviewFormDTO">
+
+        SELECT
+            REVIEW_ID,
+            USER_ID,
+            TO_CHAR(REVIEW_DATE, 'YYYY-MM-DD') AS REVIEW_DATE,
+            TOTAL_RATING,
+            MOOD_TAGS,
+            OVERALL_COMMENT,
+            MAIN_IMAGE_URL
+        FROM DAILY_REVIEWS
+        WHERE USER_ID = #{userId}
+        <choose>
+            <when test="reviewDate != null and reviewDate != ''">
+                AND TO_CHAR(REVIEW_DATE, 'YYYY-MM-DD') = SUBSTR(#{reviewDate}, 1, 10)
+            </when>
+            <otherwise>
+                AND TRUNC(REVIEW_DATE) = TRUNC(SYSDATE)
+            </otherwise>
+        </choose>
+        ORDER BY REVIEW_DATE DESC, REVIEW_ID DESC
+        FETCH FIRST 1 ROW ONLY
+
+    </select>
+
+
+    <!-- =========================================
          MY 페이지 - 데일리 기록별 서브 리뷰 조회
     ========================================== -->
     <select id="findSubReviewsByReviewId"

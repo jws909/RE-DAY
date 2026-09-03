@@ -72,4 +72,10 @@ public interface ReviewService {
     
     // 메인 페이지 - 서브 리뷰 카테고리별 등록 건수 집계
     public CategoryCountDTO findCategoryCounts();
+
+    // 작성자 및 일자 기준 데일리 리뷰 단건/중복 조회
+    public DailyReviewFormDTO findReviewByUserIdAndDate(
+            String userId,
+            String reviewDate
+    );
 }

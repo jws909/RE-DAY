@@ -491,4 +491,26 @@
       AND CHEER_COUNT > 0
 
 </update>
+
+
+<!-- =========================================
+     데일리 리뷰 작성 시 연속 기록(스트릭) 갱신
+     - 어제 작성한 리뷰가 존재하면: 기존 스트릭 + 1
+     - 어제 작성한 리뷰가 없으면: 1로 시작/리셋
+========================================= -->
+<update id="updateStreakCount"
+        parameterType="string">
+
+    UPDATE USERS
+    SET STREAK_COUNT = CASE
+        WHEN EXISTS (
+            SELECT 1 FROM DAILY_REVIEWS
+            WHERE USER_ID = #{value}
+              AND TRUNC(REVIEW_DATE) = TRUNC(SYSDATE) - 1
+        ) THEN NVL(STREAK_COUNT, 0) + 1
+        ELSE 1
+    END
+    WHERE USER_ID = #{value}
+
+</update>
 </mapper>

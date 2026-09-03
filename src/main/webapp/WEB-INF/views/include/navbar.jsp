@@ -549,3 +549,11 @@
 
 	}
 </script>
+
+<c:if test="${not empty errorMessage}">
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		alert("${errorMessage}");
+	});
+</script>
+</c:if>

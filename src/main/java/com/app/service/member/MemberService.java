@@ -68,4 +68,7 @@ public interface MemberService {
 	        String requestUserId,
 	        String responseUserId
 	);
+
+	// 데일리 리뷰 작성 시 연속 기록(스트릭) 갱신
+	public int updateStreakCount(String userId);
 }

@@ -89,15 +89,18 @@
                         <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
                             <i class="fa-regular fa-calendar-days text-slate-400"></i>
                             <span>리뷰 일자</span>
+                            <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded font-mono font-medium border border-slate-200">작성일 고정 (수정 불가)</span>
                         </label>
                         <input
-                            type="date"
+                            type="text"
                             id="reviewDate"
                             name="reviewDate"
                             value="${review.reviewDate}"
+                            readonly
                             required
-                            class="w-full px-3 py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:border-slate-800 bg-slate-50"
+                            class="w-full px-3 py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm font-mono bg-slate-100 text-slate-600 cursor-not-allowed focus:outline-none"
                         />
+                        <p class="text-[11px] text-slate-400 mt-1">* 리뷰 작성 일자는 수정할 수 없으며 기존 작성일 그대로 보존됩니다.</p>
                     </div>
 
                     <div>
