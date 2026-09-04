@@ -301,7 +301,21 @@ function escapeHtml(text) {
         .replace(/'/g, '&#039;');
 }
 
-function getLevelBadgeHtml(rawLevel) {
+/**
+ * 🎁 [이스터에그] '승북이'인지 확인하는 함수
+ */
+function isSeungbuk(userId, nickname) {
+    var uid = (userId || '').toString().toLowerCase().trim();
+    var nick = (nickname || '').toString().toLowerCase().trim();
+    return nick === '승북이' || nick.indexOf('승북') !== -1 || uid === '승북이';
+}
+
+function getLevelBadgeHtml(rawLevel, userId, nickname) {
+    // 🎁 [이스터에그] '승북이' 전용 특별 레벨 뱃지
+    if (isSeungbuk(userId, nickname)) {
+        return '<span class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 6px; vertical-align: middle; box-shadow: 0 1px 2px rgba(34, 197, 94, 0.15);">Lv.100 RE:DAY 막내 팀장</span>';
+    }
+
     rawLevel = (rawLevel || 'LV1').toString().trim().toUpperCase();
     if (rawLevel === 'LV5' || rawLevel === '5') {
         return '<span class="text-xs font-mono px-2 py-0.5 rounded border border-purple-300 bg-purple-50 text-purple-700 font-bold">Lv.5 라이프 해커</span>';
@@ -354,7 +368,7 @@ function buildReviewCardHtml(review) {
         : '<span class="material-symbols-outlined" style="font-size: 20px; color: #64748B;">person</span>';
 
     var nickname = escapeHtml(review.authorNickname || '익명');
-    var levelBadgeHtml = getLevelBadgeHtml(review.authorLevel);
+    var levelBadgeHtml = getLevelBadgeHtml(review.authorLevel, review.userId, review.authorNickname);
     var streakBadgeHtml = getStreakBadgeHtml(review.authorStreakCount);
 
     var todayBadgeHtml = '';

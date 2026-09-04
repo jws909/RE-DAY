@@ -21,7 +21,7 @@
 
 <%-- MY 페이지 CSS --%>
 
-<link href="${pageContext.request.contextPath}/css/mainpage/my.css"
+<link href="${pageContext.request.contextPath}/css/mainpage/my.css?v=<%=System.currentTimeMillis()%>"
 	rel="stylesheet">
 
 <%-- MY 페이지 JavaScript --%>
@@ -111,27 +111,24 @@
 
 								<%-- 회원 레벨 / 등급명 --%>
 
-								<span class="my_badge_blue font-mono"> <c:choose>
+								<c:choose>
+									<%-- 🎁 [이스터에그] '승북이' 전용 특별 레벨 뱃지 (Lv.100 RE:DAY 막내 팀장) --%>
+									<c:when test="${loginUser.nickname eq '승북이' or fn:contains(loginUser.nickname, '승북') or loginUser.userId eq '승북이'}">
+										<span class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 6px; vertical-align: middle; box-shadow: 0 1px 2px rgba(34, 197, 94, 0.15);">
+											Lv.100 RE:DAY 막내 팀장
+										</span>
+									</c:when>
 
-										<%-- 와이어프레임 LV4 표시 --%>
+									<%-- 와이어프레임 LV4 표시 --%>
+									<c:when test="${loginUser.userLevel eq 'LV4'}">
+										<span class="my_badge_blue font-mono">Lv.4 프로 기록러</span>
+									</c:when>
 
-										<c:when test="${loginUser.userLevel eq 'LV4'}">
-
-            Lv.4 프로 기록러
-
-        </c:when>
-
-										<%-- 그 외 레벨은 DB 값 그대로 표시 --%>
-
-										<c:otherwise>
-
-            ${loginUser.userLevel}
-
-        </c:otherwise>
-
-									</c:choose>
-
-								</span>
+									<%-- 그 외 레벨은 DB 값 그대로 표시 --%>
+									<c:otherwise>
+										<span class="my_badge_blue font-mono">${loginUser.userLevel}</span>
+									</c:otherwise>
+								</c:choose>
 
 
 
