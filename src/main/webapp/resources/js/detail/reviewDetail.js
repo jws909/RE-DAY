@@ -12,13 +12,6 @@ function initUserLevelBadge() {
     var levelBadge = document.getElementById('userLevelBadge');
     if (!levelBadge) return;
 
-    // 🎁 [이스터에그] '승북이' 전용 뱃지인 경우 덮어쓰지 않고 유지
-    if (levelBadge.classList.contains('seungbuk_level_badge') || 
-        levelBadge.classList.contains('mp_easter_egg_badge') ||
-        (levelBadge.textContent && levelBadge.textContent.indexOf('막내 팀장') !== -1)) {
-        return;
-    }
-
     var rawLevel = (levelBadge.getAttribute('data-level') || levelBadge.textContent || '').trim().toUpperCase();
 
     // LV1 ~ LV5 매핑 테이블

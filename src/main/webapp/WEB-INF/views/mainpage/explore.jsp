@@ -8,10 +8,13 @@
 <title>RE:DAY - 당신의 오늘 하루는 어땠나요?</title>
 
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
-<link href="${pageContext.request.contextPath}/css/mainpage/explore.css?v=<%=System.currentTimeMillis()%>" rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/css/mainpage/explore.css?v=<%=System.currentTimeMillis()%>"
+	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<script src="${pageContext.request.contextPath}/js/mainpage/explore.js?v=<%=System.currentTimeMillis()%>"></script>
+<script
+	src="${pageContext.request.contextPath}/js/mainpage/explore.js?v=<%=System.currentTimeMillis()%>"></script>
 </head>
 <body>
 	<!-- 상단 네비게이션 바 불러오기 -->
@@ -27,276 +30,103 @@
 			<div class="ex_t_bottom">주관적인 평점 순위 대신, 꾸준히 기록을 이어가는 유저들의 일기에
 				가장 많이 등장한 실사용 장소·아이템 트렌드를 확인해보세요.</div>
 		</div>
-		<div class="ex_bottom_column">
-			</div>
-			<!-- 하단 2열 컨텐츠 영역 -->
-			<div class="ex_b_bottom_column">
-				<!-- 좌측: 연속 기록 스트릭 챌린저 -->
-				<div class="ex_bottom_left">
-					<div class="ex_section_header">
-						<div class="ex_section_title">
-							<span class="material-symbols-outlined icon_flame">local_fire_department</span>
-							<h2 class="text-lg font-bold">연속 기록 스트릭(Streak)</h2>
-						</div>
-						<span class="ex_badge_orange font-mono">꾸준한 기록러</span>
+		<div class="ex_bottom_column"></div>
+		<!-- 하단 2열 컨텐츠 영역 -->
+		<div class="ex_b_bottom_column">
+			<!-- 좌측: 연속 기록 스트릭 챌린저 -->
+			<div class="ex_bottom_left">
+				<div class="ex_section_header">
+					<div class="ex_section_title">
+						<span class="material-symbols-outlined icon_flame">local_fire_department</span>
+						<h2 class="text-lg font-bold">연속 기록 스트릭(Streak)</h2>
 					</div>
-					<p class="ex_section_desc">
-						평점이 아닌 <strong>매일 하루를 빼놓지 않고 기록</strong>하며 삶을 성실히 채워가는 유저들입니다.
-					</p>
+					<span class="ex_badge_orange font-mono">꾸준한 기록러</span>
+				</div>
+				<p class="ex_section_desc">
+					평점이 아닌 <strong>매일 하루를 빼놓지 않고 기록</strong>하며 삶을 성실히 채워가는 유저들입니다.
+				</p>
 
 
-					<%-- =========================================
+				<%-- =========================================
      탐색 페이지 - 연속 기록 스트릭 Top 5
      - DB 조회 결과 반복 출력
      ========================================= --%>
 
-					<div class="ex_challenger_list">
+				<div class="ex_challenger_list">
 
-						<c:forEach var="user" items="${streakUsers}">
+					<c:forEach var="user" items="${streakUsers}">
 
-							<div class="ex_challenger_card">
+						<div class="ex_challenger_card">
 
-								<div class="ex_challenger_info">
+							<div class="ex_challenger_info">
 
-									<%-- 좌측 스트릭 박스 --%>
-									<div class="ex_streak_box">
+								<%-- 좌측 스트릭 박스 --%>
+								<div class="ex_streak_box">
 
-										<span class="material-symbols-outlined icon_flame">
-											local_fire_department </span> <span class="streak_day font-mono">
-											${user.streakCount}일 </span>
+									<span class="material-symbols-outlined icon_flame">
+										local_fire_department </span> <span class="streak_day font-mono">
+										${user.streakCount}일 </span>
+
+								</div>
+
+								<%-- 중앙 유저 메타 정보 --%>
+								<div class="ex_challenger_meta">
+
+									<div class="meta_row_top">
+
+										<h3 class="ex_challenger_name">${user.nickname}</h3>
+
+										<span class="streak_badge"> 👑 ${user.streakCount}일 연속
+											기록 </span>
 
 									</div>
 
-									<%-- 중앙 유저 메타 정보 --%>
-									<div class="ex_challenger_meta">
-
-										<div class="meta_row_top">
-
-											<h3 class="ex_challenger_name">${user.nickname}</h3>
-
-											<span class="streak_badge"> 👑 ${user.streakCount}일 연속
-												기록 </span>
-
-										</div>
-
-										<div class="meta_row_bottom">
-
-											<c:choose>
-												<c:when test="${user.nickname eq '승북이' or user.userId eq '승북이'}">
-													<span class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; font-size: 11px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 4px; vertical-align: middle;">
-														Lv.100 RE:DAY 막내 팀장
-													</span>
-												</c:when>
-												<c:otherwise>
-													<span class="user_level font-mono"> ${user.userLevel} </span>
-												</c:otherwise>
-											</c:choose> <span class="dot"> • </span> <span class="review_stats">
-												기록 ${user.totalReviewCount}편 (서브 ${user.subReviewCount}개) ·
-												이번 주 ${user.weeklyReviewCount}일 </span>
-
-										</div>
-
-										<%-- 최근 태그 --%>
-										<c:if test="${not empty user.recentTags}">
-											<div class="recent_tag_row">
-
-												<span class="recent_tag_label"> 최근 태그
-													${user.recentTags} </span>
-
-											</div>
-										</c:if>
-
+									
+									<div class="meta_row_bottom">
+										<c:choose>
+											<c:when
+												test="${user.nickname eq '승북이' or user.userId eq '승북이'}">
+												<span>기록 ${user.totalReviewCount}편 (서브
+													${user.subReviewCount}개) · 이번 주 ${user.weeklyReviewCount}일</span>
+											</c:when>
+											<c:otherwise>
+												<span>기록 ${user.totalReviewCount}편 · 이번 주
+													${user.weeklyReviewCount}일</span>
+											</c:otherwise>
+										</c:choose>
 									</div>
 
-								</div>
+									<%-- 최근 태그 --%>
+									<c:if test="${not empty user.recentTags}">
+										<div class="recent_tag_row">
 
-								<%-- 우측 응원 버튼 --%>
+											<span class="recent_tag_label"> 최근 태그
+												${user.recentTags} </span>
 
-								<form
-									action="${pageContext.request.contextPath}/RE:DAY/explore/cheer"
-									method="post">
-
-									<input type="hidden" name="responseUserId"
-										value="${user.userId}">
-
-									<button type="submit"
-										class="ex_cheer_btn ${user.cheeredByMe ? 'active' : ''}">
-
-										<span class="material-symbols-outlined icon_heart">
-											favorite </span> <span> 응원 ${user.cheerCount} </span>
-
-									</button>
-								</form>
-
-							</div>
-
-						</c:forEach>
-
-					</div>
-
-					<!-- 스트릭 유도 배너 -->
-					<div class="ex_streak_banner">
-						<div class="banner_title">
-							<span class="material-symbols-outlined">event_available</span> <span>나도
-								스트릭 챌린지 시작하기</span>
-						</div>
-						<p class="banner_desc">오늘의 하루를 리뷰하면 1일차 불꽃 뱃지가 활성화됩니다. 7일 연속
-							작성 시 '주간 루틴 마스터' 뱃지가 부여됩니다.</p>
-					</div>
-				</div>
-
-				<!-- 우측: 이번 주 최다 언급 아이템 & 장소 -->
-				<div class="ex_bottom_right">
-					<div class="ex_section_header">
-						<div class="ex_section_title">
-							<span class="material-symbols-outlined icon_blue">trending_up</span>
-							<h2 class="text-lg font-bold">이번 주 최다 언급 아이템 & 장소</h2>
-						</div>
-						<span class="ex_badge_blue font-mono">실사용 데이터 기반</span>
-					</div>
-					<p class="ex_section_desc">
-						단순 주관적 별점이 아닌, <strong>실제 유저들의 일기 속에 가장 많이 기록되고 내돈내산 인증된</strong>
-						핫 아이템/장소입니다.
-					</p>
-
-					<!-- 카테고리 탭 버튼 -->
-					<div class="ex_curation_tab_bar">
-						<button type="button" onclick="filterCuration('all', this)" id="tab-all"
-							class="ex_curation_tab active">전체 트렌드</button>
-						<button type="button" onclick="filterCuration('item', this)"
-							id="tab-item" class="ex_curation_tab">💻 전자기기/아이템</button>
-						<button type="button" onclick="filterCuration('place', this)"
-							id="tab-place" class="ex_curation_tab">☕ 핫플 장소/카페</button>
-						<button type="button" onclick="filterCuration('transport', this)"
-							id="tab-transport" class="ex_curation_tab">🚗 모빌리티/차량</button>
-						<button type="button" onclick="filterCuration('content', this)"
-							id="tab-content" class="ex_curation_tab">🎬 콘텐츠/미디어</button>
-					</div>
-
-					<!-- 큐레이션 카드 그리드 -->
-					<div class="ex_curation_grid" id="curation-list">
-						<c:choose>
-							<c:when test="${not empty trendingItems}">
-								<c:forEach var="item" items="${trendingItems}">
-									<div class="ex_curation_card" data-category="${item.category}">
-										<div class="card_header">
-											<span class="category_label">${item.categoryLabel}</span>
-											<span class="mention_cnt font-mono">언급 ${item.mentionCount}회</span>
 										</div>
-										<h4 class="curation_title"><c:out value="${item.itemName}" /></h4>
-										<p class="curation_desc">
-											<c:choose>
-												<c:when test="${not empty item.latestComment}">
-													<c:out value="${item.latestComment}" />
-												</c:when>
-												<c:otherwise>
-													유저들의 실제 일기 속에 자주 기록된 인기 ${item.categoryLabel}입니다.
-												</c:otherwise>
-											</c:choose>
-										</p>
-										<c:if test="${not empty item.avgRating and item.avgRating > 0}">
-											<div class="flex items-center gap-1 mt-auto pt-2 text-xs font-mono text-amber-500 font-semibold">
-												<i class="fa-solid fa-star text-xs"></i>
-												<span>${item.avgRating}</span>
-												<span class="text-slate-400 font-normal">/ 5.0</span>
-											</div>
-										</c:if>
-									</div>
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<div class="col-span-full py-12 text-center text-slate-400 text-sm bg-slate-50 rounded-xl border border-dashed border-slate-200">
-									<i class="fa-regular fa-clipboard text-2xl mb-2 text-slate-300 block"></i>
-									<p>아직 등록된 핫 아이템/장소 언급 데이터가 없습니다.</p>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</div>
-			</div>
-			<%-- =========================================
-                 탐색 페이지 - 주간 유저 랭킹 Top 5
-                 - 이번 주 작성률 / 평균 평점 기준
-                 ========================================= --%>
-			<div class="ex_weekly_ranking_section">
-
-				<!-- 랭킹 영역 상단 -->
-				<div class="ex_ranking_header">
-
-					<div class="ex_ranking_title_wrap">
-						<span class="material-symbols-outlined icon_ranking">
-							social_leaderboard </span>
-
-						<div>
-							<h2 class="ex_ranking_title">주간 유저 랭킹 Top 5</h2>
-
-							<p class="ex_ranking_desc">이번 주 꾸준히 하루를 기록한 유저들의 작성률과 평균
-								평점입니다.</p>
-						</div>
-					</div>
-
-					<span class="ex_ranking_badge font-mono"> WEEKLY TOP 5 </span>
-
-				</div>
-
-
-				<!-- 주간 랭킹 목록 -->
-				<div class="ex_ranking_list">
-
-					<c:forEach var="user" items="${weeklyRanking}">
-
-						<div class="ex_ranking_card">
-
-							<!-- 순위 -->
-							<div class="ex_rank_number">${user.ranking}</div>
-
-
-							<!-- 유저 프로필 -->
-							<div class="ex_rank_user">
-
-								<div class="ex_rank_profile">
-
-									<c:choose>
-
-										<c:when test="${not empty user.profileImg}">
-											<img src="${user.profileImg}" alt="${user.nickname} 프로필 이미지">
-										</c:when>
-
-										<c:otherwise>
-											<span class="material-symbols-outlined"> person </span>
-										</c:otherwise>
-
-									</c:choose>
-
-								</div>
-
-								<div class="ex_rank_user_info">
-
-									<strong class="ex_rank_nickname"> ${user.nickname} </strong> <span
-										class="ex_rank_review_count font-mono"> 이번 주
-										${user.weeklyReviewCount}일 기록 </span>
+									</c:if>
 
 								</div>
 
 							</div>
 
+							<%-- 우측 응원 버튼 --%>
 
-							<!-- 작성률 -->
-							<div class="ex_rank_stat">
+							<form
+								action="${pageContext.request.contextPath}/RE:DAY/explore/cheer"
+								method="post">
 
-								<span class="ex_rank_stat_label"> 작성률 </span> <strong
-									class="ex_rank_stat_value"> ${user.writingRate}% </strong>
+								<input type="hidden" name="responseUserId"
+									value="${user.userId}">
 
-							</div>
+								<button type="submit"
+									class="ex_cheer_btn ${user.cheeredByMe ? 'active' : ''}">
 
+									<span class="material-symbols-outlined icon_heart">
+										favorite </span> <span> 응원 ${user.cheerCount} </span>
 
-							<!-- 평균 평점 -->
-							<div class="ex_rank_stat">
-
-								<span class="ex_rank_stat_label"> 평균 평점 </span> <strong
-									class="ex_rank_stat_value"> ⭐ ${user.averageRating} </strong>
-
-							</div>
+								</button>
+							</form>
 
 						</div>
 
@@ -304,8 +134,182 @@
 
 				</div>
 
+				<!-- 스트릭 유도 배너 -->
+				<div class="ex_streak_banner">
+					<div class="banner_title">
+						<span class="material-symbols-outlined">event_available</span> <span>나도
+							스트릭 챌린지 시작하기</span>
+					</div>
+					<p class="banner_desc">오늘의 하루를 리뷰하면 1일차 불꽃 뱃지가 활성화됩니다. 7일 연속 작성
+						시 '주간 루틴 마스터' 뱃지가 부여됩니다.</p>
+				</div>
+			</div>
+
+			<!-- 우측: 이번 주 최다 언급 아이템 & 장소 -->
+			<div class="ex_bottom_right">
+				<div class="ex_section_header">
+					<div class="ex_section_title">
+						<span class="material-symbols-outlined icon_blue">trending_up</span>
+						<h2 class="text-lg font-bold">이번 주 최다 언급 아이템 & 장소</h2>
+					</div>
+					<span class="ex_badge_blue font-mono">실사용 데이터 기반</span>
+				</div>
+				<p class="ex_section_desc">
+					단순 주관적 별점이 아닌, <strong>실제 유저들의 일기 속에 가장 많이 기록되고 내돈내산 인증된</strong> 핫
+					아이템/장소입니다.
+				</p>
+
+				<!-- 카테고리 탭 버튼 -->
+				<div class="ex_curation_tab_bar">
+					<button type="button" onclick="filterCuration('all', this)"
+						id="tab-all" class="ex_curation_tab active">전체 트렌드</button>
+					<button type="button" onclick="filterCuration('item', this)"
+						id="tab-item" class="ex_curation_tab">💻 전자기기/아이템</button>
+					<button type="button" onclick="filterCuration('place', this)"
+						id="tab-place" class="ex_curation_tab">☕ 핫플 장소/카페</button>
+					<button type="button" onclick="filterCuration('transport', this)"
+						id="tab-transport" class="ex_curation_tab">🚗 모빌리티/차량</button>
+					<button type="button" onclick="filterCuration('content', this)"
+						id="tab-content" class="ex_curation_tab">🎬 콘텐츠/미디어</button>
+				</div>
+
+				<!-- 큐레이션 카드 그리드 -->
+				<div class="ex_curation_grid" id="curation-list">
+					<c:choose>
+						<c:when test="${not empty trendingItems}">
+							<c:forEach var="item" items="${trendingItems}">
+								<div class="ex_curation_card" data-category="${item.category}">
+									<div class="card_header">
+										<span class="category_label">${item.categoryLabel}</span> <span
+											class="mention_cnt font-mono">언급 ${item.mentionCount}회</span>
+									</div>
+									<h4 class="curation_title">
+										<c:out value="${item.itemName}" />
+									</h4>
+									<p class="curation_desc">
+										<c:choose>
+											<c:when test="${not empty item.latestComment}">
+												<c:out value="${item.latestComment}" />
+											</c:when>
+											<c:otherwise>
+													유저들의 실제 일기 속에 자주 기록된 인기 ${item.categoryLabel}입니다.
+												</c:otherwise>
+										</c:choose>
+									</p>
+									<c:if test="${not empty item.avgRating and item.avgRating > 0}">
+										<div
+											class="flex items-center gap-1 mt-auto pt-2 text-xs font-mono text-amber-500 font-semibold">
+											<i class="fa-solid fa-star text-xs"></i> <span>${item.avgRating}</span>
+											<span class="text-slate-400 font-normal">/ 5.0</span>
+										</div>
+									</c:if>
+								</div>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<div
+								class="col-span-full py-12 text-center text-slate-400 text-sm bg-slate-50 rounded-xl border border-dashed border-slate-200">
+								<i
+									class="fa-regular fa-clipboard text-2xl mb-2 text-slate-300 block"></i>
+								<p>아직 등록된 핫 아이템/장소 언급 데이터가 없습니다.</p>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</div>
 		</div>
+		<%-- =========================================
+                 탐색 페이지 - 주간 유저 랭킹 Top 5
+                 - 이번 주 작성률 / 평균 평점 기준
+                 ========================================= --%>
+		<div class="ex_weekly_ranking_section">
+
+			<!-- 랭킹 영역 상단 -->
+			<div class="ex_ranking_header">
+
+				<div class="ex_ranking_title_wrap">
+					<span class="material-symbols-outlined icon_ranking">
+						social_leaderboard </span>
+
+					<div>
+						<h2 class="ex_ranking_title">주간 유저 랭킹 Top 5</h2>
+
+						<p class="ex_ranking_desc">이번 주 꾸준히 하루를 기록한 유저들의 작성률과 평균
+							평점입니다.</p>
+					</div>
+				</div>
+
+				<span class="ex_ranking_badge font-mono"> WEEKLY TOP 5 </span>
+
+			</div>
+
+
+			<!-- 주간 랭킹 목록 -->
+			<div class="ex_ranking_list">
+
+				<c:forEach var="user" items="${weeklyRanking}">
+
+					<div class="ex_ranking_card">
+
+						<!-- 순위 -->
+						<div class="ex_rank_number">${user.ranking}</div>
+
+
+						<!-- 유저 프로필 -->
+						<div class="ex_rank_user">
+
+							<div class="ex_rank_profile">
+
+								<c:choose>
+
+									<c:when test="${not empty user.profileImg}">
+										<img src="${user.profileImg}" alt="${user.nickname} 프로필 이미지">
+									</c:when>
+
+									<c:otherwise>
+										<span class="material-symbols-outlined"> person </span>
+									</c:otherwise>
+
+								</c:choose>
+
+							</div>
+
+							<div class="ex_rank_user_info">
+
+								<strong class="ex_rank_nickname"> ${user.nickname} </strong> <span
+									class="ex_rank_review_count font-mono"> 이번 주
+									${user.weeklyReviewCount}일 기록 </span>
+
+							</div>
+
+						</div>
+
+
+						<!-- 작성률 -->
+						<div class="ex_rank_stat">
+
+							<span class="ex_rank_stat_label"> 작성률 </span> <strong
+								class="ex_rank_stat_value"> ${user.writingRate}% </strong>
+
+						</div>
+
+
+						<!-- 평균 평점 -->
+						<div class="ex_rank_stat">
+
+							<span class="ex_rank_stat_label"> 평균 평점 </span> <strong
+								class="ex_rank_stat_value"> ⭐ ${user.averageRating} </strong>
+
+						</div>
+
+					</div>
+
+				</c:forEach>
+
+			</div>
+
+		</div>
+	</div>
 	</div>
 </body>
 
