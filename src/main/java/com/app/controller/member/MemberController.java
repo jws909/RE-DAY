@@ -331,7 +331,8 @@ public class MemberController {
             // ========================================
             // 5. DB INSERT
             // ========================================
-
+            memberDTO.setProvider("LOCAL");
+            
             System.out.println(
                     "4. 회원 INSERT 시작"
             );

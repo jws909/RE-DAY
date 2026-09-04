@@ -116,6 +116,13 @@
 													<!-- 유저 레벨 (USER_LEVEL: LV1~LV5) 뱃지 -->
 													<c:set var="rawLevel" value="${not empty review.authorLevel ? review.authorLevel : 'LV1'}" />
 													<c:choose>
+														<%-- 🎁 [이스터에그] '승북이' 전용 특별 레벨 뱃지 (Lv.100 RE:DAY 막내 팀장) --%>
+														<c:when test="${review.authorNickname eq '승북이' or fn:contains(review.authorNickname, '승북') or review.userId eq '승북이'}">
+															<span class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 6px; vertical-align: middle; box-shadow: 0 1px 2px rgba(34, 197, 94, 0.15);">
+																Lv.100 RE:DAY 막내 팀장
+															</span>
+														</c:when>
+
 														<c:when test="${rawLevel eq 'LV5' or rawLevel eq '5'}">
 															<span class="text-xs font-mono px-2 py-0.5 rounded border border-purple-300 bg-purple-50 text-purple-700 font-bold">
 																Lv.5 라이프 해커

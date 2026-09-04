@@ -194,6 +194,13 @@
 								<c:set var="rawLevel"
 									value="${not empty user.userLevel ? user.userLevel : (not empty user.userLevel ? user.userLevel : (not empty userLevel ? userLevel : 'LV1'))}" />
 								<c:choose>
+									<%-- 🎁 [이스터에그] '승북이' 전용 특별 레벨 뱃지 (Lv.100 RE:DAY 막내 팀장) --%>
+									<c:when test="${user.nickname eq '승북이' or fn:contains(user.nickname, '승북') or review.userId eq '승북이' or user.userId eq '승북이'}">
+										<span id="userLevelBadge" class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 6px; vertical-align: middle; box-shadow: 0 1px 2px rgba(34, 197, 94, 0.15);">
+											Lv.100 RE:DAY 막내 팀장
+										</span>
+									</c:when>
+
 									<c:when test="${rawLevel eq 'LV5' or rawLevel eq '5'}">
 										<span id="userLevelBadge" data-level="${rawLevel}"
 											class="text-xs font-mono px-2 py-0.5 rounded border border-purple-300 bg-purple-50 text-purple-700 font-bold">
@@ -672,12 +679,19 @@
 											</span>
 
 											<!-- 레벨 뱃지 -->
-											<c:if test="${not empty comment.userLevel}">
-												<span
-													class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
-													<c:out value="${comment.userLevel}" />
-												</span>
-											</c:if>
+											<c:choose>
+												<c:when test="${comment.nickname eq '승북이' or fn:contains(comment.nickname, '승북') or comment.userId eq '승북이'}">
+													<span class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; font-size: 10px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 4px; vertical-align: middle;">
+														Lv.100 RE:DAY 막내 팀장
+													</span>
+												</c:when>
+												<c:when test="${not empty comment.userLevel}">
+													<span
+														class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
+														<c:out value="${comment.userLevel}" />
+													</span>
+												</c:when>
+											</c:choose>
 
 											<!-- 스트릭 뱃지 -->
 											<c:if
