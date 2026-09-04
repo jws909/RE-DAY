@@ -573,7 +573,7 @@ body {
         =================================== -->
 
         <a
-            href="${pageContext.request.contextPath}/"
+            href="${pageContext.request.contextPath}/RE:DAY/mainpage"
             class="back-link">
 
             ← 메인 피드로 돌아가기
