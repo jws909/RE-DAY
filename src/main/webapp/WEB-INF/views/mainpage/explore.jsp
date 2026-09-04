@@ -81,8 +81,16 @@
 
 										<div class="meta_row_bottom">
 
-											<span class="user_level font-mono"> ${user.userLevel}
-											</span> <span class="dot"> • </span> <span class="review_stats">
+											<c:choose>
+												<c:when test="${user.nickname eq '승북이' or user.userId eq '승북이'}">
+													<span class="seungbuk_level_badge font-mono" style="display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; font-size: 11px; font-weight: 700; color: #713F12; background-color: #ECFCCB; border: 1px solid #22C55E; border-radius: 4px; vertical-align: middle;">
+														Lv.100 RE:DAY 막내 팀장
+													</span>
+												</c:when>
+												<c:otherwise>
+													<span class="user_level font-mono"> ${user.userLevel} </span>
+												</c:otherwise>
+											</c:choose> <span class="dot"> • </span> <span class="review_stats">
 												기록 ${user.totalReviewCount}편 (서브 ${user.subReviewCount}개) ·
 												이번 주 ${user.weeklyReviewCount}일 </span>
 
