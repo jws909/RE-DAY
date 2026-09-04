@@ -32,6 +32,10 @@
 
 	<!-- ======================================== 회원가입 ========================================= -->
 	<insert id="insertMember" parameterType="MemberDTO">
+		<selectKey keyProperty="userId" resultType="String" order="BEFORE">
+            SELECT RAWTOHEX(SYS_GUID())
+            FROM DUAL
+        </selectKey>
 
 		INSERT INTO USERS
 		(
@@ -45,13 +49,13 @@
 		)
 		VALUES
 		(
-		RAWTOHEX(SYS_GUID()),
+		#{userId},
 		#{email},
 		#{password},
 		#{nickname},
 		#{interests},
 		#{provider},
-		#{providerId}
+		#{provider} || '_' || #{userId}
 		)
 
 	</insert>
