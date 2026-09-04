@@ -16,5 +16,7 @@ public class MemberDTO {
     private String interests;
     private String isPublic;
     private Integer streakCount;
+    
+    private String providerId;
 
 }

@@ -39,7 +39,9 @@
 		EMAIL,
 		PASSWORD,
 		NICKNAME,
-		INTERESTS
+		INTERESTS,
+		PROVIDER,
+		PROVIDER_ID
 		)
 		VALUES
 		(
@@ -47,7 +49,9 @@
 		#{email},
 		#{password},
 		#{nickname},
-		#{interests}
+		#{interests},
+		#{provider},
+		#{providerId}
 		)
 
 	</insert>
