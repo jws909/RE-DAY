@@ -144,5 +144,19 @@
 
     </delete>
 
+    <!-- =========================================
+         특정 리뷰의 좋아요 개수 조회
+    ========================================== -->
+    <select
+        id="countLikesByReviewId"
+        parameterType="long"
+        resultType="int">
+
+        SELECT COUNT(*)
+        FROM LIKES
+        WHERE REVIEW_ID = #{reviewId}
+
+    </select>
+
 
 </mapper>

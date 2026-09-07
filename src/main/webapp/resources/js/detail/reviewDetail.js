@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initUserStreakBadge();
     initCommentCounter();
     initLikeFormAjaxEnhancement();
+    syncReviewStateToSession();
+});
+
+window.addEventListener('pageshow', function() {
+    syncReviewStateToSession();
 });
 
 /**
@@ -235,7 +240,7 @@ function initLikeFormAjaxEnhancement() {
         var isLoggedIn = likeForm.getAttribute('data-logged-in') === 'true';
         if (!isLoggedIn) {
             if (confirm('좋아요 기능은 로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) {
-                window.location.href = '/member/signin'; // 프로젝트 로그인 경로                       
+                window.location.href = (window.contextPath || '') + '/member/signin'; // 프로젝트 로그인 경로                       
             }
             return false;
         }
@@ -269,14 +274,20 @@ function initLikeFormAjaxEnhancement() {
                 return response.json();
             })
             .then(function(result) {
-                // ResponseResult { success: true, message: "성공", data: null }                           
+                // ResponseResult { success: true, message: "성공", data: { liked: boolean, likeCount: number } }
                 if (result && result.success) {
-                    // UI 상태 반전 (토글)                                                                 
-                    isLiked = !isLiked;
-                    likeForm.setAttribute('data-is-liked', isLiked ? 'true' : 'false');
+                    if (result.data && typeof result.data.liked === 'boolean') {
+                        isLiked = result.data.liked;
+                        likeForm.setAttribute('data-is-liked', isLiked ? 'true' : 'false');
+                        likeCountSpan.textContent = result.data.likeCount;
+                    } else {
+                        // UI 상태 반전 (토글 Fallback)
+                        isLiked = !isLiked;
+                        likeForm.setAttribute('data-is-liked', isLiked ? 'true' : 'false');
 
-                    var newCount = isLiked ? (currentCount + 1) : Math.max(0, currentCount - 1);
-                    likeCountSpan.textContent = newCount;
+                        var newCount = isLiked ? (currentCount + 1) : Math.max(0, currentCount - 1);
+                        likeCountSpan.textContent = newCount;
+                    }
 
                     var heartIcon = likeButton.querySelector('i');
                     if (isLiked) {
@@ -286,8 +297,19 @@ function initLikeFormAjaxEnhancement() {
                         likeButton.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer bg-white border-slate-200 text-slate-700 hover:bg-slate-50';
                         if (heartIcon) heartIcon.className = 'fa-solid fa-heart text-xs text-slate-400';
                     }
+
+                    var updatedLikeCount = (result.data && typeof result.data.likeCount === 'number')
+                        ? result.data.likeCount
+                        : parseInt(likeCountSpan.textContent, 10);
+                    syncReviewStateToSession({ liked: isLiked, likeCount: updatedLikeCount });
                 } else {
-                    alert('좋아요 처리에 실패했습니다.');
+                    if (result && result.message && result.message.indexOf('로그인') !== -1) {
+                        if (confirm('좋아요 기능은 로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) {
+                            window.location.href = (window.contextPath || '') + '/member/signin';
+                        }
+                    } else {
+                        alert((result && result.message) ? result.message : '좋아요 처리에 실패했습니다.');
+                    }
                 }
             })
             .catch(function(error) {
@@ -372,7 +394,9 @@ function removeComment(commentId) {
                 var countSpan = document.getElementById('commentCountSpan');
                 if (countSpan) {
                     var cur = parseInt(countSpan.textContent, 10) || 0;
-                    countSpan.textContent = Math.max(0, cur - 1);
+                    var newCommentCount = Math.max(0, cur - 1);
+                    countSpan.textContent = newCommentCount;
+                    syncReviewStateToSession({ commentCount: newCommentCount });
                 }
             } else {
                 alert('댓글 삭제에 실패했습니다.');
@@ -382,4 +406,76 @@ function removeComment(commentId) {
             console.error(err);
             alert('댓글 삭제 중 오류가 발생했습니다.');
         });
+}
+
+/**
+ * 7. 세션/로컬 스토리지에 현재 리뷰의 최신 좋아요/댓글 상태 동기화 저장
+ */
+function syncReviewStateToSession(overrideData) {
+    try {
+        var reviewIdEl = document.getElementById('likeReviewId');
+        if (!reviewIdEl) return;
+        var reviewId = parseInt(reviewIdEl.value, 10);
+        if (isNaN(reviewId) || reviewId <= 0) return;
+
+        var likeForm = document.getElementById('likeForm');
+        var isLiked = likeForm ? (likeForm.getAttribute('data-is-liked') === 'true') : false;
+        var likeCountSpan = document.getElementById('likeCountSpan');
+        var likeCount = likeCountSpan ? (parseInt(likeCountSpan.textContent, 10) || 0) : 0;
+        var commentCountSpan = document.getElementById('commentCountSpan');
+        var commentCount = commentCountSpan ? (parseInt(commentCountSpan.textContent, 10) || 0) : 0;
+
+        if (overrideData) {
+            if (typeof overrideData.liked === 'boolean') isLiked = overrideData.liked;
+            if (typeof overrideData.likeCount === 'number') likeCount = overrideData.likeCount;
+            if (typeof overrideData.commentCount === 'number') commentCount = overrideData.commentCount;
+        }
+
+        var map = {};
+        try {
+            var raw = sessionStorage.getItem('reday_review_sync_map') || localStorage.getItem('reday_review_sync_map');
+            if (raw) map = JSON.parse(raw);
+        } catch (e) {}
+
+        map[reviewId] = {
+            reviewId: reviewId,
+            liked: isLiked,
+            likeCount: likeCount,
+            commentCount: commentCount,
+            updatedAt: Date.now()
+        };
+
+        var str = JSON.stringify(map);
+        sessionStorage.setItem('reday_review_sync_map', str);
+        localStorage.setItem('reday_review_sync_map', str);
+    } catch (e) {
+        console.warn('Failed to sync review state to storage', e);
+    }
+}
+
+/**
+ * 8. 목록으로 돌아가기 (이전 페이지 또는 메인 피드)
+ */
+function handleGoBack() {
+    // 1. 세션 동기화 예외 방어
+    try {
+        if (typeof syncReviewStateToSession === 'function') {
+            syncReviewStateToSession();
+        }
+    } catch (e) {
+        console.error("세션 동기화 실패:", e);
+    }
+
+    const referrer = document.referrer;
+    // URL 디코딩을 거쳐 %3A(콜론) 이슈 방지
+    const decodedReferrer = referrer ? decodeURIComponent(referrer) : '';
+
+    // 이전 페이지가 메인 페이지인지 검사
+    if (decodedReferrer && decodedReferrer.includes('/RE:DAY/mainpage')) {
+        history.back();
+    } else {
+        // contextPath가 선언되지 않았을 때를 대비해 기본 루트 상대 경로 보정
+        const basePath = window.contextPath !== undefined ? window.contextPath : '';
+        window.location.href = basePath + '/RE:DAY/mainpage';
+    }
 }

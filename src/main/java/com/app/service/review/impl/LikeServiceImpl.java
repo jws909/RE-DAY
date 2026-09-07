@@ -28,9 +28,11 @@ public class LikeServiceImpl implements LikeService {
 		int count = likeDAO.checkExists(likeRequestDTO);
 	    
 	    if (count > 0) {
-	        return likeDAO.delete(likeRequestDTO);
+	        likeDAO.delete(likeRequestDTO);
+	        return 0; // 좋아요 취소됨
 	    } else {
-	        return likeDAO.insert(likeRequestDTO);
+	        likeDAO.insert(likeRequestDTO);
+	        return 1; // 좋아요 등록됨
 	    }
 	}
 
@@ -47,5 +49,17 @@ public class LikeServiceImpl implements LikeService {
 
 	}
 
+	@Override
+	public int countLikesByReviewId(long reviewId) {
+		return likeDAO.countLikesByReviewId(reviewId);
+	}
+
+	@Override
+	public boolean checkExists(LikeRequestDTO likeRequestDTO) {
+		if (likeRequestDTO == null || likeRequestDTO.getUserId() == null || likeRequestDTO.getReviewId() == null) {
+			return false;
+		}
+		return likeDAO.checkExists(likeRequestDTO) > 0;
+	}
 
 }
