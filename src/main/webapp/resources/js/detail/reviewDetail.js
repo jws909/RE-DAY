@@ -457,10 +457,25 @@ function syncReviewStateToSession(overrideData) {
  * 8. 목록으로 돌아가기 (이전 페이지 또는 메인 피드)
  */
 function handleGoBack() {
-    syncReviewStateToSession();
-    if (document.referrer && document.referrer.indexOf('/RE:DAY/mainpage') !== -1) {
+    // 1. 세션 동기화 예외 방어
+    try {
+        if (typeof syncReviewStateToSession === 'function') {
+            syncReviewStateToSession();
+        }
+    } catch (e) {
+        console.error("세션 동기화 실패:", e);
+    }
+
+    const referrer = document.referrer;
+    // URL 디코딩을 거쳐 %3A(콜론) 이슈 방지
+    const decodedReferrer = referrer ? decodeURIComponent(referrer) : '';
+
+    // 이전 페이지가 메인 페이지인지 검사
+    if (decodedReferrer && decodedReferrer.includes('/RE:DAY/mainpage')) {
         history.back();
     } else {
-        window.location.href = (window.contextPath || '') + '/RE:DAY/mainpage';
+        // contextPath가 선언되지 않았을 때를 대비해 기본 루트 상대 경로 보정
+        const basePath = window.contextPath !== undefined ? window.contextPath : '';
+        window.location.href = basePath + '/RE:DAY/mainpage';
     }
 }
