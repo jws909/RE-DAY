@@ -135,10 +135,18 @@ document.addEventListener("DOMContentLoaded", function() {
                                                   '</div>';
                         } else {
                             var html = '';
+                            var seenIds = {};
                             reviews.forEach(function(rev) {
-                                html += buildReviewCardHtml(rev);
+                                if (!seenIds[rev.reviewId]) {
+                                    seenIds[rev.reviewId] = true;
+                                    html += buildReviewCardHtml(rev);
+                                }
                             });
                             container.innerHTML = html;
+
+                            if (typeof syncReviewStatesFromSession === 'function') {
+                                syncReviewStatesFromSession();
+                            }
                         }
 
                         // 더보기 버튼 가시성 제어
@@ -252,12 +260,18 @@ window.loadMoreReviews = function() {
 
     if (!btnLoadMore || !container) return;
 
+    // 이미 요청 중이면 중복 실행 방지 (연타 및 중복 이벤트 가드)
+    if (btnLoadMore.disabled || btnLoadMore.getAttribute('data-loading') === 'true') {
+        return;
+    }
+
     var currentPage = parseInt(container.getAttribute('data-page') || '1', 10);
     var currentSort = container.getAttribute('data-sort') || 'latest';
     var currentCategory = container.getAttribute('data-category') || 'all';
     var nextPage = currentPage + 1;
 
     btnLoadMore.disabled = true;
+    btnLoadMore.setAttribute('data-loading', 'true');
     btnLoadMore.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">sync</span> <span>로딩 중...</span>';
 
     var feedUrl = ctx + '/RE:DAY/feed?page=' + nextPage + '&size=5&sort=' + encodeURIComponent(currentSort) + '&category=' + encodeURIComponent(currentCategory);
@@ -273,10 +287,19 @@ window.loadMoreReviews = function() {
 
                 if (reviews && reviews.length > 0) {
                     reviews.forEach(function(rev) {
-                        var cardHtml = buildReviewCardHtml(rev);
-                        container.insertAdjacentHTML('beforeend', cardHtml);
+                        // 중복 방지: 이미 DOM에 렌더링된 동일한 리뷰 ID는 건너뜀
+                        var existing = container.querySelector('.mp_review_card[data-review-id="' + rev.reviewId + '"]');
+                        if (!existing) {
+                            var cardHtml = buildReviewCardHtml(rev);
+                            container.insertAdjacentHTML('beforeend', cardHtml);
+                        }
                     });
                     container.setAttribute('data-page', nextPage);
+
+                    // 세션 스토리지에 동기화된 좋아요/댓글 상태 적용
+                    if (typeof syncReviewStatesFromSession === 'function') {
+                        syncReviewStatesFromSession();
+                    }
                 }
 
                 if (!data.hasMore) {
@@ -294,6 +317,7 @@ window.loadMoreReviews = function() {
         })
         .finally(function() {
             btnLoadMore.disabled = false;
+            btnLoadMore.removeAttribute('data-loading');
             btnLoadMore.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span> <span>리뷰 더보기 (+5개)</span>';
         });
 };
@@ -301,7 +325,10 @@ window.loadMoreReviews = function() {
 document.addEventListener("DOMContentLoaded", function() {
     var btnLoadMore = document.getElementById('btnLoadMore');
     if (btnLoadMore) {
-        btnLoadMore.addEventListener('click', window.loadMoreReviews);
+        btnLoadMore.onclick = function(e) {
+            e.preventDefault();
+            window.loadMoreReviews();
+        };
     }
 });
 

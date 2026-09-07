@@ -128,7 +128,9 @@
             MOOD_TAGS,
             OVERALL_COMMENT,
             MAIN_IMAGE_URL,
-            IS_PUBLIC
+            IS_PUBLIC,
+            CREATED_AT,
+            UPDATED_AT
         )
         VALUES (
             #{reviewId},
@@ -138,9 +140,10 @@
             #{moodTags},
             #{overallComment},
             #{mainImageUrl},
-            NVL(#{isPublic, jdbcType=VARCHAR}, 'Y')
+            NVL(#{isPublic, jdbcType=VARCHAR}, 'Y'),
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP
         )
-
     </insert>
 
 
@@ -226,7 +229,7 @@
 
         WHERE USER_ID = #{userId}
 
-        ORDER BY REVIEW_DATE DESC
+        ORDER BY TRUNC(REVIEW_DATE) DESC, CREATED_AT DESC, REVIEW_ID DESC
 
     </select>
 
@@ -288,7 +291,9 @@
         WHERE DR.USER_ID = #{userId}
 
         ORDER BY
-            DR.REVIEW_DATE DESC,
+            TRUNC(DR.REVIEW_DATE) DESC,
+            DR.CREATED_AT DESC,
+            DR.REVIEW_ID DESC,
             SR.SUB_REVIEW_ID ASC
 
     </select>
@@ -341,9 +346,9 @@
         SET TOTAL_RATING    = #{totalRating},
             MOOD_TAGS       = #{moodTags},
             OVERALL_COMMENT = #{overallComment},
-            REVIEW_DATE     = TO_DATE(SUBSTR(#{reviewDate}, 1, 10), 'YYYY-MM-DD'),
             MAIN_IMAGE_URL  = #{mainImageUrl, jdbcType=VARCHAR},
-            IS_PUBLIC       = NVL(#{isPublic, jdbcType=VARCHAR}, IS_PUBLIC)
+            IS_PUBLIC       = NVL(#{isPublic, jdbcType=VARCHAR}, IS_PUBLIC),
+            UPDATED_AT      = CURRENT_TIMESTAMP
         WHERE REVIEW_ID = #{reviewId}
 
     </update>
@@ -388,10 +393,10 @@
         </if>
         <choose>
             <when test='sort != null and sort == "rating"'>
-                ORDER BY d.TOTAL_RATING DESC, d.REVIEW_DATE DESC, d.REVIEW_ID DESC
+                ORDER BY d.TOTAL_RATING DESC, TRUNC(d.REVIEW_DATE) DESC, d.CREATED_AT DESC, d.REVIEW_ID DESC
             </when>
             <otherwise>
-                ORDER BY d.REVIEW_DATE DESC, d.REVIEW_ID DESC
+                ORDER BY TRUNC(d.REVIEW_DATE) DESC, d.CREATED_AT DESC, d.REVIEW_ID DESC
             </otherwise>
         </choose>
         OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
