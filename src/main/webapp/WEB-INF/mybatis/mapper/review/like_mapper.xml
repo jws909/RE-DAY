@@ -126,7 +126,7 @@
 
         WHERE l.USER_ID = #{userId}
 
-        ORDER BY d.REVIEW_DATE DESC
+        ORDER BY TRUNC(d.REVIEW_DATE) DESC, d.CREATED_AT DESC, d.REVIEW_ID DESC
 
     </select>
 
