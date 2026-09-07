@@ -75,10 +75,8 @@
 					<div class="sort_filter_left">
 						<span class="material-symbols-outlined">sort</span>정렬
 						<div class="filter_button">
-							<button type="button" class="${currentSort eq 'latest' ? 'active' : ''}" data-sort="latest"
-									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=latest&category=${not empty currentCategory ? currentCategory : 'all'}'">최신 날짜순</button>
-							<button type="button" class="${currentSort eq 'rating' ? 'active' : ''}" data-sort="rating"
-									onclick="location.href='${pageContext.request.contextPath}/RE:DAY/mainpage?sort=rating&category=${not empty currentCategory ? currentCategory : 'all'}'">하루 평점 높은순</button>
+							<button type="button" class="${currentSort eq 'latest' ? 'active' : ''}" data-sort="latest">최신 날짜순</button>
+							<button type="button" class="${currentSort eq 'rating' ? 'active' : ''}" data-sort="rating">하루 평점 높은순</button>
 						</div>
 					</div>
 					<div class="sort_filter_right">총 <span id="feedTotalCount">${totalCount}</span>개의 하루 리뷰</div>
@@ -281,7 +279,6 @@
 				<!-- 피드 더보기 버튼 영역 -->
 				<div id="feedMoreContainer" style="margin-top: 24px; text-align: center; ${hasMore ? '' : 'display: none;'}">
 					<button type="button" id="btnLoadMore" 
-							onclick="if(window.loadMoreReviews) window.loadMoreReviews();"
 							style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 320px; padding: 12px 20px; background-color: #ffffff; border: 2px dashed #CBD5E1; border-radius: 12px; font-weight: bold; font-size: 14px; color: #475569; cursor: pointer; transition: all 0.2s ease;">
 						<span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span>
 						<span>리뷰 더보기 (+5개)</span>
