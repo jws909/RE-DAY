@@ -23,11 +23,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-<<<<<<< HEAD
-=======
 import com.app.dto.review.TrendingItemDTO;
 import com.app.dao.member.MemberDAO;
->>>>>>> develop
 import com.app.dao.review.LikeDAO;
 import com.app.dto.review.LikeRequestDTO;
 
