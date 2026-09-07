@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.app.dto.member.MemberDTO;
@@ -43,8 +44,15 @@ public class MainPageController {
 	public String mainpage(
 			@RequestParam(value = "sort", defaultValue = "latest") String sort,
 			@RequestParam(value = "category", defaultValue = "all") String category,
+			HttpServletResponse response,
 			HttpSession session,
 			Model model) {
+
+		if (response != null) {
+			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+			response.setHeader("Pragma", "no-cache");
+			response.setDateHeader("Expires", 0);
+		}
 
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 		String loginUserId = (loginUser != null) ? loginUser.getUserId() : null;

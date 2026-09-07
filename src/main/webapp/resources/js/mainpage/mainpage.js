@@ -203,16 +203,30 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(function(result) {
             if (result && result.success) {
-                // UI 상태 반전 (토글)
-                isLiked = !isLiked;
-                button.setAttribute("data-liked", isLiked ? "true" : "false");
+                if (result.data && typeof result.data.liked === 'boolean') {
+                    isLiked = result.data.liked;
+                    button.setAttribute("data-liked", isLiked ? "true" : "false");
+                    if (countSpan) countSpan.textContent = result.data.likeCount;
+                } else {
+                    // UI 상태 반전 (토글 Fallback)
+                    isLiked = !isLiked;
+                    button.setAttribute("data-liked", isLiked ? "true" : "false");
+                    if (isLiked) {
+                        if (countSpan) countSpan.textContent = currentCount + 1;
+                    } else {
+                        if (countSpan) countSpan.textContent = Math.max(0, currentCount - 1);
+                    }
+                }
                 if (isLiked) {
                     button.classList.add("active");
-                    if (countSpan) countSpan.textContent = currentCount + 1;
                 } else {
                     button.classList.remove("active");
-                    if (countSpan) countSpan.textContent = Math.max(0, currentCount - 1);
                 }
+
+                var newLikeCount = (result.data && typeof result.data.likeCount === 'number')
+                    ? result.data.likeCount
+                    : (isLiked ? currentCount + 1 : Math.max(0, currentCount - 1));
+                saveReviewSyncState(parseInt(reviewId, 10), isLiked, newLikeCount);
             } else {
                 if (result && result.message && result.message.indexOf("로그인") !== -1) {
                     if (confirm('좋아요 기능은 로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) {
@@ -431,6 +445,14 @@ function buildReviewCardHtml(review) {
         subReviewsHtml += '</div></div>';
     }
 
+    var syncMap = getStoredReviewSyncMap();
+    if (syncMap && syncMap[review.reviewId]) {
+        var syncItem = syncMap[review.reviewId];
+        if (typeof syncItem.liked === 'boolean') review.likedByMe = syncItem.liked;
+        if (typeof syncItem.likeCount === 'number') review.likeCount = syncItem.likeCount;
+        if (typeof syncItem.commentCount === 'number') review.commentCount = syncItem.commentCount;
+    }
+
     var likedClass = review.likedByMe ? 'active' : '';
     var isLikedStr = review.likedByMe ? 'true' : 'false';
     var detailUrl = ctx + '/RE:DAY/review/detail/' + review.reviewId;
@@ -473,7 +495,7 @@ function buildReviewCardHtml(review) {
            '</button>' +
            '<span class="mp_action_info">' +
            '<span class="material-symbols-outlined">chat_bubble</span>' +
-           '<span>댓글 ' + (review.commentCount || 0) + '</span>' +
+           '<span class="mp_comment_count">댓글 ' + (review.commentCount || 0) + '</span>' +
            '</span>' +
            '</div>' +
            '<div class="mp_detail_link" onclick="location.href=\'' + detailUrl + '\'" style="cursor: pointer;">' +
@@ -540,4 +562,115 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(function(error) {
             console.error('통계 데이터를 불러오는 중 오류 발생:', error);
         });
+});
+
+/**
+ * =========================================================================
+ * 메인 피드 ↔ 상세 페이지 상태 실시간 동기화 (BFCache / 뒤로가기 / 탭 전환 완벽 대응)
+ * =========================================================================
+ */
+
+/**
+ * 세션/로컬 스토리지에서 최신 리뷰 상태 맵 조회
+ */
+function getStoredReviewSyncMap() {
+    try {
+        var str = sessionStorage.getItem('reday_review_sync_map') || localStorage.getItem('reday_review_sync_map');
+        return str ? JSON.parse(str) : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+/**
+ * 특정 리뷰 상태를 세션/로컬 스토리지에 동기화 저장
+ */
+function saveReviewSyncState(reviewId, liked, likeCount, commentCount) {
+    try {
+        var map = getStoredReviewSyncMap();
+        var existing = map[reviewId] || {};
+        map[reviewId] = {
+            reviewId: reviewId,
+            liked: (typeof liked === 'boolean') ? liked : existing.liked,
+            likeCount: (typeof likeCount === 'number') ? likeCount : existing.likeCount,
+            commentCount: (typeof commentCount === 'number') ? commentCount : existing.commentCount,
+            updatedAt: Date.now()
+        };
+        var str = JSON.stringify(map);
+        sessionStorage.setItem('reday_review_sync_map', str);
+        localStorage.setItem('reday_review_sync_map', str);
+    } catch (e) {}
+}
+
+/**
+ * 상세 페이지 등에서 변경된 최신 좋아요/댓글 상태를 메인 피드의 모든 카드에 동기화 반영
+ */
+function syncReviewStatesFromSession() {
+    try {
+        var map = getStoredReviewSyncMap();
+        if (!map || typeof map !== 'object') return;
+
+        Object.keys(map).forEach(function(reviewIdStr) {
+            var item = map[reviewIdStr];
+            if (!item || !item.reviewId) return;
+
+            var likeButtons = document.querySelectorAll('.like_btn[data-review-id="' + item.reviewId + '"]');
+            likeButtons.forEach(function(btn) {
+                // 1. 좋아요 활성화/비활성화 상태 및 클래스 동기화
+                if (typeof item.liked === 'boolean') {
+                    btn.setAttribute('data-liked', item.liked ? 'true' : 'false');
+                    if (item.liked) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+
+                // 2. 좋아요 개수 동기화
+                if (typeof item.likeCount === 'number') {
+                    var countSpan = btn.querySelector('.like_count');
+                    if (countSpan) {
+                        countSpan.textContent = item.likeCount;
+                    }
+                }
+
+                // 3. 댓글 개수 동기화
+                if (typeof item.commentCount === 'number') {
+                    var card = btn.closest('.mp_review_card');
+                    if (card) {
+                        var commentSpan = card.querySelector('.mp_comment_count');
+                        if (commentSpan) {
+                            commentSpan.textContent = '댓글 ' + item.commentCount;
+                        }
+                    }
+                }
+            });
+        });
+    } catch (e) {
+        console.warn('Failed to sync review states from storage', e);
+    }
+}
+
+// 1. DOM 로드 시 동기화
+document.addEventListener("DOMContentLoaded", function() {
+    syncReviewStatesFromSession();
+});
+
+// 2. 브라우저 뒤로가기(BFCache) 및 페이지 복원 시 즉시 동기화
+window.addEventListener('pageshow', function() {
+    syncReviewStatesFromSession();
+});
+
+// 3. 탭 전환 또는 창 다시 활성화 시 동기화
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        syncReviewStatesFromSession();
+    }
+});
+
+// 4. 다른 탭이나 창에서 좋아요 변경 시 실시간 동기화
+window.addEventListener('storage', function(e) {
+    if (e.key === 'reday_review_sync_map') {
+        syncReviewStatesFromSession();
+    }
 });

@@ -28,6 +28,10 @@
 
         <result property="isPublic" column="IS_PUBLIC" />
 
+        <result property="likeCount" column="LIKE_COUNT" />
+
+        <result property="commentCount" column="COMMENT_COUNT" />
+
 
         <!-- 1:N 서브 리뷰 리스트 컬렉션 매핑 -->
         <collection property="subReviews"
@@ -76,6 +80,8 @@
             d.OVERALL_COMMENT,
             d.MAIN_IMAGE_URL,
             d.IS_PUBLIC,
+            (SELECT COUNT(*) FROM LIKES l WHERE l.REVIEW_ID = d.REVIEW_ID) AS LIKE_COUNT,
+            (SELECT COUNT(*) FROM COMMENTS c WHERE c.REVIEW_ID = d.REVIEW_ID) AS COMMENT_COUNT,
 
             s.SUB_REVIEW_ID,
             s.REVIEW_ID AS SUB_REVIEW_FK,

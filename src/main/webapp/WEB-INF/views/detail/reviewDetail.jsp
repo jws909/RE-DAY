@@ -68,7 +68,7 @@
 			<div
 				class="flex items-center justify-between pb-4 border-b-2 border-dashed border-slate-300">
 				<!-- 목록으로 버튼 -->
-				<button type="button" onclick="history.back()"
+				<button type="button" onclick="handleGoBack()"
 					class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors font-mono cursor-pointer">
 					<i class="fa-solid fa-arrow-left text-xs"></i> <span>목록으로</span>
 				</button>
@@ -92,8 +92,7 @@
 							${isLiked ? 'bg-rose-50 border-rose-300 text-rose-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">
 							<i
 								class="fa-solid fa-heart text-xs ${isLiked ? 'text-rose-500' : 'text-slate-400'}"></i>
-							<span>좋아요</span> <span id="likeCountSpan" class="font-mono">
-								${empty review.likeCount ? (empty likeCount ? 0 : likeCount) : review.likeCount}</span>
+							<span>좋아요</span> <span id="likeCountSpan" class="font-mono">${empty review ? 0 : review.likeCount}</span>
 						</button>
 					</form>
 
@@ -801,6 +800,9 @@
 	</div>
 
 	<!-- 리뷰 상세 전용 스크립트 분리 -->
+	<script>
+		window.contextPath = '${pageContext.request.contextPath}';
+	</script>
 	<script src="<%=request.getContextPath()%>/js/detail/reviewDetail.js"></script>
 </body>
 </html>

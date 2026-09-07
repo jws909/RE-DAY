@@ -111,4 +111,18 @@ public class LikeDAOImpl implements LikeDAO {
         );
     }
 
+
+    /* =========================================
+       특정 데일리 리뷰의 좋아요 개수 조회
+    ========================================= */
+    @Override
+    public int countLikesByReviewId(
+            long reviewId) {
+
+        return sqlSessionTemplate.selectOne(
+                "like_mapper.countLikesByReviewId",
+                reviewId
+        );
+    }
+
 }

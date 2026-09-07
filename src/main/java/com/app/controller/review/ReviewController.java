@@ -6,6 +6,7 @@ import java.util.List;
 import java.time.LocalDate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.dto.review.DailyReviewFormDTO;
+import com.app.dto.review.LikeRequestDTO;
 import com.app.dto.review.SubReviewDTO;
 import com.app.service.member.MemberService;
 import com.app.service.review.CommentService;
+import com.app.service.review.LikeService;
 import com.app.service.review.ReviewService;
 import com.app.common.ResponseResult;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +40,9 @@ public class ReviewController {
 	
 	@Autowired
 	MemberService memberService;
+
+	@Autowired
+	LikeService likeService;
 
 	@GetMapping("/RE:DAY/review/write")
 	public String writeReview(HttpSession session, RedirectAttributes rttr) {
@@ -95,19 +101,37 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/RE:DAY/review/detail/{reviewId}")
-	public String reviewDetail(@PathVariable long reviewId, Model model) {
+	public String reviewDetail(@PathVariable long reviewId, HttpServletResponse response, HttpSession session, Model model) {
 		
+		if (response != null) {
+			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+			response.setHeader("Pragma", "no-cache");
+			response.setDateHeader("Expires", 0);
+		}
+
 		DailyReviewFormDTO review = reviewService.findReviewDetailByReviewId(reviewId);
 		
 		if(review != null) {
 			MemberDTO user = memberService.findUserInfoByUserId(review.getUserId());
 			
+			MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+			boolean isLiked = false;
+			if (loginUser != null) {
+				LikeRequestDTO likeDto = new LikeRequestDTO();
+				likeDto.setUserId(loginUser.getUserId());
+				likeDto.setReviewId(reviewId);
+				isLiked = likeService.checkExists(likeDto);
+			}
+			review.setLikedByMe(isLiked);
+
 			model.addAttribute("user", user);
 			model.addAttribute("comments", commentService.findCommentListForDetail(reviewId));
 			model.addAttribute("dayOfWeek", DateUtil.DateToDayOfWeek(review.getReviewDate()));
 			model.addAttribute("todayDate", LocalDate.now().toString());
 			model.addAttribute("review", review);
 			model.addAttribute("subReviews", review.getSubReviews());
+			model.addAttribute("isLiked", isLiked);
+			model.addAttribute("likeCount", review.getLikeCount());
 		}
 		
 		return "detail/reviewDetail";

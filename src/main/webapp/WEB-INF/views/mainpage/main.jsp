@@ -264,7 +264,7 @@
 											</button>
 											<span class="mp_action_info">
 												<span class="material-symbols-outlined">chat_bubble</span>
-												<span>댓글 ${review.commentCount}</span>
+												<span class="mp_comment_count">댓글 ${review.commentCount}</span>
 											</span>
 										</div>
 										<div class="mp_detail_link" onclick="location.href='${pageContext.request.contextPath}/RE:DAY/review/detail/${review.reviewId}'" style="cursor: pointer;">

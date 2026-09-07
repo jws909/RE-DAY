@@ -6,5 +6,8 @@ public interface LikeService {
 	public int insert(LikeRequestDTO likeRequestDTO) throws Exception;
 	
 	public int delete(LikeRequestDTO likeRequestDTO) throws Exception;
-	
+
+	public int countLikesByReviewId(long reviewId);
+
+	public boolean checkExists(LikeRequestDTO likeRequestDTO);
 }

@@ -36,4 +36,11 @@ public interface LikeDAO {
     public int deleteLikesByReviewId(
             long reviewId
     );
+
+    /* =========================================
+       특정 데일리 리뷰의 좋아요 개수 조회
+    ========================================= */
+    public int countLikesByReviewId(
+            long reviewId
+    );
 }
